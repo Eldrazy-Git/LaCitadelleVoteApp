@@ -56,7 +56,7 @@ Inspirée de l’univers médiéval du serveur, elle propose une **interface él
 - Rappels automatiques pour chaque site de vote  
 - Annulation des notifications à l’ouverture de l’app  
 
-### 🎨 Thème médiéval
+### 🎨 Thème
 - Couleurs : `#283852` (fond), `#40516d` (boutons), `#aba36d` (bordures)  
 - Police : **MedievalSharp Bold**  
 - Interface fidèle au site [La Citadelle](https://lacitadelle-mc.fr)
