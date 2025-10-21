@@ -1,0 +1,32 @@
+# Gradle / builds
+.gradle/
+**/build/
+app/release/
+local.properties
+
+# IDE
+.idea/
+*.iml
+captures/
+
+# Artefacts
+*.apk
+*.aab
+output-metadata.json
+mapping.txt
+
+# Signing
+*.jks
+*.keystore
+key.properties
+
+# Logs / profiler
+*.log
+*.hprof
+
+# NDK / CMake
+.externalNativeBuild/
+.cxx/
+
+# Google services (optionnel)
+google-services.json

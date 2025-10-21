@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <style name="Theme.LaCitadelleVoteApp" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:statusBarColor">@color/cit_bg</item>
+        <item name="android:navigationBarColor">@color/cit_bg</item>
+        <item name="android:colorBackground">@color/cit_bg</item>
+    </style>
+</resources>
