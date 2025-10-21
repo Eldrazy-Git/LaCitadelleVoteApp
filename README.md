@@ -30,13 +30,13 @@ Inspirée de l’univers médiéval du serveur, elle propose une **interface él
 ## 📥 Téléchargement
 
 <p align="center">
-  <a href="https://github.com/Eldrazy-Git/La-CitadelleVoteApp/releases/latest">
+  <a href="https://github.com/Eldrazy-Git/LaCitadelleVoteApp/releases/latest">
     <img src="https://img.shields.io/badge/Télécharger%20l’APK-Dernière%20version-blue?style=for-the-badge&logo=android&logoColor=white" alt="Download APK"/>
   </a>
 </p>
 
 > 🧱 **Version la plus récente :**  
-> [Cliquez ici pour télécharger la dernière version de l’application (APK)](https://github.com/Eldrazy-Git/La-CitadelleVoteApp/releases/latest)
+> [Cliquez ici pour télécharger la dernière version de l’application (APK)](https://github.com/Eldrazy-Git/LaCitadelleVoteApp/releases/latest)
 
 ---
 
