@@ -27,6 +27,20 @@ Elle permet de **voter sur plusieurs sites** en un seul endroit, tout en respect
 Inspirée de l’univers médiéval du serveur, elle propose une **interface élégante et fonctionnelle**, fidèle à l’identité visuelle du royaume 🛡️
 
 ---
+## 📥 Téléchargement
+
+<p align="center">
+  <a href="https://github.com/Eldrazy-Git/La-Citadelle---Vote-app/releases/latest">
+    <img src="https://img.shields.io/badge/Télécharger%20l’APK-Dernière%20version-blue?style=for-the-badge&logo=android&logoColor=white" alt="Download APK"/>
+  </a>
+</p>
+
+> 🧱 **Version la plus récente :**  
+> [Cliquez ici pour télécharger la dernière version de l’application (APK)](https://github.com/Eldrazy-Git/La-Citadelle---Vote-app/releases/latest)
+
+💡 Ce lien redirige automatiquement vers **la dernière release publiée** sur GitHub.  
+Tu n’as donc **rien à mettre à jour manuellement** à chaque nouvelle version 🎯
+---
 
 ## 🧩 Fonctionnalités
 
