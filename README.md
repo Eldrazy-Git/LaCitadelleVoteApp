@@ -35,9 +35,6 @@ Inspirée de l’univers médiéval du serveur, elle propose une **interface él
   </a>
 </p>
 
-> 🧱 **Version la plus récente :**  
-> [Cliquez ici pour télécharger la dernière version de l’application (APK)](https://github.com/Eldrazy-Git/LaCitadelleVoteApp/releases/latest)
-
 ---
 
 ## 🧩 Fonctionnalités
