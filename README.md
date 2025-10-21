@@ -28,6 +28,16 @@ Inspirée de l’univers médiéval du serveur, elle propose une **interface él
 
 ---
 
+> ⚠️ **Note :**  
+> L’application a été testée :
+> - 🧰 Sur **OnePlus 5 (OxygenOS)** pour les premières versions  
+> - 📱 Et actuellement sur **Xiaomi 15 Ultra (HyperOS 3 / Android 15)**  
+>
+> Bien que ces appareils aient permis de valider le bon fonctionnement des timers et notifications, le comportement peut **varier légèrement selon la marque ou la surcouche Android**.  
+> N’hésitez pas à **signaler tout problème de notifications ou de minuteries** via la section [Issues](../../issues).
+
+---
+
 ## 📥 Téléchargement
 
 <p align="center">
