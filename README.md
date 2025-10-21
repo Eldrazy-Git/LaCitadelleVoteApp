@@ -104,7 +104,7 @@ Certaines versions d’Android (notamment sur **Xiaomi, Samsung, OnePlus, Huawei
 #### Étapes :
 1. Ouvrez **Paramètres** ⚙️  
 2. Allez dans **Batterie et performances** → **Économiseur de batterie / Gestion d’alimentation**  
-3. Recherchez **La Citadelle Vote App**  
+3. Recherchez **La Citadelle Vote**  
 4. Choisissez **Aucune restriction** ou **Ne pas optimiser**
 
 > Cela permet aux minuteries de continuer à fonctionner même lorsque l’application n’est pas ouverte.
@@ -114,7 +114,7 @@ Certaines versions d’Android (notamment sur **Xiaomi, Samsung, OnePlus, Huawei
 ### 🔔 2. Autoriser toutes les notifications
 
 #### Étapes :
-1. Ouvrez **Paramètres → Notifications → La Citadelle Vote App**  
+1. Ouvrez **Paramètres → Notifications → La Citadelle Vote**  
 2. Activez :
    - ✅ **Afficher les notifications**
    - ✅ **Notifications sur écran verrouillé**
@@ -127,7 +127,7 @@ Certaines versions d’Android (notamment sur **Xiaomi, Samsung, OnePlus, Huawei
 ### 🧱 3. (Optionnel) Autoriser le démarrage automatique
 
 Sur certaines surcouches (notamment **MIUI**, **ColorOS**, **EMUI**, etc.) :
-1. Ouvrez **Paramètres → Applications → La Citadelle Vote App → Autres paramètres**
+1. Ouvrez **Paramètres → Applications → La Citadelle Vote → Autres paramètres**
 2. Activez **Démarrage automatique**
 
 > Cela assure que l’app relance ses rappels après un redémarrage du téléphone.
