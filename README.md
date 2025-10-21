@@ -5,7 +5,7 @@
 </p>
 
 <p align="center">
-  <b>Application Android <u>Non officielle</u> pour voter sur le serveur Minecraft <a href="https://lacitadelle-mc.fr">La Citadelle</a></b><br/>
+  <b>Application Android Non officielle pour voter sur le serveur Minecraft <a href="https://lacitadelle-mc.fr">La Citadelle</a></b><br/>
   Soutenez le royaume, renforcez les murs et aidez votre cité à prospérer ⚔️
 </p>
 
