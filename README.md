@@ -1,104 +1,93 @@
-# 🏰 La Citadelle - Vote App
+<h1 align="center">🏰 La Citadelle - Vote App</h1>
 
-![Logo de La Citadelle](app/src/main/res/drawable/logo_citadelle.png)
+<p align="center">
+  <img src="app/src/main/res/drawable/logo_citadelle.png" alt="Logo de La Citadelle" width="160"/>
+</p>
 
-> Application Android officielle permettant aux joueurs du serveur **Minecraft La Citadelle** de voter facilement pour soutenir le royaume 🛡️
+<p align="center">
+  <b>Application Android officielle pour voter sur le serveur Minecraft <a href="https://lacitadelle-mc.fr">La Citadelle</a></b><br/>
+  Soutenez le royaume, renforcez les murs et aidez votre cité à prospérer ⚔️
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Kotlin-1.9%2B-purple?logo=kotlin&logoColor=white" alt="Kotlin"/>
+  <img src="https://img.shields.io/badge/Android-10%2B-brightgreen?logo=android&logoColor=white" alt="Android"/>
+  <img src="https://img.shields.io/badge/Gradle-8.4+-green?logo=gradle&logoColor=white" alt="Gradle"/>
+  <img src="https://img.shields.io/badge/License-MIT-blue" alt="License"/>
+  <img src="https://img.shields.io/github/last-commit/Eldrazy-Git/La-Citadelle---Vote-app" alt="Dernier commit"/>
+</p>
 
 ---
 
 ## ⚔️ Présentation
 
-**La Citadelle Vote App** est une application Android développée sur mesure pour les joueurs du serveur Minecraft [La Citadelle](https://lacitadelle-mc.fr).  
-Elle regroupe **tous les sites de vote officiels** du serveur, avec un design inspiré du thème médiéval du site web.
+**La Citadelle Vote App** est une application Android conçue pour les joueurs du serveur Minecraft [La Citadelle](https://lacitadelle-mc.fr).  
+Elle permet de **voter sur plusieurs sites** en un seul endroit, tout en respectant les **temps de cooldown** entre deux votes.
 
-🎯 Objectif : simplifier le vote quotidien tout en rappelant automatiquement au joueur de voter grâce à des **notifications programmées intelligentes**.
+Inspirée de l’univers médiéval du serveur, elle propose une **interface élégante et fonctionnelle**, fidèle à l’identité visuelle du royaume 🛡️
 
 ---
 
-## 🧩 Fonctionnalités principales
+## 🧩 Fonctionnalités
 
 ### 🕓 Gestion des votes
-- 3 (ou plus) **sites de vote intégrés**
-- Affichage en temps réel du **temps restant avant le prochain vote**
-- Lancement automatique du **compte à rebours après un vote**
-- **Boutons visuels** avec les logos officiels des sites de vote
+- Intégration de **plusieurs sites de vote** avec logos et liens directs  
+- Affichage en **temps réel du cooldown restant**  
+- Lancement automatique du compte à rebours après un vote  
+- Gestion intelligente : le timer ne se relance **que** lorsqu’un vote est réellement effectué  
 
 ### 🔔 Notifications personnalisées
-- Rappels automatiques lorsque les votes redeviennent disponibles  
-- Sons et polices personnalisées pour correspondre au thème du serveur  
-- Fonctionne même **après redémarrage du téléphone**
+- Notifications **programmées** via WorkManager  
+- Sons et polices **personnalisés**  
+- Fonctionnement **même en arrière-plan ou après redémarrage**  
 
-### ⚙️ Système de persistance
-- **Timers sauvegardés** localement avec `DataStore`  
-- Gestion du **cooldown individuel** pour chaque site de vote  
-- Les notifications se réinitialisent **uniquement** si tu votes réellement (ou via la notification)
+### ⚙️ Persistance des données
+- Sauvegarde des timers et des sites de vote via **DataStore Preferences**  
+- Rappels automatiques pour chaque site de vote  
+- Annulation des notifications à l’ouverture de l’app  
 
-### 🛡️ Design médiéval unique
-- Palette de couleurs : `#283852`, `#40516d`, `#aba36d`  
-- Police personnalisée : **MedievalSharp Bold**  
-- Interface fidèle à l'identité visuelle du site officiel
-
----
-
-## 💾 Fonctionnement interne
-
-| Module | Description |
-|--------|--------------|
-| `MainActivity.kt` | Gère l’affichage principal, les boutons de vote et les timers. |
-| `VoteScheduler.kt` | Programme les rappels de vote via **WorkManager**. |
-| `NotificationHelper.kt` | Envoie les notifications personnalisées. |
-| `VoteSitesRepository.kt` | Stocke les temps de cooldown et les prochaines échéances. |
-| `VoteReminderWorker.kt` | Exécute les rappels même quand l’application est fermée. |
+### 🎨 Thème médiéval
+- Couleurs : `#283852` (fond), `#40516d` (boutons), `#aba36d` (bordures)  
+- Police : **MedievalSharp Bold**  
+- Interface fidèle au site [La Citadelle](https://lacitadelle-mc.fr)
 
 ---
 
-## 📱 Installation
+## 🛠️ Architecture du projet
 
-### 🔧 Méthode manuelle (APK)
-1. Télécharger la dernière version depuis l’onglet **Releases** du dépôt.  
-2. Sur ton appareil Android :
-   - Autorise les **sources inconnues** (une seule fois).
-   - Ouvre le fichier `.apk`.
-   - Valide l’installation.
+| Fichier / Module | Description |
+|------------------|-------------|
+| `MainActivity.kt` | Écran principal, boutons de vote, timers et logique d’ouverture des liens |
+| `VoteScheduler.kt` | Gestion des timers via WorkManager |
+| `NotificationHelper.kt` | Création et affichage des notifications |
+| `VoteSitesRepository.kt` | Persistance et gestion des temps de cooldown |
+| `VoteReminderWorker.kt` | Gestion des rappels automatiques (même après reboot) |
 
-> ⚠️ L’avertissement “cette application peut être dangereuse” est normal :  
-> il s’affiche pour toute installation manuelle non issue du Play Store.
+---
+
+## 💾 Installation
+
+### 🔧 Installation manuelle
+1. Téléchargez la dernière version depuis l’onglet **[Releases](https://github.com/Eldrazy-Git/La-Citadelle---Vote-app/releases)**.  
+2. Sur votre téléphone Android :
+   - Activez les **sources inconnues** si nécessaire  
+   - Installez le fichier `.apk` téléchargé  
+   - Validez les permissions lors du premier lancement  
+
+> ⚠️ Le message “cette application peut contenir des virus” est affiché par Android pour toute app installée manuellement (hors Play Store).  
+> L’application est **sécurisée et signée**.
 
 ---
 
 ## 🧙‍♂️ Développement
 
 ### Environnement
-- Android Studio Ladybug | 2024.3.2 Patch 1
-- Kotlin 1.9+
-- Gradle 8.4+
-- Min SDK : Android 10 (API 29)
-- Target SDK : Android 15 (API 35)
+- **Android Studio** : Ladybug 🐞 (2024.3.2 Patch 1)  
+- **Kotlin** : 1.9+  
+- **Gradle** : 8.4+  
+- **Min SDK** : 29 (Android 10)  
+- **Target SDK** : 35 (Android 15)
 
-### Build
-> Depuis Android Studio :  
-`Build → Generate Signed App Bundle / APK → APK (Release)`  
-La signature est gérée via un keystore local (non partagé).
-
----
-
-## 📜 À propos
-
-- 🧱 Projet : Application de vote pour le serveur Minecraft **La Citadelle**  
-- 🌐 Site officiel : [https://lacitadelle-mc.fr](https://lacitadelle-mc.fr)  
-- 💬 Discord : [https://discord.gg/h8jr9jkQzk](https://discord.gg/h8jr9jkQzk)  
-- 👑 Développeur Android : **Eldrazy**
-
----
-
-## 🧾 Licence
-
-Ce projet est sous licence **MIT**.  
-Vous êtes libres de réutiliser le code, à condition de **créditer l’auteur original** et **ne pas le distribuer sous le nom "La Citadelle"** sans autorisation.
-
----
-
-## 🖼️ Aperçu
-
-*(Tu peux ajouter ici des captures d’écran une fois l’appli en prod 👇)*
-
+### Build (version Release)
+```bash
+Build → Generate Signed App Bundle / APK → APK (Release)
