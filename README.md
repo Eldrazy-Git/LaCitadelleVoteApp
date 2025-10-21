@@ -27,6 +27,7 @@ Elle permet de **voter sur plusieurs sites** en un seul endroit, tout en respect
 Inspirée de l’univers médiéval du serveur, elle propose une **interface élégante et fonctionnelle**, fidèle à l’identité visuelle du royaume 🛡️
 
 ---
+
 ## 📥 Téléchargement
 
 <p align="center">
@@ -85,6 +86,67 @@ Inspirée de l’univers médiéval du serveur, elle propose une **interface él
 
 > ⚠️ Le message “cette application peut contenir des virus” est affiché par Android pour toute app installée manuellement (hors Play Store).  
 > L’application est **sécurisée et signée**.
+
+---
+
+## ⚙️ Configuration Android recommandée
+
+> Pour garantir le bon fonctionnement des **rappels de vote** et des **notifications**, il est essentiel d’ajuster quelques paramètres Android.
+>  
+> Ces réglages permettent à l’application de fonctionner correctement **même lorsque l’écran est éteint ou que le téléphone est en veille**.
+
+---
+
+### 🔋 1. Désactiver l’optimisation de la batterie
+
+Certaines versions d’Android (notamment sur **Xiaomi, Samsung, OnePlus, Huawei**, etc.) bloquent les applications en arrière-plan.
+
+#### Étapes :
+1. Ouvrez **Paramètres** ⚙️  
+2. Allez dans **Batterie et performances** → **Économiseur de batterie / Gestion d’alimentation**  
+3. Recherchez **La Citadelle Vote App**  
+4. Choisissez **Aucune restriction** ou **Ne pas optimiser**
+
+> Cela permet aux minuteries de continuer à fonctionner même lorsque l’application n’est pas ouverte.
+
+---
+
+### 🔔 2. Autoriser toutes les notifications
+
+#### Étapes :
+1. Ouvrez **Paramètres → Notifications → La Citadelle Vote App**  
+2. Activez :
+   - ✅ **Afficher les notifications**
+   - ✅ **Notifications sur écran verrouillé**
+   - ✅ **Sons et bulles de notification**
+
+> Ces options garantissent que vous recevrez bien les rappels de vote au moment exact.
+
+---
+
+### 🧱 3. (Optionnel) Autoriser le démarrage automatique
+
+Sur certaines surcouches (notamment **MIUI**, **ColorOS**, **EMUI**, etc.) :
+1. Ouvrez **Paramètres → Applications → La Citadelle Vote App → Autres paramètres**
+2. Activez **Démarrage automatique**
+
+> Cela assure que l’app relance ses rappels après un redémarrage du téléphone.
+
+---
+
+### 💬 Résumé rapide
+
+| Réglage | Action | Pourquoi |
+|----------|--------|-----------|
+| 🔋 Optimisation batterie | ❌ Désactiver | Garde les timers actifs |
+| 🔔 Notifications | ✅ Activer toutes | Reçoit les rappels de vote |
+| ⚙️ Démarrage automatique | ✅ Facultatif | Rappels après redémarrage |
+
+---
+
+> 🧙‍♂️ Une fois ces réglages appliqués, votre application fonctionnera de manière **fiable, continue et autonome**, sans risque de rater un rappel de vote.
+>
+> _“Un bon citoyen veille à ne jamais manquer un vote.”_ ⚔️
 
 ---
 
