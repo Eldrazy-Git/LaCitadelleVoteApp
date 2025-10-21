@@ -78,7 +78,7 @@ Inspirée de l’univers médiéval du serveur, elle propose une **interface él
 ## 💾 Installation
 
 ### 🔧 Installation manuelle
-1. Téléchargez la dernière version depuis l’onglet **[Releases](https://github.com/Eldrazy-Git/La-Citadelle---Vote-app/releases)**.  
+1. Téléchargez la dernière version depuis l’onglet **[Releases](https://github.com/Eldrazy-Git/LaCitadelleVoteApp/releases)**.  
 2. Sur votre téléphone Android :
    - Activez les **sources inconnues** si nécessaire  
    - Installez le fichier `.apk` téléchargé  
