@@ -1,0 +1,577 @@
+:root{
+  --bg:#283852;
+  --card: rgba(10, 10, 10, 0.20);
+  --accent:#aba36d;
+  --text:#fdf7e3;
+  --muted:#d6d2be;
+}
+
+@font-face {
+  font-family: 'MedievalSharp';
+  src: url('file:///android_res/font/medievalsharp.ttf');
+}
+/* Quand l'appli dit "pas de police médiévale" */
+body.no-medieval {
+  font-family: system-ui, -apple-system, Roboto, "Segoe UI", sans-serif !important;
+}
+body.no-medieval h1,
+body.no-medieval .tab-btn,
+body.no-medieval .subtab-btn,
+body.no-medieval .item-name,
+body.no-medieval .global-note,
+body.no-medieval .global-note h4,
+body.no-medieval .calc-label,
+body.no-medieval .totals-card .line {
+  font-family: system-ui, -apple-system, Roboto, "Segoe UI", sans-serif !important;
+}
+
+*{box-sizing:border-box}
+
+html,
+body{
+  margin:0;
+  margin-bottom: 10px;
+  padding:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:system-ui,Segoe UI,Roboto,Arial;
+  scroll-behavior:smooth;
+  scrollbar-width: none;        /* Firefox */
+  -ms-overflow-style: none;     /* Internet Explorer / Edge Legacy */
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none;                /* Chrome, Safari, Android WebView */
+}
+
+/* un peu d’air pour éviter barres système */
+body{
+  padding-top:8px;
+  padding-bottom:24px;
+}
+
+.page-header{
+  padding:20px 14px 6px;
+  border-bottom:1px solid rgba(255,255,255,.08);
+}
+
+h1{
+  text-align:center;
+  font-size:2.2em;
+  color:var(--accent);
+  margin:10px 0 12px;
+  font-family:MedievalSharp, cursive;
+}
+
+.tabs{
+  display:flex;
+  gap:8px;
+  justify-content:center;
+  flex-wrap:wrap;
+}
+
+.tab-btn{
+  background:transparent;
+  border:1px solid var(--accent);
+  color:var(--text);
+  padding:8px 12px;
+  border-radius:10px;
+  font-size:14px;
+  font-family:MedievalSharp, cursive;
+}
+
+.tab-btn.active{
+  background:var(--accent);
+  color:#111;
+}
+
+.tab-panel{
+  display:none;
+  padding:12px;
+}
+
+.tab-panel.active{
+  display:block;
+}
+
+/* Totaux */
+.totals-card{
+  background:var(--card);
+  border:1px solid rgba(171,163,109,.45);
+  border-radius:14px;
+  padding:12px;
+  margin-bottom:12px;
+}
+
+.totals-card .line{
+  display:flex;
+  justify-content:space-between;
+  padding:6px 0;
+  border-bottom:1px dashed rgba(255,255,255,.18);
+  font-family:MedievalSharp, cursive;
+}
+
+.orbsvalue {
+	font-family:system-ui,Segoe UI,Roboto,Arial;
+}
+	
+.totals-card .line:last-child{
+  border-bottom:none;
+}
+
+.subtotals{
+  margin-top:8px;
+  color:var(--muted);
+  display:grid;
+  gap:4px;
+}
+
+.hint{
+  opacity:.85;
+  font-size:11px;
+}
+
+/* Sous-onglets */
+.subtabs{
+  display:flex;
+  gap:8px;
+  margin:8px 0 12px;
+  justify-content:center;
+  flex-wrap:wrap;
+}
+
+.subtab-btn{
+  background:transparent;
+  border:1px solid var(--accent);
+  color:var(--text);
+  padding:6px 10px;
+  border-radius:10px;
+  font-size:13px;
+  font-family:MedievalSharp, cursive;
+}
+
+.subtab-btn.active{
+  background:var(--accent);
+  color:#111;
+}
+
+.subtab-panel{
+  display:none;
+}
+
+.subtab-panel.active{
+  display:block;
+}
+
+/* Accordéons items */
+
+.accordion{
+  margin-top:4px;
+}
+
+details.ely-item{
+  background:var(--card);
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:14px;
+  margin-bottom:10px;
+  overflow:hidden;
+  transition:
+    border-color .18s ease,
+    box-shadow .18s ease,
+    transform .18s ease;
+}
+
+details.ely-item[open]{
+  background: rgba(0, 0, 0, 0);
+  border-color:var(--accent);
+  outline: none;
+  box-shadow:0 6px 14px rgba(0,0,0,.35);
+  transform:translateY(-1px);
+}
+
+.accordion summary{
+  list-style:none;
+  cursor:pointer;
+  padding:10px;
+  display:flex;
+  gap:10px;
+  align-items:center;
+}
+
+.accordion summary::-webkit-details-marker{
+  display:none;
+}
+
+.item-img{
+  width:42px;
+  height:42px;
+  border-radius:8px;
+  background:#223149;
+  border:1px solid rgba(255,255,255,.6);
+  flex:0 0 auto;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.item-img img{
+  max-width:36px;
+  max-height:36px;
+}
+
+.item-head{
+  display:flex;
+  flex-direction:column;
+  gap:2px;
+  flex:1;
+}
+
+.item-name{
+  font-weight:700;
+  font-size: 1.05em;
+  font-family:MedievalSharp, cursive;
+}
+
+.item-cost{
+  font-size:0.85em;
+  color:var(--muted);
+}
+
+
+.item-body{
+  padding:8px 12px 10px 12px;
+  border-top:1px solid rgba(255,255,255,.08);
+  font-size:13px;
+  animation:fadeIn .18s ease-out;
+}
+
+.item-body h4{
+  margin:0 0 6px 0;
+  font-size:13px;
+  color:var(--accent);
+}
+
+.item-body ul{
+  margin:0;
+  padding-left:18px;
+}
+
+/* Separation outils */
+.tools-section{
+  margin-top:18px;
+}
+
+/* Effets globaux */
+.global-note{
+  background:#14203b;
+  border:1px dashed rgba(255,255,255,.22);
+  padding:10px;
+  border-radius:12px;
+  margin-top:12px;
+  font-size:14px;
+  font-family:MedievalSharp, cursive;
+}
+
+.global-note h4 {
+	font-family:MedievalSharp, cursive;
+	font-size:16px;
+	margin-top:10px;
+	margin-bottom:12px;
+	padding-left:10px;
+	color:var(--accent);
+}
+
+
+/* Calculateur */
+.calc-header{
+  background:var(--card);
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:14px;
+  padding:12px;
+  margin-bottom:12px;
+  display:flex;
+  gap:6px;
+  font-size:13px;
+  align-items: center;
+  flex-direction: row !important;
+}
+
+.calc-orb {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: flex-start;
+}
+
+.calc-orb img {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  display: block;
+}
+
+.calc-fields {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.calc-label {
+  font-size: 0.95rem;
+  color: var(--muted);
+  display: inline-flex;
+  flex-direction: flex;
+  gap: 2px;
+}
+
+.calc-label input {
+  margin-top: 1px;
+  padding: 4px 8px;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.16);
+  background: rgba(0,0,0,0.32);
+  color: var(--text);
+  width: 90px;
+}
+
+.calc-current strong,
+.calc-gold strong{
+  color:var(--accent);
+}
+
+/* Accordéons ressources */
+.resource-card{
+  background:var(--card);
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:14px;
+  margin-bottom:10px;
+  overflow:hidden;
+}
+
+.resource-card summary{
+  list-style:none;
+  cursor:pointer;
+  padding:10px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:8px;
+}
+
+.resource-card summary::-webkit-details-marker{
+  display:none;
+}
+
+.resource-name{
+  font-weight:600;
+  font-size:13px;
+}
+
+.resource-qty{
+  font-size:12px;
+  color:var(--muted);
+}
+
+.resource-body{
+  padding:8px 12px 10px;
+  border-top:1px solid rgba(255,255,255,.08);
+  font-size:12px;
+}
+
+.dlg-actions{
+  display:flex;
+  justify-content:flex-end;
+  gap:8px;
+  margin-top:10px;
+}
+
+dialog{
+  border-radius:14px;
+  border:1px solid var(--accent);
+  padding:14px;
+  background:#121826;
+  color:var(--text);
+}
+
+dialog input{
+  width:100%;
+  padding:6px 8px;
+  margin-top:6px;
+  border-radius:8px;
+  border:1px solid rgba(255,255,255,.2);
+  background:#0b0f18;
+  color:var(--text);
+}
+
+button.primary{
+  background:var(--accent);
+  color:#111;
+  border:none;
+  padding:6px 10px;
+  border-radius:8px;
+  font-weight:600;
+}
+
+/* Ligne de séparation entre familles de ressources */
+.recap-separator {
+  margin: 6px 0;
+  border:1px dashed rgba(255,255,255,.18);
+}
+
+
+/* Anim fade-in */
+@keyframes fadeIn{
+  from{opacity:0;transform:translateY(-2px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+.calc-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-bottom: 1rem;
+}
+
+.calc-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.95rem;
+  font-family:MedievalSharp, cursive;
+}
+
+#orbsInput {
+  width: 90px;
+  padding: 4px 6px;
+  border-radius: 6px;
+  border: 1px solid rgba(250,247,227,0.25);
+  background: rgba(0,0,0,0.3);
+  color: var(--text);
+  font-size: 0.95rem;
+}
+
+.total-line strong {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+summary {
+  -webkit-tap-highlight-color:var(--card); /* supprime flash bleu sur mobile */
+  user-select: none;
+  cursor: pointer;
+}
+
+
+/* ===== Craft style façon wiki Minecraft ===== */
+
+.craft-section {
+  margin-top: 10px;
+}
+
+.craft-step {
+  margin-top: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.craft-label {
+  font-size: 0.8rem;
+  color: var(--muted);
+  margin-bottom: 0.25rem;
+}
+
+.craft-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.craft-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 34px);
+  grid-auto-rows: 34px;
+  gap: 2px;
+  padding: 4px;
+  background: rgba(0, 0, 0, 0.25);
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.craft-slot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.55rem;
+  text-align: center;
+  padding: 2px;
+  color: var(--text);
+  background: rgba(15, 15, 15, 0.75);
+  border-radius: 4px;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.04);
+}
+
+.craft-slot img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  image-rendering: pixelated;
+}
+
+.craft-slot.empty {
+  opacity: 0.08;
+}
+
+.craft-arrow {
+  font-size: 1.2rem;
+  color: var(--accent);
+}
+
+.craft-result {
+  min-width: 90px;
+  padding: 4px 8px;
+  font-size: 0.7rem;
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.35);
+  color: var(--accent);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.craft-result strong {
+  color: var(--text);
+  margin-left: 4px;
+}
+
+.craft-furnace {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 4px 6px;
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  font-size: 0.6rem;
+  color: var(--muted);
+}
+
+.craft-furnace span {
+  padding: 2px 4px;
+  border-radius: 4px;
+  background: rgba(10, 10, 10, 0.85);
+  color: var(--text);
+}
+
+/* Mise en gras des enchantements */
+.ench {
+  font-weight: 600;
+  color: var(--text);
+}
+
+/* Enchantements custom Elytreum */
+.ench-custom {
+  color: #83c3ff;  /* bleu/blanc clair */
+  font-weight: 600;
+}

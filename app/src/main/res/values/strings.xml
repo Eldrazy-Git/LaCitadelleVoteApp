@@ -3,4 +3,31 @@
     <string name="app_name">La Citadelle Vote</string>
     <string name="logo_citadelle">Logo Citadelle</string>
     <string name="logo_discord">Logo Discord</string>
+	<string name="nav_open">Nav_open</string>
+	<string name="vote_spn">Vote Serveur-Privé</string>
+	<string name="vote_smv">Vote Serveur Minecraft Vote</string>
+	<string name="vote_smc">Vote Serveur Minecraft com</string>
+	<string name="vote_smo">Vote Serveur Minecraft org</string>
+	<string name="notification_vote_title">Vote pour %1$s</string>
+	<string name="notification_vote_text">Il est temps de voter.</string>
+	<string name="notification_vote_group_title">Rappels de vote</string>
+	<string name="notification_vote_group_text">Votes disponibles.</string>
+	<string name="notification_channel_votes">Rappels de vote</string>
+	<string name="settings_category_sites">Sites de vote</string>
+	<string name="settings_site_ready">Prêt à voter</string>
+	<string name="settings_site_vote_in_minutes">Vote dans %1$d min</string>
+	<!-- ===== Infos & Légal ===== -->
+	<string name="pref_info_category_title">Infos &amp; légal</string>
+
+	<string name="pref_legal_mentions_title">Mentions légales</string>
+	<string name="pref_legal_mentions_summary">Consulter les informations légales de l’application.</string>
+
+	<string name="pref_privacy_title">Politique de confidentialité</string>
+	<string name="pref_privacy_summary">Détails sur la collecte et l’utilisation des données.</string>
+
+	<string name="pref_licenses_title">Licences &amp; crédits</string>
+	<string name="pref_licenses_summary">Bibliothèques utilisées &amp; crédits visuels.</string>
+
+	<string name="pref_version_title">Version de l’application</string>
+
 </resources>

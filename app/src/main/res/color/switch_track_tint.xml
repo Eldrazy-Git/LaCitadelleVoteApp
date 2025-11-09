@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Désactivé -->
+    <item android:state_enabled="false" android:color="#33D4C376" />
+    <!-- ON -->
+    <item android:state_checked="true" android:color="@color/pref_switch_on_track" />
+    <!-- OFF -->
+    <item android:color="@color/pref_switch_off_track" />
+</selector>

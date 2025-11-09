@@ -1,0 +1,50 @@
+La Citadelle VoteApp
+--------------------
+Développée par : Eldrazy
+Année : 2025
+Version actuelle : 1.1 (Bêta publique)
+
+Description :
+-------------
+Application Android non commerciale permettant aux joueurs de voter pour le serveur Minecraft
+« La Citadelle », avec système de rappels de vote, gestion de cooldowns, notifications et interface
+inspirée du thème médiéval du serveur.
+
+Statut :
+--------
+Projet privé à usage communautaire — sources non publiques.
+Aucun droit de redistribution, modification ou réutilisation n’est accordé.
+
+Propriété intellectuelle :
+--------------------------
+- Code, structure et design de l’application : © 2025 Eldrazy. Tous droits réservés.
+- Images, icônes et visuels liés à « La Citadelle » : propriété de leurs créateurs, utilisés avec autorisation.
+- Les marques et noms associés à « La Citadelle » demeurent la propriété exclusive du serveur.
+
+Composants tiers :
+-----------------
+- AndroidX / Jetpack — Apache License 2.0
+- Material Components for Android — Apache License 2.0
+- Glide — BSD, MIT et Apache 2.0 combinées
+- Kotlin — Apache License 2.0
+
+Restrictions :
+--------------
+- Toute reproduction, modification ou redistribution du projet est interdite sans autorisation d’Eldrazy.
+- Les assets appartenant à La Citadelle ne peuvent être extraits ni utilisés dans d’autres projets.
+- L’application ne collecte ni ne transmet aucune donnée personnelle (voir Politique de confidentialité).
+
+Publication et conformité :
+---------------------------
+Cette application respecte les politiques de contenu et de confidentialité du Google Play Store :
+- Aucune donnée utilisateur collectée.
+- Aucune publicité ni traceur intégré.
+- Conformité RGPD (Règlement Général sur la Protection des Données).
+- Mentions légales et politique de confidentialité accessibles depuis l’application.
+
+Contact :
+---------
+Eldrazy — Discord : https://discord.gg/uDzGRVQZ
+Projet non affilié officiellement à Mojang Studios ni à Microsoft.
+
+© 2025 Eldrazy — Tous droits réservés.

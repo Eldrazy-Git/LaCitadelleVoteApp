@@ -1,8 +1,96 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools">
-    <style name="Theme.LaCitadelleVoteApp" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <item name="android:statusBarColor">@color/cit_bg</item>
-        <item name="android:navigationBarColor">@color/cit_bg</item>
-        <item name="android:colorBackground">@color/cit_bg</item>
+<resources>
+
+    <!-- =============================
+         🎨 Thème principal de l'application
+         ============================= -->
+    <style name="Theme.LaCitadelleVoteApp" parent="Theme.Material3.DayNight.NoActionBar">
+
+        <!-- Palette principale -->
+        <item name="colorPrimary">#40516d</item>
+        <item name="colorOnPrimary">#aba36d</item>
+        <item name="colorSecondary">#283852</item>
+        <item name="colorOnSecondary">#aba36d</item>
+        <item name="colorTertiary">#aba36d</item>
+        <item name="colorOnTertiary">#283852</item>
+
+        <!-- Fond global -->
+        <item name="android:colorBackground">#283852</item>
+        <item name="colorSurface">#283852</item>
+
+        <!-- Couleurs de texte globales (branchées sur tes couleurs) -->
+        <item name="colorOnSurface">@color/pref_title_color</item>            <!-- Titres -->
+        <item name="colorOnSurfaceVariant">@color/pref_summary_color</item>   <!-- Descriptions -->
+
+        <!-- Contrôles actifs (Switch, Checkbox, etc.) -->
+        <item name="colorControlActivated">@color/pref_switch_on</item>
+
+        <!-- Barres système -->
+        <item name="android:statusBarColor">#283852</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+
+        <!-- Pas d’ActionBar -->
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+
+        <!-- Désactivation des effets de surbrillance bleus -->
+        <item name="android:colorControlHighlight">@android:color/transparent</item>
     </style>
+
+    <!-- =============================
+         ⚙️ Thème spécifique à la page des préférences
+         ============================= -->
+    <style name="Theme.LaCitadelleVoteApp.Preferences" parent="Theme.Material3.DayNight.NoActionBar">
+
+        <!-- Fond général -->
+        <item name="android:colorBackground">#283852</item>
+        <item name="colorSurface">#283852</item>
+
+        <!-- Textes -->
+        <item name="colorOnSurface">@color/pref_title_color</item>            <!-- Titres -->
+        <item name="colorOnSurfaceVariant">@color/pref_summary_color</item>   <!-- Descriptions -->
+
+        <!-- Switchs dorés -->
+        <item name="colorControlActivated">@color/pref_switch_on</item>
+
+        <!-- Barres système -->
+        <item name="android:statusBarColor">#283852</item>
+        <item name="android:navigationBarColor">#283852</item>
+
+        <!-- Fenêtre -->
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+
+        <!-- Overlay des préférences -->
+        <item name="preferenceTheme">@style/PreferenceThemeOverlay.LaCitadelle</item>
+    </style>
+
+
+    <!-- =============================
+         🧩 Overlay de style pour les préférences
+         (connecte les layouts custom dans res/layout/)
+         ============================= -->
+    <style name="PreferenceThemeOverlay.LaCitadelle" parent="PreferenceThemeOverlay.v14.Material">
+        <item name="preferenceStyle">@style/Pref.Item</item>
+        <item name="switchPreferenceCompatStyle">@style/Pref.Switch</item>
+		<item name="preferenceCategoryStyle">@style/Pref.Category</item>
+    </style>
+
+
+    <!-- =============================
+         🎛 Styles appliqués via l’overlay
+         ============================= -->
+    <style name="Pref.Item" parent="Preference.Material">
+        <!-- ton layout custom avec @color/pref_title_color et @color/pref_summary_color -->
+        <item name="android:layout">@layout/pref_item</item>
+    </style>
+
+    <style name="Pref.Switch" parent="Preference.SwitchPreferenceCompat.Material">
+        <!-- ton layout custom pour les Switch (thumb/track tints via XML) -->
+        <item name="android:layout">@layout/pref_switch</item>
+    </style>
+
+	<style name="Pref.Category" parent="Preference.Category.Material">
+		<item name="android:layout">@layout/pref_category</item>
+	</style>
 </resources>

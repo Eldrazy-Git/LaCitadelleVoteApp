@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto">
+	<group android:checkableBehavior="none">
+		<item
+			android:id="@+id/nav_settings"
+			android:title="Paramètres"
+			android:fontFamily="@font/medievalsharp"
+			android:icon="@drawable/ic_settings" />
+
+		<item
+			android:id="@+id/nav_wiki"
+			android:title="Wiki"
+			android:icon="@drawable/ic_info" />
+
+		<item
+			android:id="@+id/nav_rankup"
+			android:title="Rankup"
+			android:icon="@drawable/ic_rankup" />
+			
+		<item
+			android:id="@+id/nav_Elytreum"
+			app:actionLayout="@layout/menu_item_elytreum" />
+			
+		<item
+			android:id="@+id/nav_more"
+			android:title="À venir…" 
+			android:icon="@drawable/ic_soon" />
+	</group>
+</menu>

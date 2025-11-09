@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+				xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!-- Notifications -->
+    <PreferenceCategory android:title="Notifications">
+
+        <com.example.lacitadellevote.settings.DimmableSwitchPreference
+            android:key="pref_notifications_enabled"
+            android:title="Activer les notifications"
+            android:summary="Rappels de vote et alarmes"
+            android:defaultValue="true" />
+
+        <com.example.lacitadellevote.settings.DimmableSwitchPreference
+            android:key="pref_vibrate"
+            android:title="Vibration"
+            android:defaultValue="true" />
+
+        <com.example.lacitadellevote.settings.DimmableSwitchPreference
+            android:key="pref_custom_sound"
+            android:title="Son personnalisé"
+            android:summary="Utiliser le son custom de l'application"
+            android:defaultValue="true" />
+
+        <Preference
+            android:key="pref_test_notification"
+            android:title="Tester une notification"
+            android:summary="Vérifie son/vibration et l’affichage écran verrouillé" />
+    </PreferenceCategory>
+
+        <!-- Affichage -->
+    <PreferenceCategory android:title="Affichage">
+
+        <com.example.lacitadellevote.settings.DimmableSwitchPreference
+            android:key="pref_custom_font"
+            android:title="Police médiévale"
+            android:summary="Activer la police MedievalSharp"
+            android:defaultValue="true" />
+    </PreferenceCategory>
+	
+	<!-- NOUVELLE CATÉGORIE : Votes -->
+    <PreferenceCategory
+        android:key="prefcat_votes"
+        android:title="Votes">
+
+        <!-- Suivi en direct du compte à rebours -->
+        <SwitchPreferenceCompat
+            android:key="pref_vote_live_updates"
+            android:title="Suivi en direct"
+            android:summary="Actualise les compteurs toutes les secondes (Dans les paramètres)"
+            android:defaultValue="true" />
+
+        <!-- Bouton : tout remettre à zéro -->
+        <Preference
+            android:key="pref_vote_reset_all"
+            android:title="Réinitialiser tous les timers"
+            android:summary="Met tous les sites à 'Prêt à voter' immédiatement" />
+        <!-- Les éléments par site seront ajoutés dynamiquement dans le Fragment -->
+    </PreferenceCategory>
+	
+	<!-- Système -->
+    <PreferenceCategory android:title="Système">
+
+        <Preference
+            android:key="pref_open_app_notifications"
+            android:title="Paramètres de notifications (Android)"
+            android:summary="Ouvrir l’écran système de l’app" />
+
+        <Preference
+            android:key="pref_battery_optim"
+            android:title="Désactiver l’optimisation batterie"
+            android:summary="Recommandé pour des rappels fiables" />
+
+        <Preference
+            android:key="pref_exact_alarm"
+            android:title="Autoriser les alarmes exactes"
+            android:summary="Nécessaire sur Android 12+ pour des rappels à l’heure" />
+    </PreferenceCategory>
+	
+	<!-- ====================== CATÉGORIE INFOS & LÉGAL ====================== -->
+    <PreferenceCategory
+		android:key="prefcat_info"
+		android:title="@string/pref_info_category_title">
+
+		<Preference
+			android:key="pref_legal_mentions"
+			android:title="@string/pref_legal_mentions_title"
+			android:summary="@string/pref_legal_mentions_summary"
+			app:iconSpaceReserved="false" />
+
+		<Preference
+			android:key="pref_privacy"
+			android:title="@string/pref_privacy_title"
+			android:summary="@string/pref_privacy_summary"
+			app:iconSpaceReserved="false" />
+
+		<Preference
+			android:key="pref_licenses"
+			android:title="@string/pref_licenses_title"
+			android:summary="@string/pref_licenses_summary"
+			app:iconSpaceReserved="false" />
+
+		<Preference
+			android:key="pref_version"
+			android:title="@string/pref_version_title"
+			app:iconSpaceReserved="false" />
+	</PreferenceCategory>
+</PreferenceScreen>
+

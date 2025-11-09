@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Journal des versions - La Citadelle Vote</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <style>
+    :root {
+      --bg: #283852;
+      --card: rgba(10, 10, 10, 0.22);
+      --text: #fdf7e3;
+      --muted: #d6d2be;
+      --gold: #aba36d;
+      --radius: 16px;
+    }
+
+    @font-face {
+      font-family: 'MedievalSharp';
+      src: url('file:///android_res/font/medievalsharp.ttf');
+    }
+
+    html, body {
+      margin: 0;
+      padding: 40px 14px 50px;
+      background: var(--bg);
+      color: var(--text);
+      font-family: system-ui, -apple-system, Roboto, "Segoe UI", sans-serif;
+      -webkit-tap-highlight-color: transparent;
+      scrollbar-width: none;
+    }
+
+    body::-webkit-scrollbar {
+      width: 0;
+      height: 0;
+      display: none;
+    }
+
+    .page {
+      max-width: 900px;
+      margin: 0 auto;
+      background: var(--card);
+      padding: 18px 16px 20px;
+      border-radius: var(--radius);
+      border: 1px solid rgba(255,255,255,0.08);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.32);
+    }
+
+    h1 {
+      font-size: 24px;
+      margin: 0 0 8px;
+      color: var(--gold);
+      text-align: center;
+      font-family: 'MedievalSharp', system-ui, sans-serif;
+    }
+
+    .subtitle {
+      text-align: center;
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 18px;
+    }
+
+    h2 {
+      font-size: 17px;
+      color: var(--gold);
+      margin: 18px 0 8px;
+    }
+
+    ul {
+      margin: 6px 0 12px 18px;
+      padding: 0;
+      font-size: 14px;
+      color: var(--text);
+    }
+
+    li {
+      margin-bottom: 4px;
+    }
+
+    p {
+      margin: 4px 0 8px;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .note {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 10px;
+    }
+
+    hr {
+      border: none;
+      border-top: 1px dashed rgba(255,255,255,0.22);
+      margin: 12px 0;
+    }
+
+    footer {
+      margin-top: 40px;
+      font-size: 11px;
+      color: var(--muted);
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+<div class="page">
+  <h1>Journal des versions</h1>
+  <div class="subtitle">Historique des mises à jour de l’application La Citadelle Vote</div>
+
+  <p><strong>Dernière version :</strong> 1.1_3 (Stable) — novembre 2025</p>
+
+  <hr />
+
+  <h2>Version 1.1_3 — Release Stable</h2>
+  <ul>
+    <li>Correction des notifications manquantes lorsque l’application est fermée ou l’appareil verrouillé.</li>
+    <li>Cliquer sur un bouton de vote ne redémarre plus le timer (évite les erreurs de missclicks).</li>
+    <li>Ajout d’une bulle d’information indiquant le temps restant avant le prochain vote.</li>
+    <li>Cliquer sur la notification relance le timer du site et ouvre directement la page de vote.</li>
+    <li>Cliquer sur un groupe de notifications n’ouvre plus qu’une seule instance de l’application.</li>
+  </ul>
+
+  <p><em>Bugs connus :</em> notifications fantômes rares, fond d’icônes dégradé sur certaines versions.</p>
+
+  <hr />
+
+  <h2>Version 1.1_2</h2>
+  <ul>
+    <li>Ajout d’un nouveau site de vote : <strong>serveur-minecraft-vote.fr</strong>.</li>
+    <li>Positionné sous <strong>serveur-prive.net</strong> (même durée de 90 minutes).</li>
+  </ul>
+
+  <p><em>Bugs connus :</em> notifications fantômes occasionnelles et fond d’icônes déformé.</p>
+
+  <hr />
+
+  <h2>Version 1.1</h2>
+  <ul>
+    <li>Refonte complète pour compatibilité Android 10 à 15.</li>
+    <li>Nouvelle architecture des tâches de fond et des notifications (WorkManager).</li>
+    <li>Cliquer sur un bouton de vote réinitialise le timer sans duplication.</li>
+    <li>Notifications fiabilisées, son custom réparé.</li>
+    <li>Interface modernisée, suppression du bouton de paramètres visible.</li>
+    <li>Cliquer sur la notification ouvre directement l’application de vote.</li>
+  </ul>
+
+  <p><em>Bugs connus :</em> notifications absentes sur certains appareils (Xiaomi notamment).</p>
+
+  <hr />
+
+  <h2>Versions 1.0 à 1.0_4 — Versions de test initiales</h2>
+  <ul>
+    <li>Version initiale de l’application avec les 3 sites de vote intégrés :</li>
+    <ul>
+      <li><strong>serveur-prive.net</strong></li>
+      <li><strong>serveur-minecraft.com</strong></li>
+      <li><strong>serveursminecraft.org</strong></li>
+    </ul>
+    <li>Ajout du logo cliquable vers le site officiel et du logo Discord.</li>
+    <li>Ajout des timers par site et notifications personnalisées “Vote disponible”.</li>
+    <li>Utilisation de la police médiévale <strong>MedievalSharp.ttf</strong>.</li>
+    <li>Bouton paramètres : réinitialisation des compteurs, test des notifications.</li>
+  </ul>
+
+  <p><em>Bugs connus :</em> duplication des timers, son de notification parfois absent, fond d’icônes imparfait.</p>
+
+  <hr />
+
+  <p class="note">
+    Ce journal est mis à jour automatiquement à chaque release publique.<br/>
+    Dernière révision : novembre 2025.
+  </p>
+</div>
+
+<footer>
+  &copy; 2025 Eldrazy. Tous droits réservés.<br/>
+  Les visuels et marques associés à « La Citadelle » demeurent la propriété exclusive de leurs auteurs.
+</footer>
+</body>
+</html>

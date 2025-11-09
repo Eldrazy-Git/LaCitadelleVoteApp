@@ -1,6 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Couleurs app -->
     <color name="cit_bg">#283852</color>
     <color name="cit_button">#40516d</color>
     <color name="cit_border">#aba36d</color>
+	<color name="cit_gold">#aba36d</color>
+
+	<!-- Titres / descriptions des préférences -->
+    <color name="pref_title_color">#E7E2C0</color>      <!-- clair, lisible -->
+    <color name="pref_summary_color">#d6d6d1</color>    <!-- un peu moins contrasté -->
+	<color name="pref_category_color">#F0E4B0</color>
+	
+    <!-- Couleurs des Switch (préférences) -->
+    <color name="pref_switch_on">#ABA36D</color>   <!-- doré -->
+    <color name="pref_switch_off">#687487</color> <!-- gris bleuté -->
+	
+	<!-- Couleur de TRACK (l’arrière-plan de la piste), semi-transparente -->
+    <color name="pref_switch_on_track">#66ABA36D</color>   <!-- or doré 40% d’opacité -->
+    <color name="pref_switch_off_track">#6640516D</color>  <!-- bleu-gris 40% d’opacité -->
 </resources>

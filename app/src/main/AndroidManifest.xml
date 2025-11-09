@@ -1,43 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.lacitadellevote">
 
+    <!-- Permissions essentielles -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
-    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <!-- Android 12+ : autoriser les alarmes exactes (nécessite aussi l’écran de demande à l’utilisateur) -->
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
 
     <application
         android:name=".MyApplication"
         android:allowBackup="true"
         android:label="@string/app_name"
         android:icon="@mipmap/ic_launcher"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/ic_launcher_legacy"
         android:supportsRtl="true"
         android:theme="@style/Theme.LaCitadelleVoteApp">
-        
-        <activity android:name=".SettingsActivity" />
 
+        <!-- Activité principale (lanceur) -->
         <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-        <receiver
-            android:name=".alarm.AlarmReceiver"
-            android:exported="false"/>
+        <!-- Écran des paramètres -->
+        <activity
+            android:name=".settings.SettingsActivity"
+            android:exported="false"
+            android:theme="@style/Theme.LaCitadelleVoteApp.Preferences">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.lacitadellevote.MainActivity" />
+        </activity>
 
+        <activity
+            android:name=".legal.LegalPageActivity"
+            android:exported="false" />
+
+        <!-- Rankup (si présent) -->
+        <activity
+            android:name=".RankupActivity"
+            android:exported="false" />
+
+
+        <!-- Elytreum -->
+        <activity
+            android:name=".ElytreumActivity"
+            android:exported="false" />
+
+        <!-- Receiver déclenché par AlarmManager quand un vote est dispo -->
+        <receiver
+            android:name=".alarm.VoteAlarmReceiver"
+            android:enabled="true"
+            android:exported="true" />
+
+        <!-- Replanification au reboot / mise à jour appli -->
         <receiver
             android:name=".alarm.BootReceiver"
             android:enabled="true"
-            android:exported="false">
+            android:exported="true"
+            android:directBootAware="true">
             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED"/>
-                <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED"/>
-                <action android:name="android.intent.action.MY_PACKAGE_REPLACED"/>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED" />
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
             </intent-filter>
         </receiver>
 

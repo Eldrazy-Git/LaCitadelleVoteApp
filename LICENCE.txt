@@ -1,0 +1,46 @@
+La Citadelle VoteApp — Licence propriétaire
+© 2025 Eldrazy. Tous droits réservés.
+
+Ce logiciel, y compris son code source, ses fichiers de configuration, ses scripts,
+son interface utilisateur et tout autre élément composant l’application, est la propriété exclusive de son auteur, Eldrazy.
+
+La Citadelle VoteApp est un projet personnel, non commercial et non affilié officiellement
+à La Citadelle (serveur Minecraft). L’application est utilisée à des fins communautaires
+avec l’accord explicite des administrateurs du serveur La Citadelle pour l’usage de leurs visuels,
+images et éléments thématiques.
+
+Aucune partie de ce projet ne peut être :
+- copiée, reproduite, distribuée ou rendue publique ;
+- modifiée, traduite, adaptée ou intégrée dans une autre application ;
+- exploitée à des fins commerciales ou promotionnelles ;
+sans une autorisation écrite préalable d’Eldrazy.
+
+Les ressources appartenant à La Citadelle (logos, textures, images, sons ou textes)
+demeurent la propriété de leurs créateurs respectifs. Leur usage dans ce projet se fait uniquement
+avec autorisation et ne confère aucun droit de réutilisation à des tiers.
+
+L’application contient des composants tiers distribués sous licence libre :
+- AndroidX / Jetpack — Apache License 2.0
+- Material Components for Android — Apache License 2.0
+- Glide — BSD, MIT et Apache 2.0 combinées
+- Kotlin — Apache License 2.0
+
+Toute violation de ces termes pourra entraîner des poursuites conformément
+aux articles L111-1 à L131-4 et L335-2 du Code de la propriété intellectuelle (France).
+
+Aucune licence open source ne s’applique à ce projet.
+
+──────────────────────────────────────────────────────────────
+Conformité Play Store et RGPD
+──────────────────────────────────────────────────────────────
+
+Cette application respecte les règles de publication du Google Play Store :
+- Aucun suivi, traçage, ou collecte de données personnelles.
+- Aucune publicité, ni partage de données avec des tiers.
+- Les permissions utilisées sont limitées au bon fonctionnement des notifications et rappels.
+- Les mentions légales et la politique de confidentialité sont accessibles dans l’application et sur le site du développeur.
+
+Pour toute demande ou contact :
+Discord : https://discord.gg/uDzGRVQZ
+
+© 2025 Eldrazy — Tous droits réservés.
