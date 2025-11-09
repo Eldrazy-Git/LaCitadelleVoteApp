@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">La Citadelle Vote</string>
+    <string name="app_name">La Citadelle - Vote Compagnon</string>
     <string name="logo_citadelle">Logo Citadelle</string>
     <string name="logo_discord">Logo Discord</string>
 	<string name="nav_open">Nav_open</string>
