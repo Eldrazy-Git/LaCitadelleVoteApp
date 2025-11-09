@@ -102,6 +102,25 @@
       color: var(--muted);
       text-align: center;
     }
+
+    details {
+      margin: 6px 0 10px 0;
+      padding: 8px 10px;
+      border-radius: 10px;
+      background: rgba(0,0,0,0.18);
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+
+    details summary {
+      cursor: pointer;
+      font-weight: 600;
+      color: var(--gold);
+      list-style: none;
+    }
+
+    details summary::-webkit-details-marker {
+      display: none;
+    }
   </style>
 </head>
 
@@ -110,9 +129,196 @@
   <h1>Journal des versions</h1>
   <div class="subtitle">Historique des mises à jour de l’application La Citadelle Vote</div>
 
-  <p><strong>Dernière version :</strong> 1.1_3 (Stable) — novembre 2025</p>
+  <p><strong>Dernière version :</strong> 1.1_4 (Stable)</p>
 
   <hr />
+
+  <!-- Version 1.1_4 -->
+  <h2>Version 1.1_4 — Release Stable</h2>
+
+  <p><em>Release Stable — La Citadelle Vote App</em></p>
+
+  <h3>📘 Interface</h3>
+
+  <details>
+    <summary>Page principale — Timer</summary>
+    <ul>
+      <li>Modification du format d’affichage du timer :
+        <ul>
+          <li>Affichage en format lisible : <strong>12 h 34 min 56 s</strong> plutôt que <strong>12:34:56</strong>.</li>
+          <li>Si la durée est supérieure à 1 heure : affichage du format <strong>1 h 23 min</strong>, <strong>12 h 34 min</strong>, etc.</li>
+          <li>Si la durée est inférieure à 1 heure : affichage du format <strong>12 min 34 s</strong>, <strong>1 min 2 s</strong>, etc.</li>
+        </ul>
+      </li>
+    </ul>
+  </details>
+
+  <details>
+    <summary>Intégration : Drawer (volet de navigation)</summary>
+    <p>Ajout d’un volet de navigation sur le bord droit de l’écran, accessible :</p>
+    <ul>
+      <li>Par un glissement depuis le bord droit.</li>
+      <li>Par un clic sur le bouton dédié.</li>
+    </ul>
+    <p>Le Drawer donne accès à :</p>
+    <ul>
+      <li>Page <strong>Paramètres</strong></li>
+      <li>Page <strong>Wiki de La Citadelle</strong></li>
+      <li>Page <strong>Rankup</strong></li>
+      <li>Page <strong>Elytreum</strong></li>
+      <li>Bouton <strong>« À venir »</strong></li>
+    </ul>
+  </details>
+
+  <details>
+    <summary>Bouton page "Paramètres"</summary>
+
+    <p><strong>Intégration : Notifications</strong></p>
+    <ul>
+      <li>Sélecteur pour activer/désactiver les notifications.</li>
+      <li>Sélecteur pour activer/désactiver les vibrations.</li>
+      <li>Sélecteur pour activer/désactiver le son de notification custom.</li>
+      <li>Bouton de test de notification.</li>
+    </ul>
+
+    <p><strong>Intégration : Affichage</strong></p>
+    <ul>
+      <li>Sélecteur pour activer/désactiver la police <strong>MedievalSharp.ttf</strong>.</li>
+    </ul>
+
+    <p><strong>Intégration : Votes</strong></p>
+    <ul>
+      <li>Sélecteur pour suivre les votes en temps réel dans les paramètres.</li>
+      <li>Bouton de remise à zéro globale des timers en cas de problème.</li>
+      <li>Boutons de suivi et de remise à zéro des timers pour chaque site.</li>
+    </ul>
+
+    <p><strong>Intégration : Système</strong></p>
+    <ul>
+      <li>Accès rapide aux autorisations de notifications.</li>
+      <li>Accès rapide aux autorisations de batterie.</li>
+      <li>Accès rapide aux autorisations d’alarmes exactes.</li>
+    </ul>
+
+    <p><strong>Intégration : Infos &amp; légal</strong></p>
+    <ul>
+      <li>Mentions légales.</li>
+      <li>Politique de confidentialité.</li>
+      <li>Licences et crédits.</li>
+    </ul>
+
+    <p><strong>Intégration : Version de l’application</strong></p>
+    <ul>
+      <li>Affiche la version actuelle de l’application.</li>
+      <li>Un clic ouvre le journal des versions (cette page).</li>
+    </ul>
+  </details>
+
+  <details>
+    <summary>Bouton "Wiki"</summary>
+    <p><strong>Intégration : Bouton "Wiki"</strong></p>
+    <ul>
+      <li>Bouton redirigeant vers le wiki officiel de La Citadelle :
+        <a href="https://la-citadelle.gitbook.io/wiki" target="_blank" rel="noopener noreferrer">
+          https://la-citadelle.gitbook.io/wiki
+        </a>
+      </li>
+    </ul>
+  </details>
+
+  <details>
+    <summary>Bouton page "Rankup"</summary>
+    <p><strong>Intégration : Page "Rankup"</strong></p>
+    <ul>
+      <li>Permet de suivre manuellement sa progression de rang.</li>
+      <li>Chaque rang inclut :
+        <ul>
+          <li>Nom du rang + coche "Rang terminé".</li>
+          <li>Requis : coût, niveau, objets.</li>
+          <li>Informations : Homes, Places, Shops, Lands, Métiers, HDV.</li>
+          <li>Fonctionnalités débloquées.</li>
+          <li>Récompenses.</li>
+        </ul>
+      </li>
+      <li>Ouverture automatique du premier rang non complété.</li>
+      <li>Coches pour chaque critère (argent, niveau, items) avec grisé automatique une fois validés.</li>
+      <li>Cocher toutes les conditions passe le rang en "Rang terminé" et ouvre le suivant.</li>
+      <li>Un rang complété est minimisé pour plus de lisibilité.</li>
+      <li>Cliquer sur le volet du rang ouvert le ferme, permettant de cocher sans réouverture automatique.</li>
+    </ul>
+  </details>
+
+  <details>
+    <summary>Bouton page "Elytreum"</summary>
+    <p><strong>Intégration : Page "Elytreum"</strong></p>
+
+    <p><em>Onglet "Stuffs"</em></p>
+    <ul>
+      <li>Récapitulatif du coût complet du stuff Elytreum.</li>
+      <li>Armure :
+        <ul>
+          <li>Menu déroulant par item : image, nom, coût en Orbes &amp; Pièces d’or.</li>
+          <li>Détail des enchantements liés à chaque item.</li>
+          <li>Récap des effets globaux.</li>
+        </ul>
+      </li>
+      <li>Outils &amp; armes :
+        <ul>
+          <li>Menu déroulant par item : image, nom, coût, enchantements.</li>
+        </ul>
+      </li>
+    </ul>
+
+    <p><em>Onglet "Calculateur"</em></p>
+    <ul>
+      <li>Boîte de dialogue pour saisir le nombre d’Orbes Elytreum (≥ 1, entier).</li>
+      <li>Récap des ressources brutes nécessaires, triées par item custom.</li>
+      <li>Pour chaque item custom :
+        <ul>
+          <li>Image, nom, quantité requise.</li>
+          <li>Craft présenté façon Wiki Minecraft.</li>
+          <li>Détail des ressources brutes nécessaires.</li>
+        </ul>
+      </li>
+      <li>Affichage des quantités totales et conversion en stacks.</li>
+    </ul>
+  </details>
+
+  <details>
+    <summary>Bouton "À venir"</summary>
+    <ul>
+      <li>Bouton "À venir" affichant un popup <strong>"Bientôt 👀"</strong>.</li>
+      <li>Réservé pour de futures fonctionnalités (contrats, jobs avec recherche, etc.).</li>
+    </ul>
+  </details>
+
+  <h3>🛠️ Système</h3>
+  <ul>
+    <li>Masquage de la scroll-bar dans toute l’application (hors sites externes).</li>
+    <li>Modification de <code>SettingsActivity.kt</code> pour un usage plus clair et structuré.</li>
+    <li>Intégration des alarmes exactes pour fiabiliser les notifications.</li>
+    <li>Demandes guidées des autorisations Notifications, Batterie et Alarmes exactes.</li>
+    <li>Privatisation du code et mise en place d’une licence propriétaire pour protéger le projet et les assets de La Citadelle.</li>
+    <li>Nettoyage des fichiers résiduels et imports inutiles.</li>
+  </ul>
+
+  <hr />
+
+  <h3>📘 Infos supplémentaires — Prochaine version</h3>
+  <ul>
+    <li>Préparation de l’application pour une publication publique sur le Google Play Store.</li>
+    <li>Changement de nom :
+      <ul>
+        <li>Ancien : <strong>La Citadelle Vote</strong></li>
+        <li>Nouveau : <strong>La Citadelle — Vote Compagnon</strong></li>
+      </ul>
+    </li>
+    <li>Passage prévu de la version <strong>1.1_4</strong> à <strong>1.2</strong>.</li>
+  </ul>
+
+  <hr />
+
+  <!-- Anciennes versions conservées -->
 
   <h2>Version 1.1_3 — Release Stable</h2>
   <ul>
@@ -122,7 +328,6 @@
     <li>Cliquer sur la notification relance le timer du site et ouvre directement la page de vote.</li>
     <li>Cliquer sur un groupe de notifications n’ouvre plus qu’une seule instance de l’application.</li>
   </ul>
-
   <p><em>Bugs connus :</em> notifications fantômes rares, fond d’icônes dégradé sur certaines versions.</p>
 
   <hr />
@@ -132,7 +337,6 @@
     <li>Ajout d’un nouveau site de vote : <strong>serveur-minecraft-vote.fr</strong>.</li>
     <li>Positionné sous <strong>serveur-prive.net</strong> (même durée de 90 minutes).</li>
   </ul>
-
   <p><em>Bugs connus :</em> notifications fantômes occasionnelles et fond d’icônes déformé.</p>
 
   <hr />
@@ -146,32 +350,30 @@
     <li>Interface modernisée, suppression du bouton de paramètres visible.</li>
     <li>Cliquer sur la notification ouvre directement l’application de vote.</li>
   </ul>
-
   <p><em>Bugs connus :</em> notifications absentes sur certains appareils (Xiaomi notamment).</p>
 
   <hr />
 
   <h2>Versions 1.0 à 1.0_4 — Versions de test initiales</h2>
   <ul>
-    <li>Version initiale de l’application avec les 3 sites de vote intégrés :</li>
-    <ul>
-      <li><strong>serveur-prive.net</strong></li>
-      <li><strong>serveur-minecraft.com</strong></li>
-      <li><strong>serveursminecraft.org</strong></li>
-    </ul>
+    <li>Version initiale de l’application avec les 3 sites de vote intégrés :
+      <ul>
+        <li><strong>serveur-prive.net</strong></li>
+        <li><strong>serveur-minecraft.com</strong></li>
+        <li><strong>serveursminecraft.org</strong></li>
+      </ul>
+    </li>
     <li>Ajout du logo cliquable vers le site officiel et du logo Discord.</li>
-    <li>Ajout des timers par site et notifications personnalisées “Vote disponible”.</li>
+    <li>Ajout des timers par site et notifications personnalisées « Vote disponible ».</li>
     <li>Utilisation de la police médiévale <strong>MedievalSharp.ttf</strong>.</li>
     <li>Bouton paramètres : réinitialisation des compteurs, test des notifications.</li>
   </ul>
-
   <p><em>Bugs connus :</em> duplication des timers, son de notification parfois absent, fond d’icônes imparfait.</p>
 
   <hr />
 
   <p class="note">
-    Ce journal est mis à jour automatiquement à chaque release publique.<br/>
-    Dernière révision : novembre 2025.
+    Ce journal est mis à jour lors de chaque nouvelle version stable de l’application.
   </p>
 </div>
 
