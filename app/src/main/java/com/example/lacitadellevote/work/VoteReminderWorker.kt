@@ -2,11 +2,18 @@ package com.example.lacitadellevote.work
 
 import android.content.Context
 import androidx.work.CoroutineWorker
+import androidx.work.Data
+import androidx.work.ExistingWorkPolicy
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
 import androidx.work.WorkerParameters
-import com.example.lacitadellevote.notif.NotificationHelper
 import com.example.lacitadellevote.data.VoteSitesRepository
+import com.example.lacitadellevote.model.VoteSite
+import com.example.lacitadellevote.notif.NotificationHelper
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
+import java.util.concurrent.TimeUnit
 
 class VoteReminderWorker(
     appContext: Context,
@@ -14,27 +21,72 @@ class VoteReminderWorker(
 ) : CoroutineWorker(appContext, params) {
 
     override suspend fun doWork(): Result {
-        val id = inputData.getString("site_id") ?: return Result.failure()
-        val name = inputData.getString("site_name") ?: id
-        val url = inputData.getString("site_url") ?: ""
-        val cooldown = inputData.getLong("cooldown", 0L)
+        val siteId = inputData.getString(KEY_SITE_ID) ?: return Result.failure()
+        val siteName = inputData.getString(KEY_SITE_NAME) ?: siteId
+        val siteUrl = inputData.getString(KEY_SITE_URL) ?: ""
+        val cooldown = inputData.getInt(KEY_COOLDOWN, 90)
 
+        // Affiche la notif
         NotificationHelper.showVoteReminder(
-            applicationContext,
-            "Vote $name",
-            "C'est l'heure de voter pour $name",
-            url,
-            id.hashCode(),
-            siteId = id,
-            siteName = name,
-            cooldownMinutes = cooldown
+            context = applicationContext,
+            siteId = siteId,
+            siteName = siteName,
+            url = siteUrl,
+            cooldownMinutes = cooldown,
+            notificationId = siteId.hashCode()
         )
 
-        // Clear next trigger so no auto rechain
+        // Remet le next_trigger à 0
         withContext(Dispatchers.IO) {
-            VoteSitesRepository(applicationContext).setNextTrigger(id, 0L)
+            VoteSitesRepository(applicationContext).setNextTrigger(siteId, 0L)
         }
 
         return Result.success()
+    }
+
+    companion object {
+        private const val KEY_SITE_ID = "site_id"
+        private const val KEY_SITE_NAME = "site_name"
+        private const val KEY_SITE_URL = "site_url"
+        private const val KEY_COOLDOWN = "cooldown"
+
+        private fun uniqueWorkNameFor(siteId: String) = "vote_reminder_$siteId"
+
+        fun scheduleNext(
+            context: Context,
+            site: VoteSite,
+            delayMinutes: Long
+        ) {
+            val safeDelay = delayMinutes.coerceAtLeast(1L)
+            val triggerAt = System.currentTimeMillis() + TimeUnit.MINUTES.toMillis(safeDelay)
+
+            val repo = VoteSitesRepository(context)
+            // ⚠️ setNextTrigger est suspend → runBlocking ici
+            runBlocking(Dispatchers.IO) {
+                repo.setNextTrigger(site.id, triggerAt)
+            }
+
+            val input: Data = Data.Builder()
+                .putString(KEY_SITE_ID, site.id)
+                .putString(KEY_SITE_NAME, site.name)
+                .putString(KEY_SITE_URL, site.url)
+                .putInt(KEY_COOLDOWN, safeDelay.toInt())
+                .build()
+
+            val request = OneTimeWorkRequestBuilder<VoteReminderWorker>()
+                .setInitialDelay(safeDelay, TimeUnit.MINUTES)
+                .setInputData(input)
+                .build()
+
+            WorkManager.getInstance(context).enqueueUniqueWork(
+                uniqueWorkNameFor(site.id),
+                ExistingWorkPolicy.REPLACE,
+                request
+            )
+        }
+
+        fun cancel(context: Context, siteId: String) {
+            WorkManager.getInstance(context).cancelUniqueWork(uniqueWorkNameFor(siteId))
+        }
     }
 }

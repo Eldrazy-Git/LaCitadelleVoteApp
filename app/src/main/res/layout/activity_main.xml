@@ -1,176 +1,230 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#283852">
+	android:fitsSystemWindows="false">
 
-    <LinearLayout
+    <!-- ========= CONTENU (non-drawer) ========= -->
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:orientation="vertical"
-        android:padding="24dp">
+        android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/logoCitadelle"
-            android:layout_width="250dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="36dp"
-            android:layout_marginBottom="36dp"
-            android:adjustViewBounds="true"
-            android:contentDescription="@string/logo_citadelle"
-            android:src="@drawable/logo_citadelle" />
+        <!-- Ton écran principal -->
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+			android:layout_marginTop="0dp"
+            android:background="#283852"
+			>
 
-        <ImageView
-            android:id="@+id/logoDiscord"
-            android:layout_width="80dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="36dp"
-            android:adjustViewBounds="true"
-            android:contentDescription="@string/logo_discord"
-            android:src="@drawable/logo_discord" />
-
-        <LinearLayout
-            android:id="@+id/btnVote1"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_width="250dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginEnd="32dp"
-            android:layout_marginBottom="16dp"
-            android:background="@drawable/button_background"
-            android:gravity="center"
-            android:minHeight="72dp"
-            android:orientation="vertical"
-            android:padding="16dp">
-
-            <ImageView
-                android:layout_width="120dp"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:adjustViewBounds="true"
-                android:contentDescription="Vote Serveur Privé"
-                android:src="@drawable/logo_serveur_prive_net" />
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:padding="24dp">
 
-            <TextView
-                android:id="@+id/timerVote1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-android:text="Vote dans 00:00"
-                android:textColor="#aba36d"
-                android:textSize="14sp" />
-        </LinearLayout>
-		
-		<LinearLayout
-            android:id="@+id/btnVote4"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_width="250dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginEnd="32dp"
-            android:layout_marginBottom="16dp"
-            android:background="@drawable/button_background"
-            android:gravity="center"
-            android:minHeight="72dp"
-            android:orientation="vertical"
-            android:padding="16dp">
+                <ImageView
+                    android:id="@+id/logoCitadelle"
+                    android:layout_width="250dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="36dp"
+                    android:layout_marginBottom="24dp"
+                    android:adjustViewBounds="true"
+                    android:contentDescription="@string/logo_citadelle"
+                    android:src="@drawable/logo_citadelle" />
 
-            <ImageView
-                android:layout_width="120dp"
-                android:layout_height="wrap_content"
-                android:adjustViewBounds="true"
-                android:contentDescription="Serveur Minecraft Vote"
-                android:src="@drawable/logo_serveur_minecraft_vote" />
+                <ImageView
+                    android:id="@+id/logoDiscord"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="36dp"
+                    android:adjustViewBounds="true"
+                    android:contentDescription="@string/logo_discord"
+                    android:src="@drawable/logo_discord" />
 
-            <TextView
-                android:id="@+id/timerVote4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-android:text="Vote dans 00:00"
-                android:textColor="#aba36d"
-                android:textSize="14sp" />
-        </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/btnVote1"
+                    android:layout_width="250dp"
+                    android:layout_height="80dp"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginEnd="32dp"
+                    android:layout_marginBottom="16dp"
+                    android:background="@drawable/button_background"
+                    android:gravity="center"
+                    android:minHeight="72dp"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+					
+					<com.google.android.material.imageview.ShapeableImageView
+						android:layout_width="120dp"
+						android:layout_height="wrap_content"
+						android:adjustViewBounds="true"
+						android:scaleType="centerCrop"
+						android:contentDescription="Vote Serveur Privé"
+						app:srcCompat="@drawable/logo_serveur_prive_net"
+						app:shapeAppearanceOverlay="@style/RoundedImageStyle"
+						app:strokeWidth="0dp" />
 
-        <LinearLayout
-            android:id="@+id/btnVote2"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_width="250dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginEnd="32dp"
-            android:layout_marginBottom="16dp"
-            android:background="@drawable/button_background"
-            android:gravity="center"
-            android:minHeight="72dp"
-            android:orientation="vertical"
-            android:padding="16dp">
+                    <TextView
+                        android:id="@+id/timerVote1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Vote dans 00:00"
+                        android:textColor="#aba36d"
+                        android:textSize="14sp" />
+                </LinearLayout>
 
-            <ImageView
-                android:layout_width="120dp"
-                android:layout_height="wrap_content"
-                android:adjustViewBounds="true"
-                android:contentDescription="Vote Serveur Minecraft"
-                android:src="@drawable/logo_serveur_minecraft_com" />
+                <LinearLayout
+                    android:id="@+id/btnVote2"
+                    android:layout_width="250dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginEnd="32dp"
+                    android:layout_marginBottom="16dp"
+                    android:background="@drawable/button_background"
+                    android:gravity="center"
+                    android:minHeight="72dp"
+                    android:orientation="vertical"
+                    android:padding="16dp">
 
-            <TextView
-                android:id="@+id/timerVote2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-android:text="Vote dans 00:00"
-                android:textColor="#aba36d"
-                android:textSize="14sp" />
-        </LinearLayout>
+                <com.google.android.material.imageview.ShapeableImageView
+					android:layout_width="120dp"
+					android:layout_height="wrap_content"
+					android:adjustViewBounds="true"
+					android:scaleType="centerCrop"
+					android:contentDescription="Serveur Minecraft Vote"
+					app:srcCompat="@drawable/logo_serveur_minecraft_vote"
+					app:shapeAppearanceOverlay="@style/RoundedImageStyle"
+					app:strokeWidth="0dp" />
 
-        <LinearLayout
-            android:id="@+id/btnVote3"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_width="250dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginEnd="32dp"
-            android:layout_marginBottom="16dp"
-            android:background="@drawable/button_background"
-            android:gravity="center"
-            android:minHeight="72dp"
-            android:orientation="vertical"
-            android:padding="10dp">
+                    <TextView
+                        android:id="@+id/timerVote2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Vote dans 00:00"
+                        android:textColor="#aba36d"
+                        android:textSize="14sp" />
+                </LinearLayout>
 
-            <ImageView
-                android:layout_width="90dp"
-                android:layout_height="wrap_content"
-                android:adjustViewBounds="true"
-                android:contentDescription="Vote ServeursMinecraft.org"
-                android:src="@drawable/logo_serveursminecraft_org" />
+                <LinearLayout
+                    android:id="@+id/btnVote3"
+                    android:layout_width="250dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginEnd="32dp"
+                    android:layout_marginBottom="16dp"
+                    android:background="@drawable/button_background"
+                    android:gravity="center"
+                    android:minHeight="72dp"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+					
+				<com.google.android.material.imageview.ShapeableImageView
+					android:layout_width="120dp"
+					android:layout_height="wrap_content"
+					android:adjustViewBounds="true"
+					android:scaleType="centerCrop"
+					android:contentDescription="Vote Serveur Minecraft"
+					app:srcCompat="@drawable/logo_serveur_minecraft_com"
+					app:shapeAppearanceOverlay="@style/RoundedImageStyle"
+					app:strokeWidth="0dp" />
 
-            <TextView
-                android:id="@+id/timerVote3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-android:text="Vote dans 00:00"
-                android:textColor="#aba36d"
-                android:textSize="14sp" />
-        </LinearLayout>
+                    <TextView
+                        android:id="@+id/timerVote3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Vote dans 00:00"
+                        android:textColor="#aba36d"
+                        android:textSize="14sp" />
+                </LinearLayout>
 
-        <ImageButton
-            android:id="@+id/btnSettings"
-			android:visibility="gone"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="24dp"
-            android:layout_marginBottom="16dp"
-            android:background="@null"
-            android:contentDescription="Réglages"
-            android:scaleType="center"
-            android:src="@drawable/ic_settings" />
+                <LinearLayout
+                    android:id="@+id/btnVote4"
+                    android:layout_width="250dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginEnd="32dp"
+                    android:layout_marginBottom="16dp"
+                    android:background="@drawable/button_background"
+                    android:gravity="center"
+                    android:minHeight="72dp"
+                    android:orientation="vertical"
+                    android:padding="10dp">
+					
+					<com.google.android.material.imageview.ShapeableImageView
+					android:layout_width="120dp"
+					android:layout_height="wrap_content"
+					android:adjustViewBounds="true"
+					android:scaleType="centerCrop"
+					android:contentDescription="Vote ServeursMinecraft.org"
+					app:srcCompat="@drawable/logo_serveursminecraft_org"
+					app:shapeAppearanceOverlay="@style/RoundedImageStyle"
+					app:strokeWidth="0dp" />
 
-    </LinearLayout>
-</ScrollView>
+                    <TextView
+                        android:id="@+id/timerVote4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Vote dans 00:00"
+                        android:textColor="#aba36d"
+                        android:textSize="14sp" />
+                </LinearLayout>
+			
+            </LinearLayout>
+			
+			
+        </ScrollView>
+
+        <!-- Zone cliquable plus large pour ouvrir le drawer -->
+	<FrameLayout
+		android:id="@+id/handleContainer"
+		android:layout_width="96dp"
+		android:layout_height="48dp"
+		android:layout_gravity="end|center_vertical"
+		android:layout_marginEnd="-36dp"
+		android:clickable="true"
+		android:focusable="true">
+
+		<!-- le vrai petit bouton visuel -->
+		<ImageView
+			android:id="@+id/handleDrawer"
+			android:layout_width="8dp"
+			android:layout_height="48dp"
+			android:layout_gravity="center"
+			android:src="@drawable/handle_rect"
+			android:contentDescription="@null"
+			android:importantForAccessibility="no" />
+	</FrameLayout>
+
+
+    </FrameLayout>
+
+    <!-- ========= UNIQUE DRAWER À DROITE ========= -->
+	
+    <com.google.android.material.navigation.NavigationView
+    android:id="@+id/rightDrawer"
+    android:layout_width="172dp"
+    android:layout_height="wrap_content"
+    android:layout_gravity="end|center_vertical"
+    android:layout_marginTop="48dp"
+    android:layout_marginBottom="48dp"
+    android:background="@color/cit_button"
+
+    android:paddingTop="0dp"
+    android:paddingBottom="0dp"
+    android:overScrollMode="never"
+	android:fitsSystemWindows="true"
+	
+	
+    app:menu="@menu/drawer_menu"
+    app:itemTextColor="@color/cit_border"
+    app:itemIconTint="@color/cit_border"
+    app:itemVerticalPadding="0dp"	/>
+</androidx.drawerlayout.widget.DrawerLayout>

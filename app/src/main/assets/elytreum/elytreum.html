@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Elytreum</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1" />
+  <link rel="stylesheet" href="elytreum.css" />
+</head>
+<body>
+  <header class="page-header">
+    <h1>Elytreum</h1>
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="stuffs">Stuffs</button>
+      <button class="tab-btn" data-tab="calc">Calculateur</button>
+    </div>
+  </header>
+
+  <!-- ONGLET STUFFS -->
+  <section id="tab-stuffs" class="tab-panel active">
+    <!-- Totaux -->
+        <div class="totals-card" id="totalsBox">
+      <div class="line">
+        <span>Total Orbes (armures + outils)</span>
+        <strong id="totalOrbs" class="orbsvalue">—</strong>
+      </div>
+	  
+	  <div class="line">
+        <span>Prix des Orbes (en pièces d'or)</span>
+        <strong id="orbsGoldCost" class="orbsvalue">—</strong>
+      </div>
+
+      <div class="line">
+        <span>Total Pièces d'or (items seuls)</span>
+        <strong id="totalGold" class="orbsvalue">—</strong>
+      </div>
+
+      <div class="line total-line">
+        <span>Coût total (items + orbes)</span>
+        <strong id="grandTotal" class="orbsvalue">—</strong>
+      </div>
+
+      <div class="subtotals">
+        <div>
+          <small>Armures :</small>
+          <span id="armorOrbs">—</span> orbes •
+          <span id="armorGold">—</span> PO
+        </div>
+        <div>
+          <small>Outils :</small>
+          <span id="toolsOrbs">—</span> orbes •
+          <span id="toolsGold">—</span> PO
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Sous-onglets -->
+    <div class="subtabs">
+      <button class="subtab-btn active" data-sub="armors">Armures</button>
+      <button class="subtab-btn" data-sub="tools">Outils</button>
+    </div>
+
+    <!-- ARMURES -->
+    <div id="sub-armors" class="subtab-panel active">
+      <div class="accordion">
+
+        <!-- Casque -->
+        <details class="ely-item" data-orbs="3" data-gold="150000">
+          <summary>
+            <div class="item-img">
+              <img src="img/stuff/armor/elytreum_helmet.png" alt="Casque en Elytreum" onerror="this.style.opacity=.3">
+            </div>
+            <div class="item-head">
+              <div class="item-name">Casque en Elytreum</div>
+              <div class="item-cost">3 Orbes d'Elytreum • 150 000 pièces d'or</div>
+            </div>
+            
+          </summary>
+          <div class="item-body">
+            <h4>Enchantements / Effets</h4>
+            <ul>
+              <li>Branchie : Vous respirez sous l'eau</li>
+              <li>Protection V : Réduction des dégâts de 20%</li>
+              <li>Raccommodage : Se répare en ramassant de l'XP</li>
+              <li>Solidité IV : Augmente la solidité de 5x</li>
+            </ul>
+          </div>
+        </details>
+
+        <!-- Plastron -->
+        <details class="ely-item" data-orbs="5" data-gold="300000">
+          <summary>
+            <div class="item-img">
+              <img src="img/stuff/armor/elytreum_chestplate.png" alt="Plastron en Elytreum" onerror="this.style.opacity=.3">
+            </div>
+            <div class="item-head">
+              <div class="item-name">Plastron en Elytreum</div>
+              <div class="item-cost">5 Orbes d'Elytreum • 300 000 pièces d'or</div>
+            </div>
+            
+          </summary>
+          <div class="item-body">
+            <h4>Enchantements / Effets</h4>
+            <ul>
+              <li>Protection V : Réduction des dégâts de 20%</li>
+              <li>Raccommodage : Se répare en ramassant de l'XP</li>
+              <li>Solidité IV : Augmente la solidité de 5x</li>
+              <li>Mastodonte II : +4 cœurs</li>
+            </ul>
+          </div>
+        </details>
+
+        <!-- Jambières -->
+        <details class="ely-item" data-orbs="4" data-gold="200000">
+          <summary>
+            <div class="item-img">
+              <img src="img/stuff/armor/elytreum_leggings.png" alt="Jambières en Elytreum" onerror="this.style.opacity=.3">
+            </div>
+            <div class="item-head">
+              <div class="item-name">Jambières en Elytreum</div>
+              <div class="item-cost">4 Orbes d'Elytreum • 200 000 pièces d'or</div>
+            </div>
+            
+          </summary>
+          <div class="item-body">
+            <h4>Enchantements / Effets</h4>
+            <ul>
+              <li>Adrénaline II : +10% de vitesse en vie basse</li>
+              <li>Furtivité rapide IV : +60% de vitesse en sneak</li>
+              <li>Protection V : Réduction des dégâts de 20%</li>
+              <li>Raccommodage : Se répare en ramassant de l'XP</li>
+              <li>Solidité IV : Augmente la solidité de 5x</li>
+            </ul>
+          </div>
+        </details>
+
+        <!-- Bottes -->
+        <details class="ely-item" data-orbs="3" data-gold="150000">
+          <summary>
+            <div class="item-img">
+              <img src="img/stuff/armor/elytreum_boots.png" alt="Bottes en Elytreum" onerror="this.style.opacity=.3">
+            </div>
+            <div class="item-head">
+              <div class="item-name">Bottes en Elytreum</div>
+              <div class="item-cost">3 Orbes d'Elytreum • 150 000 pièces d'or</div>
+            </div>
+            
+          </summary>
+          <div class="item-body">
+            <h4>Enchantements / Effets</h4>
+            <ul>
+              <li>Agilité Aquatique III : +99% de vitesse sous l'eau</li>
+              <li>Agilité des âmes III : +1.61% de vitesse sur le sable des âmes</li>
+              <li>Protection V : Réduction des dégâts de 20%</li>
+              <li>Raccommodage : Se répare en ramassant de l'XP</li>
+              <li>Solidité IV : Augmente la solidité de 5x</li>
+              <li>Vitesse III : +15% de vitesse</li>
+            </ul>
+          </div>
+        </details>
+
+      </div>
+
+      <!-- Effets globaux -->
+      <div class="global-note">
+        <h4>Effets globaux de l'armure</h4>
+        <ul style="padding-left: 30px;">
+          <li>+6 cœurs supplémentaires (plastron compris)</li>
+          <li>Effet de vitesse permanent</li>
+          <li>Particules stylées autour de vous ✨</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- OUTILS -->
+    <div id="sub-tools" class="subtab-panel">
+      <div class="accordion tools-section">
+
+        <!-- Épée -->
+        <details class="ely-item" data-orbs="3" data-gold="100000">
+          <summary>
+            <div class="item-img">
+              <img src="img/stuff/tools/elytreum_sword.png" alt="Épée en Elytreum" onerror="this.style.opacity=.3">
+            </div>
+            <div class="item-head">
+              <div class="item-name">Épée en Elytreum</div>
+              <div class="item-cost">3 Orbes • 100 000 pièces d'or</div>
+            </div>
+            
+          </summary>
+          <div class="item-body">
+            <h4>Enchantements / Effets</h4>
+            <ul>
+              <li>Attraction : l'XP et les objets viennent à vous</li>
+              <li>Butin IV : +4% de butin</li>
+              <li>Châtiment V : +12.50 dégâts sur les morts-vivants</li>
+              <li>Fléau des arthropodes V : +12.50 dégâts sur les arthropodes</li>
+			  <li>Raccommodage : Se répare en ramassant de l'XP</li>
+			  <li>Solidité V : Augmente la solidité de 6x</li>
+              <li>Détraqueur I : Chaque coup donné vous soigne</li>
+              <li>Spadassin III : +30% dégâts critiques</li>
+              <li>Tranchant V : +3.50 points de dégâts</li>
+            </ul>
+          </div>
+        </details>
+
+        <!-- Arc -->
+        <details class="ely-item" data-orbs="3" data-gold="100000">
+          <summary>
+            <div class="item-img">
+              <img src="img/stuff/tools/elytreum_bow.png" alt="Arc en Elytreum" onerror="this.style.opacity=.3">
+            </div>
+            <div class="item-head">
+              <div class="item-name">Arc en Elytreum</div>
+              <div class="item-cost">3 Orbes • 100 000 pièces d'or</div>
+            </div>
+            
+          </summary>
+          <div class="item-body">
+            <h4>Enchantements / Effets</h4>
+            <ul>
+              <li>Attraction : l'XP et les objets viennent à vous</li>
+              <li>Beau Jeu I : +10% dégâts en tir en l'air</li>
+              <li>Butin IV : +4% de butin supplémentaire</li>
+              <li>Infinité : Flèches infinies</li>
+              <li>Puissance V : +150% de dégâts infligé</li>
+              <li>Raccommodage : Se répare en ramassant de l'XP</li>
+              <li>Solidité III : Augmente la solidité de 4x</li>
+            </ul>
+          </div>
+        </details>
+
+        <!-- Pioche Fortune -->
+        <details class="ely-item" data-orbs="3" data-gold="150000">
+          <summary>
+            <div class="item-img">
+              <img src="img/stuff/tools/elytreum_pickaxe.png" alt="Pioche Elytreum Fortune" onerror="this.style.opacity=.3">
+            </div>
+            <div class="item-head">
+              <div class="item-name">Pioche en Elytreum (Fortune)</div>
+              <div class="item-cost">3 Orbes • 150 000 pièces d'or</div>
+            </div>
+            
+          </summary>
+          <div class="item-body">
+            <h4>Enchantements / Effets</h4>
+            <ul>
+              <li>Attraction : l'XP et les objets viennent à vous</li>
+              <li>Efficacité VI : +50% vitesse de minage</li>
+              <li>Filon instantané II : 8 minerais d'un coup</li>
+              <li>Fortune IV : +167% loot en minant</li>
+              <li>Raccommodage : Se répare en ramassant de l'XP</li>
+              <li>Solidité V : Augmente la solidité de 6x</li>
+            </ul>
+          </div>
+        </details>
+
+        <!-- Pioche Silk -->
+        <details class="ely-item" data-orbs="3" data-gold="150000">
+          <summary>
+            <div class="item-img">
+              <img src="img/stuff/tools/elytreum_pickaxe_silk.png" alt="Pioche Elytreum Silktouch" onerror="this.style.opacity=.3">
+            </div>
+            <div class="item-head">
+              <div class="item-name">Pioche en Elytreum (Silk Touch)</div>
+              <div class="item-cost">3 Orbes • 150 000 pièces d'or</div>
+            </div>
+            
+          </summary>
+          <div class="item-body">
+            <h4>Enchantements / Effets</h4>
+            <ul>
+              <li>Attraction : l'XP et les objets viennent à vous</li>
+              <li>Efficacité VI : +50% vitesse de minage</li>
+              <li>Filon instantané II : 8 minerais d'un coup</li>
+              <li>Toucher de soie : Permet de miner les blocs fragiles</li>
+              <li>Raccommodage : Se répare en ramassant de l'XP</li>
+              <li>Solidité V : Augmente la solidité de 6x</li>
+            </ul>
+          </div>
+        </details>
+
+        <!-- Pioche 3x3 -->
+        <details class="ely-item" data-orbs="3" data-gold="150000">
+          <summary>
+            <div class="item-img">
+              <img src="img/stuff/tools/elytreum_pickaxe_3x3.png" alt="Pioche Elytreum 3x3" onerror="this.style.opacity=.3">
+            </div>
+            <div class="item-head">
+              <div class="item-name">Pioche en Elytreum (3x3)</div>
+              <div class="item-cost">3 Orbes • 150 000 pièces d'or</div>
+            </div>
+            
+          </summary>
+          <div class="item-body">
+            <h4>Enchantements / Effets</h4>
+            <ul>
+              <li>Attraction : l'XP et les objets viennent à vous</li>
+              <li>Efficacité V : +50% vitesse de minage</li>
+              <li>Terrasseur : Creuse 3x3 blocs d'un seul coup (land)</li>
+              <li>Raccommodage : Se répare en ramassant de l'XP</li>
+              <li>Solidité V : Augmente la solidité de 6x</li>
+            </ul>
+          </div>
+        </details>
+
+        <!-- Hache -->
+        <details class="ely-item" data-orbs="4" data-gold="150000">
+          <summary>
+            <div class="item-img">
+              <img src="img/stuff/tools/elytreum_axe.png" alt="Hache en Elytreum" onerror="this.style.opacity=.3">
+            </div>
+            <div class="item-head">
+              <div class="item-name">Hache en Elytreum</div>
+              <div class="item-cost">4 Orbes • 150 000 pièces d'or</div>
+            </div>
+            
+          </summary>
+          <div class="item-body">
+            <h4>Enchantements / Effets</h4>
+            <ul>
+              <li>Attraction : l'XP et les objets viennent à vous</li>
+              <li>Bûcheron VI : Récolte jusqu'à 24 bûches d'un seul coup</li>
+              <li>Efficacité VI : +50% vitesse de minage</li>
+              <li>Raccommodage : Se répare en ramassant de l'XP</li>
+              <li>Solidité V : Augmente la solidité de 6x</li>
+            </ul>
+          </div>
+        </details>
+
+        <!-- Pelle -->
+        <details class="ely-item" data-orbs="2" data-gold="150000">
+          <summary>
+            <div class="item-img">
+              <img src="img/stuff/tools/elytreum_shovel.png" alt="Pelle en Elytreum" onerror="this.style.opacity=.3">
+            </div>
+            <div class="item-head">
+              <div class="item-name">Pelle en Elytreum</div>
+              <div class="item-cost">2 Orbes • 150 000 pièces d'or</div>
+            </div>
+            
+          </summary>
+          <div class="item-body">
+            <h4>Enchantements / Effets</h4>
+            <ul>
+              <li>Attraction : l'XP et les objets viennent à vous</li>
+              <li>Bulldozer : Creuse un rayon de 3x3 blocs d'un seul coup</li>
+              <li>Efficacité VI : +50% vitesse de minage</li>
+              <li>Raccommodage : Se répare en ramassant de l'XP</li>
+              <li>Solidité V : Augmente la solidité de 6x</li>
+            </ul>
+          </div>
+        </details>
+
+        <!-- Houe -->
+        <details class="ely-item" data-orbs="2" data-gold="50000">
+          <summary>
+            <div class="item-img">
+              <img src="img/stuff/tools/elytreum_hoe.png" alt="Houe en Elytreum" onerror="this.style.opacity=.3">
+            </div>
+            <div class="item-head">
+              <div class="item-name">Houe en Elytreum</div>
+              <div class="item-cost">2 Orbes • 50 000 pièces d'or</div>
+            </div>
+            
+          </summary>
+          <div class="item-body">
+            <h4>Enchantements / Effets</h4>
+            <ul>
+              <li>Attraction : l'XP et les objets viennent à vous</li>
+			  <li>Fortune III : +121% loot en cassant une culture</li>
+			  <li>Raccommodage : Se répare en ramassant de l'XP</li>
+			  <li>Récolte Expérimentée : Casser une culture avec l'outil replante la graine</li>
+              <li>Solidité V : Augmente la solidité de 6x</li>
+            </ul>
+          </div>
+        </details>
+
+      </div>
+    </div>
+  </section>
+
+<!-- ONGLET CALCULATEUR -->
+<section id="tab-calc" class="tab-panel">
+  <div class="calc-header">
+    <div class="calc-orb">
+      <img src="img/elytreum_orb.gif" alt="Orbe d'Elytreum">
+    </div>
+    <div class="calc-fields">
+      <label class="calc-label">
+        Quantité d’orbes :
+        <input id="orbsInput" type="number" min="1" step="1">
+      </label>
+      <div class="calc-gold">
+        Pièces d’or nécessaires :
+        <strong id="orbsGold">15 000</strong>
+      </div>
+    </div>
+  </div>
+
+  <div class="accordion" id="resourcesAcc">
+    <!-- rempli par JS -->
+  </div>
+</section>
+
+
+  <script src="elytreum.js"></script>
+</body>
+</html>

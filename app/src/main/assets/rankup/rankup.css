@@ -1,0 +1,353 @@
+:root {
+  --bg: #283852;
+  --card: rgba(10, 10, 10, 0.20);
+  --text: #fdf7e3;
+  --muted: #d6d2be;
+  --gold: #aba36d;
+  --accent: #b289ff;
+  --radius: 16px;
+}
+
+@font-face {
+  font-family: 'MedievalSharp';
+  src: url('file:///android_res/font/medievalsharp.ttf');
+}
+
+/* Quand l'appli dit "pas de police médiévale" */
+body.no-medieval {
+  font-family: system-ui, -apple-system, Roboto, "Segoe UI", sans-serif !important;
+}
+body.no-medieval .rankup-title,
+body.no-medieval .rank > summary span {
+  font-family: system-ui, -apple-system, Roboto, "Segoe UI", sans-serif !important;
+}
+html,
+body {
+  scrollbar-width: none;        /* Firefox */
+  -ms-overflow-style: none;     /* Internet Explorer / Edge Legacy */
+  margin-bottom: 20px;
+  padding: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: system-ui, -apple-system, Roboto, "Segoe UI", sans-serif;
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none;                /* Chrome, Safari, Android WebView */
+}
+
+.page {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 20px 16px 32px;
+}
+
+code {
+  display: inline-block;
+  background: rgba(171, 163, 109, 0.12); /* fond doré translucide */
+  border: 1px solid rgba(171, 163, 109, 0.35);
+  border-radius: 6px;
+  padding: 2px 6px;
+  color: #fdf7e3; /* texte clair */
+  font-family: monospace;
+  font-size: 0.95em;
+  letter-spacing: 0.3px;
+}
+
+
+h1 {
+  font-size: 26px;
+  margin-bottom: 18px;
+  color: var(--text);
+}
+
+hr {
+  border: none;
+  border-top: 1px dashed rgba(255, 255, 255, 0.22);
+  margin: 14px 0;
+  height: 0;
+}
+
+.rankup-title {
+  text-align: center;
+  font-family: 'MedievalSharp', cursive;
+  font-size: 2.2em;
+  color: #aba36d;
+  margin: 20px 0 20px 0;
+}
+
+.rankup-reset-all {
+  display: block;
+  margin: 0 auto 16px auto;
+  background: rgba(171, 163, 109, 0.14);
+  border: 1px solid rgba(212, 175, 55, 0.6);
+  color: #fdf7e3;
+  padding: 6px 14px;
+  border-radius: 12px;
+  font-size: 14px;
+}
+
+.rank-reset-btn {
+  margin-top: 10px;
+  background: rgba(255, 53, 53, 0.08);
+  border: 1px solid rgba(255, 53, 53, 0.35);
+  color: #ffeaea;
+  padding: 4px 10px;
+  border-radius: 9px;
+  font-size: 12px;
+}
+
+.rank {
+  background:var(--card);
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:14px;
+  margin-bottom:10px;
+  overflow:hidden;
+  transition:
+    border-color .18s ease,
+    box-shadow .18s ease,
+    transform .18s ease;
+}
+
+details.rank[open] {
+  border-color: var(--gold);
+  box-shadow:0 6px 14px rgba(0,0,0,.35);
+}
+
+
+.rank * {
+  color: inherit;
+}
+
+/* résumé du rang — aligné sur une seule ligne */
+.rank > summary {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;   /* garde l’ensemble centré */
+  gap: 10px;
+  padding: 12px 14px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  flex-wrap: wrap;            /* évite les débordements sur petits écrans */
+  text-align: center;
+}
+
+.rank > summary::-webkit-details-marker { display: none; }
+
+.rank > summary img {
+  height: 2.2em;
+  width: auto;
+  display: inline-block;
+  vertical-align: middle;
+  flex: 0 0 auto;
+}
+
+.rank > summary span {
+  line-height: 1.3;
+  color: var(--text);
+  font-family: 'MedievalSharp', cursive;
+  font-size: 1.05em;
+}
+
+/* le mini groupe "rang terminé" à droite de l'image */
+.rank-summary-check {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 6px;
+  border-radius: 999px;
+  background: rgba(171, 163, 109, 0.08);
+  border: 1px solid rgba(171, 163, 109, 0.25);
+  font-size: 11.5px;
+  user-select: none;
+  flex: 0 0 auto;          /* ne prend pas de place inutile */
+  margin-left: 2px;        /* léger espace après l’image */
+}
+
+.rank-summary-check input[type="checkbox"] {
+  transform: translateY(0.5px);
+}
+
+/* sur très petit écran: rendre la coche encore plus compacte */
+@media (max-width: 360px) {
+  .rank-summary-check {
+    gap: 4px;
+    padding: 2px 5px;
+    font-size: 11px;
+  }
+  .rank-summary-check .label {
+    display: none; /* ne garder que la case à cocher si tu veux ultra-compact */
+  }
+}
+
+
+/* quand le détails est ouvert, on NE veut PAS du fond bleu d'Android */
+details[open] > summary {
+  background: rgba(0, 0, 0, 0) !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* si jamais le moteur met un focus visible, on le rend discret */
+details[open] > summary:focus-visible,
+.rank > summary:focus-visible {
+  outline: 1px solid rgba(171, 163, 109, 0.35);
+  box-shadow: 0 0 6px rgba(171, 163, 109, 0.15);
+  border-radius: 6px;
+}
+
+/* ===== contenu du rang ===== */
+.rank-content {
+  padding: 10px 14px 16px;
+  background: rgba(0, 0, 0, 0.18);
+  border-top: 1px solid rgba(255, 255, 255, 0.02);
+  border-bottom-left-radius: var(--radius);
+  border-bottom-right-radius: var(--radius);
+  color: var(--text);
+}
+
+.rank-content h2 {
+  margin-top: 2px;
+  margin-bottom: 10px;
+}
+
+.rank-content h3 {
+  margin-top: 14px;
+  margin-bottom: 6px;
+  color: var(--gold);
+  font-size: 15px;
+}
+
+.rank-content p,
+.rank-content li,
+.rank-content ul {
+  color: var(--text);
+}
+
+.rank-content ul {
+  margin: 0 0 6px 0;
+  padding-left: 20px;
+}
+
+.rank-content li {
+  margin-bottom: 2px;
+}
+
+/* ligne avec case à cocher injectée */
+.rank-checkline {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.rank-checkline input[type="checkbox"] {
+  margin-top: 3px;
+}
+
+.rank-checkline span {
+  flex: 1 1 auto;
+}
+
+/* état quand c’est coché */
+.rank-checkline.rank-item-done span {
+  opacity: 0.45;
+  transition: opacity 0.12s ease-out;
+}
+
+/* fade-in animation */
+@keyframes fadein {
+  from {
+    opacity: 0.65;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fadein {
+  animation: fadein 180ms ease-out;
+}
+
+/* responsive */
+@media (max-width: 520px) {
+  .rank > summary img {
+    height: 2em;
+  }
+}
+
+/* --- feedback visuel sur les boutons de reset --- */
+@keyframes rankup-pulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 rgba(171, 163, 109, 0);
+  }
+  35% {
+    transform: scale(1.03);
+    box-shadow: 0 0 14px rgba(171, 163, 109, 0.2);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 rgba(171, 163, 109, 0);
+  }
+}
+
+.rank-reset-btn.is-animating,
+#reset-all.is-animating {
+  animation: rankup-pulse 360ms ease-out;
+}
+
+/* au cas où WebView réapplique un tap highlight sur d’autres éléments */
+* {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+}
+
+/* === Rang terminé : vue mini quand le <details> est fermé === */
+details.rank.rank-completed:not([open]) > summary {
+  /* on garde une entête compacte et centrée */
+  flex-direction: column;   /* image seule au centre */
+  align-items: center;
+  text-align: center;
+  border-color:var(--gold);
+  gap: 0;
+  padding: 8px 10px;
+}
+
+/* on masque le texte et la coche de rang dans la vue fermée */
+details.rank.rank-completed:not([open]) > summary span,
+details.rank.rank-completed:not([open]) > summary .rank-summary-check {
+  display: none !important;
+}
+
+/* on peut légèrement agrandir l’icône pour compenser le vide */
+details.rank.rank-completed:not([open]) > summary img {
+  height: 2.4em; /* ajuste si tu veux */
+}
+
+/* optionnel : bord plus discret/compact quand mini */
+details.rank.rank-completed:not([open]) {
+  border:1px solid rgba(255,255,255,.1);
+}
+details.rank.rank-completed:not([open]) .rank-content {
+  /* contenu masqué n’est pas visible, mais on laisse la règle vide pour clarté */
+}
+
+/* Accessibilité : garder le focus visible mais sans flash bleu */
+details.rank > summary:focus {
+  outline: 1px solid rgba(171,163,109,0.35);
+  outline-offset: 2px;
+}
+
+/* Animation de repli progressif du contenu avant fermeture */
+.rank-content.is-collapsing {
+  transition: max-height 240ms ease-in, opacity 200ms ease-in;
+  will-change: max-height, opacity;
+}
+@media (prefers-reduced-motion: reduce) {
+  .rank-content.is-collapsing {
+    transition: none;
+  }
+}
