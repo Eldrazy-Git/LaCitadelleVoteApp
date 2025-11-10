@@ -279,6 +279,7 @@ class MainActivity : ComponentActivity() {
 
     override fun onResume() {
         super.onResume()
+        NotificationHelper.cancelAllVoteReminders(this)
         applyDrawerFont()
         applyCustomFontIfAvailable()
     }
