@@ -1,5 +1,8 @@
 package com.example.lacitadellevote.settings
 
+import android.app.AlarmManager
+import android.app.PendingIntent
+import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -18,6 +21,7 @@ import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
 import androidx.preference.SwitchPreferenceCompat
 import com.example.lacitadellevote.R
+import com.example.lacitadellevote.alarm.VoteAlarmReceiver
 import com.example.lacitadellevote.data.VoteSitesRepository
 import com.example.lacitadellevote.legal.LegalPageActivity
 import com.example.lacitadellevote.notif.NotificationHelper
@@ -35,7 +39,6 @@ class SettingsActivity : AppCompatActivity() {
         setTheme(R.style.Theme_LaCitadelleVoteApp_Preferences)
         super.onCreate(savedInstanceState)
 
-        // Edge-to-edge
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
         supportFragmentManager
@@ -53,157 +56,172 @@ class SettingsActivity : AppCompatActivity() {
             setPreferencesFromResource(R.xml.settings_preferences, rootKey)
 
             // ---- Système / Notifications ----
-            findPreference<Preference>("pref_open_app_notifications")?.setOnPreferenceClickListener {
-                try {
-                    val intent =
-                        Intent(android.provider.Settings.ACTION_APP_NOTIFICATION_SETTINGS).apply {
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                                putExtra(
-                                    android.provider.Settings.EXTRA_APP_PACKAGE,
-                                    requireContext().packageName
-                                )
-                            } else {
-                                putExtra("app_package", requireContext().packageName)
-                                putExtra("app_uid", requireContext().applicationInfo.uid)
-                            }
-                        }
-                    startActivity(intent)
-                } catch (_: Exception) {
-                    Toast.makeText(
-                        requireContext(),
-                        "Échec d’ouverture des paramètres",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-                true
-            }
-
-            findPreference<Preference>("pref_battery_optim")?.setOnPreferenceClickListener {
-                try {
-                    startActivity(Intent(android.provider.Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS))
-                } catch (_: Exception) {
-                    Toast.makeText(
-                        requireContext(),
-                        "Échec d’ouverture des paramètres batterie",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-                true
-            }
-
-            findPreference<Preference>("pref_exact_alarm")?.setOnPreferenceClickListener {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            findPreference<Preference>("pref_open_app_notifications")
+                ?.setOnPreferenceClickListener {
                     try {
-                        startActivity(Intent(android.provider.Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM))
+                        val intent =
+                            Intent(android.provider.Settings.ACTION_APP_NOTIFICATION_SETTINGS).apply {
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                    putExtra(
+                                        android.provider.Settings.EXTRA_APP_PACKAGE,
+                                        requireContext().packageName
+                                    )
+                                } else {
+                                    putExtra("app_package", requireContext().packageName)
+                                    putExtra(
+                                        "app_uid",
+                                        requireContext().applicationInfo.uid
+                                    )
+                                }
+                            }
+                        startActivity(intent)
                     } catch (_: Exception) {
                         Toast.makeText(
                             requireContext(),
-                            "Échec d’ouverture des alarmes exactes",
+                            "Échec d’ouverture des paramètres",
                             Toast.LENGTH_SHORT
                         ).show()
                     }
-                } else {
-                    Toast.makeText(
-                        requireContext(),
-                        "Non requis avant Android 12",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    true
                 }
-                true
-            }
+
+            findPreference<Preference>("pref_battery_optim")
+                ?.setOnPreferenceClickListener {
+                    try {
+                        startActivity(Intent(android.provider.Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS))
+                    } catch (_: Exception) {
+                        Toast.makeText(
+                            requireContext(),
+                            "Échec d’ouverture des paramètres batterie",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                    true
+                }
+
+            findPreference<Preference>("pref_exact_alarm")
+                ?.setOnPreferenceClickListener {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                        try {
+                            startActivity(Intent(android.provider.Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM))
+                        } catch (_: Exception) {
+                            Toast.makeText(
+                                requireContext(),
+                                "Échec d’ouverture des alarmes exactes",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    } else {
+                        Toast.makeText(
+                            requireContext(),
+                            "Non requis avant Android 12",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                    true
+                }
 
             // --- Test de notification ---
-            findPreference<Preference>("pref_test_notification")?.setOnPreferenceClickListener {
-                val prefs =
-                    PreferenceManager.getDefaultSharedPreferences(requireContext())
-                val notificationsEnabled =
-                    prefs.getBoolean("pref_notifications_enabled", true)
-                if (!notificationsEnabled) {
+            findPreference<Preference>("pref_test_notification")
+                ?.setOnPreferenceClickListener {
+                    val prefs =
+                        PreferenceManager.getDefaultSharedPreferences(requireContext())
+                    val notificationsEnabled =
+                        prefs.getBoolean("pref_notifications_enabled", true)
+                    if (!notificationsEnabled) {
+                        Toast.makeText(
+                            requireContext(),
+                            "Notifications désactivées dans l’app.",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        return@setOnPreferenceClickListener true
+                    }
+
+                    NotificationHelper.showVoteReminder(
+                        context = requireContext(),
+                        siteId = "test",
+                        siteName = getString(R.string.app_name),
+                        url = "https://lacitadelle-mc.fr/votes",
+                        cooldownMinutes = 60,
+                        notificationId = 9991
+                    )
                     Toast.makeText(
                         requireContext(),
-                        "Notifications désactivées dans l’app.",
+                        "Notification de test affichée.",
                         Toast.LENGTH_SHORT
                     ).show()
-                    return@setOnPreferenceClickListener true
+                    true
                 }
 
-                NotificationHelper.showVoteReminder(
-                    context = requireContext(),
-                    siteId = "test",
-                    siteName = getString(R.string.app_name),
-                    url = "https://lacitadelle-mc.fr/votes",
-                    cooldownMinutes = 60,
-                    notificationId = 9991
-                )
-                Toast.makeText(
-                    requireContext(),
-                    "Notification de test affichée.",
-                    Toast.LENGTH_SHORT
-                ).show()
-                true
-            }
-
-            // 🔊 Son custom → on régénère le canal
+            // --- Son & vibration : on régénère le canal ---
             findPreference<SwitchPreferenceCompat>("pref_custom_sound")
                 ?.setOnPreferenceChangeListener { _, _ ->
                     NotificationHelper.ensureChannelForPrefs(requireContext())
                     Toast.makeText(
                         requireContext(),
-                        "Préférences son appliquées aux prochaines notifications.",
+                        "Son appliqué aux prochaines notifications.",
                         Toast.LENGTH_SHORT
                     ).show()
                     true
                 }
 
-            // 📳 Vibration → on régénère le canal
             findPreference<SwitchPreferenceCompat>("pref_vibrate")
                 ?.setOnPreferenceChangeListener { _, _ ->
                     NotificationHelper.ensureChannelForPrefs(requireContext())
                     Toast.makeText(
                         requireContext(),
-                        "Préférences vibration appliquées aux prochaines notifications.",
+                        "Vibration appliquée aux prochaines notifications.",
                         Toast.LENGTH_SHORT
                     ).show()
                     true
                 }
 
-            // Police médiévale
             findPreference<SwitchPreferenceCompat>("pref_custom_font")
                 ?.setOnPreferenceChangeListener { _, _ ->
                     activity?.recreate()
                     true
                 }
 
-            // ---- Catégorie Votes ----
+            // ---- Votes ----
             setupVotesCategory()
 
             // ---- Infos & Légal ----
             setupInfoCategory()
         }
 
+        /**
+         * Réinitialisation des timers et affichage du temps restant.
+         */
         private fun setupVotesCategory() {
-            val votesCat = findPreference<PreferenceCategory>("prefcat_votes") ?: return
+            val votesCat =
+                findPreference<PreferenceCategory>("prefcat_votes") ?: return
 
-            // 1) Items par site (clic = reset individuel)
+            // 1) Reset individuel par site
             sites.forEach { site ->
-                val p = Preference(requireContext()).apply {
+                val pref = Preference(requireContext()).apply {
                     key = "pref_vote_site_${site.id}"
                     title = site.name
                     summary = "Chargement…"
                     isIconSpaceReserved = false
                 }
-                p.setOnPreferenceClickListener {
+
+                pref.setOnPreferenceClickListener {
                     viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
                         try {
-                            // Annule le job WorkManager pour ce site
+                            // Annule WorkManager pour ce site
                             VoteReminderWorker.cancel(requireContext(), site.id)
-                            // Nettoie les notifs
-                            NotificationHelper.cancelAllVoteReminders(requireContext())
+                            // Annule l’alarme exacte pour ce site (si programmée)
+                            cancelExactAlarmForSite(site.id)
+                            // Supprime la notif de ce site (si affichée)
+                            NotificationHelper.cancelVoteReminderForSite(
+                                requireContext(),
+                                site.id
+                            )
                             // Reset stockage
                             repo.setNextTrigger(site.id, 0L)
 
                             withContext(Dispatchers.Main) {
-                                p.summary = "Prêt à voter"
+                                pref.summary = "Prêt à voter"
                                 Toast.makeText(
                                     requireContext(),
                                     "« ${site.name} » réinitialisé.",
@@ -214,7 +232,7 @@ class SettingsActivity : AppCompatActivity() {
                             withContext(Dispatchers.Main) {
                                 Toast.makeText(
                                     requireContext(),
-                                    "Erreur: impossible de réinitialiser ${site.name}",
+                                    "Erreur lors de la réinitialisation de ${site.name}",
                                     Toast.LENGTH_SHORT
                                 ).show()
                             }
@@ -222,23 +240,27 @@ class SettingsActivity : AppCompatActivity() {
                     }
                     true
                 }
-                votesCat.addPreference(p)
+
+                votesCat.addPreference(pref)
             }
 
-            // 2) Reset global
+            // 2) Reset global : tous les sites
             findPreference<Preference>("pref_vote_reset_all")
                 ?.setOnPreferenceClickListener {
                     viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
                         try {
                             sites.forEach { site ->
                                 VoteReminderWorker.cancel(requireContext(), site.id)
+                                cancelExactAlarmForSite(site.id)
                                 repo.setNextTrigger(site.id, 0L)
                             }
+
+                            // Efface toutes les notifications de vote
                             NotificationHelper.cancelAllVoteReminders(requireContext())
 
                             withContext(Dispatchers.Main) {
-                                sites.forEach {
-                                    findPreference<Preference>("pref_vote_site_${it.id}")
+                                sites.forEach { site ->
+                                    findPreference<Preference>("pref_vote_site_${site.id}")
                                         ?.summary = "Prêt à voter"
                                 }
                                 Toast.makeText(
@@ -259,9 +281,36 @@ class SettingsActivity : AppCompatActivity() {
                     }
                     true
                 }
+
+            // 3) Boucle live pour afficher le temps restant
         }
 
-        // --- Live updates (optionnel) ---
+        /**
+         * Annule l’alarme exacte associée à un site.
+         * Doit matcher le PendingIntent utilisé dans ton scheduler.
+         */
+        private fun cancelExactAlarmForSite(siteId: String) {
+            val ctx = requireContext()
+            val am =
+                ctx.getSystemService(Context.ALARM_SERVICE) as? AlarmManager ?: return
+
+            val intent = Intent(ctx, VoteAlarmReceiver::class.java).apply {
+                action = "VOTE_REMINDER_$siteId"
+            }
+
+            val pi = PendingIntent.getBroadcast(
+                ctx,
+                siteId.hashCode(),
+                intent,
+                PendingIntent.FLAG_NO_CREATE or PendingIntent.FLAG_IMMUTABLE
+            )
+
+            if (pi != null) {
+                am.cancel(pi)
+                pi.cancel()
+            }
+        }
+
         private fun startLiveUpdatesLoop() {
             val liveSwitch =
                 findPreference<SwitchPreferenceCompat>("pref_vote_live_updates")
@@ -281,17 +330,17 @@ class SettingsActivity : AppCompatActivity() {
                                         }.getOrDefault(0L)
                                     }
 
-                                    val summaryText =
+                                    val summary =
                                         if (next == 0L || next <= now) {
                                             "Prêt à voter"
                                         } else {
-                                            val rem = next - now
-                                            "Vote dans ${formatHMS(rem)} - Cliquez pour reset -"
+                                            val remaining = next - now
+                                            "Vote dans ${formatHMS(remaining)} - Cliquez pour reset -"
                                         }
 
                                     withContext(Dispatchers.Main) {
                                         findPreference<Preference>("pref_vote_site_${site.id}")
-                                            ?.summary = summaryText
+                                            ?.summary = summary
                                     }
                                 }
                             }
@@ -312,19 +361,16 @@ class SettingsActivity : AppCompatActivity() {
         override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
             super.onViewCreated(view, savedInstanceState)
 
-            val rv = view.findViewById<androidx.recyclerview.widget.RecyclerView>(
-                androidx.preference.R.id.recycler_view
-            )
+            val rv =
+                view.findViewById<androidx.recyclerview.widget.RecyclerView>(
+                    androidx.preference.R.id.recycler_view
+                )
             rv?.apply {
-                // Pas de scrollbars visibles
                 isVerticalScrollBarEnabled = false
                 isHorizontalScrollBarEnabled = false
-
-                // Laisse Android gérer l’overscroll (stretch/bounce sur Android 12+)
                 overScrollMode = View.OVER_SCROLL_IF_CONTENT_SCROLLS
             }
 
-            // Insets système
             ViewCompat.setOnApplyWindowInsetsListener(view) { v, insets ->
                 val sysBars =
                     insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -337,11 +383,9 @@ class SettingsActivity : AppCompatActivity() {
                 insets
             }
             ViewCompat.requestApplyInsets(view)
-
             startLiveUpdatesLoop()
         }
 
-        /** Nouvelle section "Infos & Légal" en bas des paramètres. */
         private fun setupInfoCategory() {
             // Mentions légales
             findPreference<Preference>("pref_legal_mentions")
@@ -373,18 +417,13 @@ class SettingsActivity : AppCompatActivity() {
                     true
                 }
 
-            // Version de l'application : affiche version + ouvre changelog
+            // Version de l'application → ouvre changelog
             findPreference<Preference>("pref_version")?.let { pref ->
                 val ctx = requireContext()
                 val pm = ctx.packageManager
                 val pkg = ctx.packageName
 
-                val pInfo = try {
-                    pm.getPackageInfo(pkg, 0)
-                } catch (_: Exception) {
-                    null
-                }
-
+                val pInfo = runCatching { pm.getPackageInfo(pkg, 0) }.getOrNull()
                 val versionName = pInfo?.versionName ?: "1.0.0"
                 val versionCode =
                     if (pInfo != null) {
@@ -394,17 +433,13 @@ class SettingsActivity : AppCompatActivity() {
                             @Suppress("DEPRECATION")
                             pInfo.versionCode.toString()
                         }
-                    } else {
-                        "1"
-                    }
+                    } else "1"
 
                 pref.summary = "v$versionName ($versionCode)"
-
                 pref.setOnPreferenceClickListener {
-                    // Ouvre le changelog (local + remote GitHub)
                     openLegalPage(
                         asset = "legal_changelog.html",
-                        title = "Journal des versions",
+                        title = "Journal des versions"
                     )
                     true
                 }
@@ -419,6 +454,5 @@ class SettingsActivity : AppCompatActivity() {
             }
             startActivity(intent)
         }
-
     }
 }

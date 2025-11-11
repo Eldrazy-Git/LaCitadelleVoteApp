@@ -26,7 +26,7 @@ class VoteReminderWorker(
         val siteUrl = inputData.getString(KEY_SITE_URL) ?: ""
         val cooldown = inputData.getInt(KEY_COOLDOWN, 90)
 
-        // Affiche la notif
+        // 1 notif par site (id stable) => visible tant que non effacée
         NotificationHelper.showVoteReminder(
             context = applicationContext,
             siteId = siteId,
@@ -36,7 +36,7 @@ class VoteReminderWorker(
             notificationId = siteId.hashCode()
         )
 
-        // Remet le next_trigger à 0
+        // On marque ce site comme "prêt" après déclenchement
         withContext(Dispatchers.IO) {
             VoteSitesRepository(applicationContext).setNextTrigger(siteId, 0L)
         }
@@ -61,12 +61,11 @@ class VoteReminderWorker(
             val triggerAt = System.currentTimeMillis() + TimeUnit.MINUTES.toMillis(safeDelay)
 
             val repo = VoteSitesRepository(context)
-            // ⚠️ setNextTrigger est suspend → runBlocking ici
             runBlocking(Dispatchers.IO) {
                 repo.setNextTrigger(site.id, triggerAt)
             }
 
-            val input: Data = Data.Builder()
+            val input = Data.Builder()
                 .putString(KEY_SITE_ID, site.id)
                 .putString(KEY_SITE_NAME, site.name)
                 .putString(KEY_SITE_URL, site.url)

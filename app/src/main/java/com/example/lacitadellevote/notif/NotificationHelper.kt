@@ -20,65 +20,83 @@ import com.example.lacitadellevote.R
 
 object NotificationHelper {
 
-    private const val GROUP_VOTES = "votes_group"
+    // Préfixe commun à tous les canaux liés aux votes
     private const val CHANNEL_PREFIX = "votes_high"
-    private const val SUMMARY_NOTIFICATION_ID = 999_999
 
-    /** À appeler depuis MyApplication.onCreate() et quand l’utilisateur change un réglage. */
+    /**
+     * Appelé au lancement ou quand les prefs changent.
+     * On crée un canal "global" basé sur les prefs, surtout utile pour la notif de test.
+     */
     @JvmStatic
     fun ensureChannelForPrefs(context: Context): String {
         val prefs = PreferenceManager.getDefaultSharedPreferences(context)
         val vibrate = prefs.getBoolean("pref_vibrate", true)
         val customSound = prefs.getBoolean("pref_custom_sound", true)
-        return ensureChannel(context, vibrate, customSound)
+        // Canal générique (siteId = "global")
+        return ensureSiteChannel(context, "global", vibrate, customSound)
     }
 
     /**
-     * (Re)crée TOUJOURS le canal correspondant aux prefs (id unique par combo).
-     * Si customSound=false, on NE fixe PAS de son sur le canal O+ → Android jouera le son système.
+     * Crée (si nécessaire) un canal spécifique à un site et aux prefs actuelles.
+     *
+     * - 1 site = 1 channel (ou plusieurs variantes si l'utilisateur change son/vibration).
+     * - On NE supprime PAS les anciens canaux pour éviter d'effacer des notifs existantes.
      */
     @JvmStatic
-    fun ensureChannel(context: Context, vibrate: Boolean, customSound: Boolean): String {
-        val channelId = buildChannelId(customSound, vibrate)
+    fun ensureSiteChannel(
+        context: Context,
+        siteId: String,
+        vibrate: Boolean,
+        customSound: Boolean
+    ): String {
+        val safeSiteId = siteId.lowercase().replace(Regex("[^a-z0-9_]"), "_")
+        val soundPart = if (customSound) "c" else "d"
+        val vibPart = if (vibrate) "v1" else "v0"
+        val channelId = "${CHANNEL_PREFIX}_${safeSiteId}_${soundPart}_${vibPart}"
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val nm = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            val nm =
+                context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
-            // Recrée proprement le canal pour refléter les nouveaux réglages
-            nm.getNotificationChannel(channelId)?.let { nm.deleteNotificationChannel(channelId) }
+            val existing = nm.getNotificationChannel(channelId)
+            if (existing == null) {
+                val channel = NotificationChannel(
+                    channelId,
+                    // Nom lisible dans les paramètres système
+                    context.getString(R.string.notification_channel_votes) +
+                            " - " + siteId.uppercase(),
+                    NotificationManager.IMPORTANCE_HIGH
+                ).apply {
+                    enableVibration(vibrate)
+                    lockscreenVisibility = Notification.VISIBILITY_PUBLIC
 
-            val channel = NotificationChannel(
-                channelId,
-                context.getString(R.string.notification_channel_votes),
-                NotificationManager.IMPORTANCE_HIGH
-            ).apply {
-                enableVibration(vibrate)
-                lockscreenVisibility = Notification.VISIBILITY_PUBLIC
-
-                if (customSound) {
-                    val soundUri = Uri.parse("android.resource://${context.packageName}/${R.raw.vote_bell}")
-                    val attrs = AudioAttributes.Builder()
-                        .setUsage(AudioAttributes.USAGE_NOTIFICATION)
-                        .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
-                        .build()
-                    setSound(soundUri, attrs)
-                } else {
-                    // Ne PAS appeler setSound → le son par défaut du système sera utilisé.
+                    if (customSound) {
+                        val soundUri =
+                            Uri.parse("android.resource://${context.packageName}/${R.raw.vote_bell}")
+                        val attrs = AudioAttributes.Builder()
+                            .setUsage(AudioAttributes.USAGE_NOTIFICATION)
+                            .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                            .build()
+                        setSound(soundUri, attrs)
+                    } else {
+                        // Son par défaut du système
+                    }
                 }
-            }
 
-            nm.createNotificationChannel(channel)
+                nm.createNotificationChannel(channel)
+            }
         }
 
         return channelId
     }
 
-    private fun buildChannelId(customSound: Boolean, vibrate: Boolean): String {
-        val soundPart = if (customSound) "custom" else "default"
-        val vibPart = if (vibrate) "v1" else "v0"
-        return "${CHANNEL_PREFIX}_${soundPart}_${vibPart}"
-    }
-
+    /**
+     * Affiche une notification de rappel pour un site.
+     *
+     * - Utilise un canal dédié au site.
+     * - Pas de groupe, pas de summary.
+     * - notificationId doit être stable par site (ex: siteId.hashCode()).
+     */
     @JvmStatic
     @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
     fun showVoteReminder(
@@ -93,7 +111,8 @@ object NotificationHelper {
         val vibrate = prefs.getBoolean("pref_vibrate", true)
         val customSound = prefs.getBoolean("pref_custom_sound", true)
 
-        val channelId = ensureChannel(context, vibrate, customSound)
+        // 🔔 Canal spécifique à ce site
+        val channelId = ensureSiteChannel(context, siteId, vibrate, customSound)
 
         val intent = Intent(context, MainActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
@@ -101,49 +120,48 @@ object NotificationHelper {
             putExtra("site_id", siteId)
             putExtra("cooldown", cooldownMinutes)
         }
-        val pi = PendingIntent.getActivity(
-            context, siteId.hashCode(), intent,
+
+        val pendingIntent = PendingIntent.getActivity(
+            context,
+            siteId.hashCode(),
+            intent,
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
 
-        val child = NotificationCompat.Builder(context, channelId)
+        val builder = NotificationCompat.Builder(context, channelId)
             .setSmallIcon(getNotificationIcon(context))
-            .setContentTitle(context.getString(R.string.notification_vote_title, siteName))
+            .setContentTitle(
+                context.getString(
+                    R.string.notification_vote_title,
+                    siteName
+                )
+            )
             .setContentText(context.getString(R.string.notification_vote_text))
             .setAutoCancel(true)
-            .setContentIntent(pi)
+            .setContentIntent(pendingIntent)
             .setCategory(Notification.CATEGORY_REMINDER)
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
-            .setGroup(GROUP_VOTES)
             .apply {
-                // Fallback pré-O : son + vibration posés directement sur la notif.
+                // Pré-Android O : gérer manuellement son + vibration
                 if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
-                    if (vibrate) setVibrate(longArrayOf(0, 180, 120, 180)) else setVibrate(longArrayOf(0))
+                    if (vibrate) {
+                        setVibrate(longArrayOf(0, 180, 120, 180))
+                    } else {
+                        setVibrate(longArrayOf(0))
+                    }
+
                     val soundUri = if (customSound) {
                         Uri.parse("android.resource://${context.packageName}/${R.raw.vote_bell}")
                     } else {
-                        // Son de notification SYSTÈME
                         Settings.System.DEFAULT_NOTIFICATION_URI
                     }
                     setSound(soundUri)
                 }
             }
-            .build()
 
-        NotificationManagerCompat.from(context).notify(notificationId, child)
-
-        val summary = NotificationCompat.Builder(context, channelId)
-            .setSmallIcon(R.mipmap.ic_launcher)
-            .setContentTitle(context.getString(R.string.notification_vote_group_title))
-            .setContentText(context.getString(R.string.notification_vote_group_text))
-            .setGroup(GROUP_VOTES)
-            .setGroupSummary(true)
-            .setGroupAlertBehavior(NotificationCompat.GROUP_ALERT_CHILDREN) // seuls les enfants alertent
-            .setSilent(true)
-            .build()
-
-        NotificationManagerCompat.from(context).notify(SUMMARY_NOTIFICATION_ID, summary)
+        // 1 notif par site (id stable), plusieurs sites => plusieurs notifs visibles
+        NotificationManagerCompat.from(context).notify(notificationId, builder.build())
     }
 
     private fun getNotificationIcon(context: Context): Int {
@@ -156,8 +174,21 @@ object NotificationHelper {
         return R.mipmap.ic_launcher
     }
 
+    /**
+     * Annule la notification associée à un site spécifique.
+     * (utilisé lors d’un reset individuel)
+     */
+    @JvmStatic
+    fun cancelVoteReminderForSite(context: Context, siteId: String) {
+        NotificationManagerCompat.from(context).cancel(siteId.hashCode())
+    }
+
+    /**
+     * Annule toutes les notifications de l’app.
+     * (utilisé lors d’un reset global)
+     */
     @JvmStatic
     fun cancelAllVoteReminders(context: Context) {
-        NotificationManagerCompat.from(context).cancel(SUMMARY_NOTIFICATION_ID)
+        NotificationManagerCompat.from(context).cancelAll()
     }
 }
