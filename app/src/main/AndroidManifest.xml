@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest
     xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.lacitadellevote">
+    package="fr.lacitadelle.votecompagnon">
 
     <!-- Permissions essentielles -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
@@ -35,7 +35,7 @@
             android:theme="@style/Theme.LaCitadelleVoteApp.Preferences">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.lacitadellevote.MainActivity" />
+                android:value="com.example.votecompagnon.MainActivity" />
         </activity>
 
         <activity

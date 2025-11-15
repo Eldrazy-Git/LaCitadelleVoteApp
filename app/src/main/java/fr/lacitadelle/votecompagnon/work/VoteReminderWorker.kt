@@ -1,4 +1,4 @@
-package com.example.lacitadellevote.work
+package fr.lacitadelle.votecompagnon.work
 
 import android.content.Context
 import androidx.work.CoroutineWorker
@@ -7,9 +7,9 @@ import androidx.work.ExistingWorkPolicy
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
-import com.example.lacitadellevote.data.VoteSitesRepository
-import com.example.lacitadellevote.model.VoteSite
-import com.example.lacitadellevote.notif.NotificationHelper
+import fr.lacitadelle.votecompagnon.data.VoteSitesRepository
+import fr.lacitadelle.votecompagnon.model.VoteSite
+import fr.lacitadelle.votecompagnon.notif.NotificationHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext

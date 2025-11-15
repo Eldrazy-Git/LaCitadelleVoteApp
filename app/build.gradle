@@ -4,15 +4,15 @@ plugins {
 }
 
 android {
-    namespace 'com.example.lacitadellevote'
+    namespace 'fr.lacitadelle.votecompagnon'
     compileSdk 35
 
     defaultConfig {
-        applicationId "com.example.lacitadellevote"
+        applicationId "fr.lacitadelle.votecompagnon"
         minSdk 29
         targetSdk 35
-        versionCode 9
-        versionName "1.2.2"
+        versionCode 10
+        versionName "1.2.3"
     }
 
     buildTypes {

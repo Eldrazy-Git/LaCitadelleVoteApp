@@ -1,4 +1,4 @@
-package com.example.lacitadellevote
+package fr.lacitadelle.votecompagnon
 
 import android.Manifest
 import android.content.Intent
@@ -23,12 +23,12 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.preference.PreferenceManager
 import com.bumptech.glide.Glide
-import com.example.lacitadellevote.alarm.ExactAlarmPermission
-import com.example.lacitadellevote.alarm.VoteScheduler
-import com.example.lacitadellevote.data.VoteSitesRepository
-import com.example.lacitadellevote.model.VoteSite
-import com.example.lacitadellevote.notif.NotificationHelper
-import com.example.lacitadellevote.utils.CustomTypefaceSpan
+import fr.lacitadelle.votecompagnon.alarm.ExactAlarmPermission
+import fr.lacitadelle.votecompagnon.alarm.VoteScheduler
+import fr.lacitadelle.votecompagnon.data.VoteSitesRepository
+import fr.lacitadelle.votecompagnon.model.VoteSite
+import fr.lacitadelle.votecompagnon.notif.NotificationHelper
+import fr.lacitadelle.votecompagnon.utils.CustomTypefaceSpan
 import com.google.android.material.navigation.NavigationView
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.first
@@ -152,7 +152,7 @@ class MainActivity : ComponentActivity() {
                     startActivity(
                         Intent(
                             this,
-                            com.example.lacitadellevote.settings.SettingsActivity::class.java
+                            fr.lacitadelle.votecompagnon.settings.SettingsActivity::class.java
                         )
                     )
                 }

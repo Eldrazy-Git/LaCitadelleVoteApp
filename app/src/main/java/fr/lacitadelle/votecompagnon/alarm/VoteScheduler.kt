@@ -1,4 +1,4 @@
-package com.example.lacitadellevote.alarm
+package fr.lacitadelle.votecompagnon.alarm
 
 import android.app.AlarmManager
 import android.app.PendingIntent
@@ -8,9 +8,9 @@ import androidx.work.Data
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.OutOfQuotaPolicy
 import androidx.work.WorkManager
-import com.example.lacitadellevote.data.VoteSitesRepository
-import com.example.lacitadellevote.model.VoteSite
-import com.example.lacitadellevote.work.VoteReminderWorker
+import fr.lacitadelle.votecompagnon.data.VoteSitesRepository
+import fr.lacitadelle.votecompagnon.model.VoteSite
+import fr.lacitadelle.votecompagnon.work.VoteReminderWorker
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import java.util.concurrent.TimeUnit

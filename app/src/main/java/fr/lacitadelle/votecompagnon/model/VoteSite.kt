@@ -1,4 +1,4 @@
-package com.example.lacitadellevote.model
+package fr.lacitadelle.votecompagnon.model
 
 data class VoteSite(
     val id: String,

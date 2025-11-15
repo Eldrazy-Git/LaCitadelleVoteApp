@@ -1,4 +1,4 @@
-package com.example.lacitadellevote.legal
+package fr.lacitadelle.votecompagnon.legal
 
 import android.content.Intent
 import android.net.Uri
@@ -10,7 +10,7 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.activity.ComponentActivity
 import androidx.core.view.WindowCompat
-import com.example.lacitadellevote.R
+import fr.lacitadelle.votecompagnon.R
 
 class LegalPageActivity : ComponentActivity() {
 

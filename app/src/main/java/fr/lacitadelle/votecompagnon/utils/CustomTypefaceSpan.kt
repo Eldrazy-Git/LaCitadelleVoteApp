@@ -1,4 +1,4 @@
-package com.example.lacitadellevote.utils
+package fr.lacitadelle.votecompagnon.utils
 
 import android.graphics.Paint
 import android.graphics.Typeface

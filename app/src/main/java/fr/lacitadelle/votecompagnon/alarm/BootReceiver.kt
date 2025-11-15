@@ -1,4 +1,4 @@
-package com.example.lacitadellevote.alarm
+package fr.lacitadelle.votecompagnon.alarm
 
 import android.content.BroadcastReceiver
 import android.content.Context

@@ -1,4 +1,4 @@
-package com.example.lacitadellevote.settings
+package fr.lacitadelle.votecompagnon.settings
 
 import android.app.AlarmManager
 import android.app.PendingIntent
@@ -20,12 +20,12 @@ import androidx.preference.PreferenceCategory
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
 import androidx.preference.SwitchPreferenceCompat
-import com.example.lacitadellevote.R
-import com.example.lacitadellevote.alarm.VoteAlarmReceiver
-import com.example.lacitadellevote.data.VoteSitesRepository
-import com.example.lacitadellevote.legal.LegalPageActivity
-import com.example.lacitadellevote.notif.NotificationHelper
-import com.example.lacitadellevote.work.VoteReminderWorker
+import fr.lacitadelle.votecompagnon.R
+import fr.lacitadelle.votecompagnon.alarm.VoteAlarmReceiver
+import fr.lacitadelle.votecompagnon.data.VoteSitesRepository
+import fr.lacitadelle.votecompagnon.legal.LegalPageActivity
+import fr.lacitadelle.votecompagnon.notif.NotificationHelper
+import fr.lacitadelle.votecompagnon.work.VoteReminderWorker
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first

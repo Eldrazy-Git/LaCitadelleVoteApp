@@ -1,8 +1,8 @@
 // MyApplication.kt
-package com.example.lacitadellevote
+package fr.lacitadelle.votecompagnon
 
 import android.app.Application
-import com.example.lacitadellevote.notif.NotificationHelper
+import fr.lacitadelle.votecompagnon.notif.NotificationHelper
 
 class MyApplication : Application() {
     override fun onCreate() {

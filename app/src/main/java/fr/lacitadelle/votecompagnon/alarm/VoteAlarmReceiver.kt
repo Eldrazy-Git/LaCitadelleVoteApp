@@ -1,10 +1,10 @@
-package com.example.lacitadellevote.alarm
+package fr.lacitadelle.votecompagnon.alarm
 
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import com.example.lacitadellevote.data.VoteSitesRepository
-import com.example.lacitadellevote.notif.NotificationHelper
+import fr.lacitadelle.votecompagnon.data.VoteSitesRepository
+import fr.lacitadelle.votecompagnon.notif.NotificationHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

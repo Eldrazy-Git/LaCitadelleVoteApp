@@ -1,4 +1,4 @@
-package com.example.lacitadellevote.notif
+package fr.lacitadelle.votecompagnon.notif
 
 import android.Manifest
 import android.app.Notification
@@ -15,8 +15,8 @@ import androidx.annotation.RequiresPermission
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.preference.PreferenceManager
-import com.example.lacitadellevote.MainActivity
-import com.example.lacitadellevote.R
+import fr.lacitadelle.votecompagnon.MainActivity
+import fr.lacitadelle.votecompagnon.R
 
 object NotificationHelper {
 

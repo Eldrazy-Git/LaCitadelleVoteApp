@@ -5,18 +5,18 @@
     <!-- Notifications -->
     <PreferenceCategory android:title="Notifications">
 
-        <com.example.lacitadellevote.settings.DimmableSwitchPreference
+        <fr.lacitadelle.votecompagnon.settings.DimmableSwitchPreference
             android:key="pref_notifications_enabled"
             android:title="Activer les notifications"
             android:summary="Rappels de vote et alarmes"
             android:defaultValue="true" />
 
-        <com.example.lacitadellevote.settings.DimmableSwitchPreference
+        <fr.lacitadelle.votecompagnon.settings.DimmableSwitchPreference
             android:key="pref_vibrate"
             android:title="Vibration"
             android:defaultValue="true" />
 
-        <com.example.lacitadellevote.settings.DimmableSwitchPreference
+        <fr.lacitadelle.votecompagnon.settings.DimmableSwitchPreference
             android:key="pref_custom_sound"
             android:title="Son personnalisé"
             android:summary="Utiliser le son custom de l'application"
@@ -31,7 +31,7 @@
         <!-- Affichage -->
     <PreferenceCategory android:title="Affichage">
 
-        <com.example.lacitadellevote.settings.DimmableSwitchPreference
+        <fr.lacitadelle.votecompagnon.settings.DimmableSwitchPreference
             android:key="pref_custom_font"
             android:title="Police médiévale"
             android:summary="Activer la police MedievalSharp"

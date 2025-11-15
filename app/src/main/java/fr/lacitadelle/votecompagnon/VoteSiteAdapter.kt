@@ -1,4 +1,4 @@
-package com.example.lacitadellevote.ui
+package fr.lacitadelle.votecompagnon.ui
 
 import android.graphics.Typeface
 import android.view.LayoutInflater
@@ -8,8 +8,8 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.lacitadellevote.R
-import com.example.lacitadellevote.model.VoteSite
+import fr.lacitadelle.votecompagnon.R
+import fr.lacitadelle.votecompagnon.model.VoteSite
 
 class VoteSiteAdapter(
     private val items: MutableList<VoteSiteUi>,

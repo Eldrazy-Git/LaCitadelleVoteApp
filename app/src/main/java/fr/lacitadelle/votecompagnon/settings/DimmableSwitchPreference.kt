@@ -1,4 +1,4 @@
-package com.example.lacitadellevote.settings
+package fr.lacitadelle.votecompagnon.settings
 
 import android.animation.ValueAnimator
 import android.content.Context
