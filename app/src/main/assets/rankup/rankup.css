@@ -3,8 +3,7 @@
   --card: rgba(10, 10, 10, 0.20);
   --text: #fdf7e3;
   --muted: #d6d2be;
-  --gold: #aba36d;
-  --accent: #b289ff;
+  --accent: #aba36d;
   --radius: 16px;
 }
 
@@ -18,9 +17,12 @@ body.no-medieval {
   font-family: system-ui, -apple-system, Roboto, "Segoe UI", sans-serif !important;
 }
 body.no-medieval .rankup-title,
+body.no-medieval .rank-section h2,
+body.no-medieval .rank-section h3,
 body.no-medieval .rank > summary span {
   font-family: system-ui, -apple-system, Roboto, "Segoe UI", sans-serif !important;
 }
+
 html,
 body {
   scrollbar-width: none;        /* Firefox */
@@ -40,7 +42,7 @@ body::-webkit-scrollbar {
 .page {
   max-width: 1100px;
   margin: 0 auto;
-  padding: 20px 16px 32px;
+  padding: 20px 2px 32px;
 }
 
 code {
@@ -51,8 +53,29 @@ code {
   padding: 2px 6px;
   color: #fdf7e3; /* texte clair */
   font-family: monospace;
-  font-size: 0.95em;
   letter-spacing: 0.3px;
+}
+
+/* Couleur clé de vote */
+li span.basic {
+	color: #AAAAAA;
+	font-weight: bold;
+}
+
+li span.rare {
+	font-weight: bold;
+	color: #FF5555;
+
+}
+
+li span.epic {
+	color: #AA00AA;
+	font-weight: bold;
+}
+
+li span.legendary {
+	color: #55FFFF;
+	font-weight: bold;
 }
 
 
@@ -111,8 +134,11 @@ hr {
 }
 
 details.rank[open] {
-  border-color: var(--gold);
+  background: rgba(0, 0, 0, 0);
+  border-color:var(--accent);
+  outline: none;
   box-shadow:0 6px 14px rgba(0,0,0,.35);
+  transform:translateY(-1px);
 }
 
 
@@ -129,7 +155,7 @@ details.rank[open] {
   gap: 10px;
   padding: 12px 14px;
   cursor: pointer;
-  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  -webkit-tap-highlight-color:var(--card);
   flex-wrap: wrap;            /* évite les débordements sur petits écrans */
   text-align: center;
 }
@@ -167,7 +193,31 @@ details.rank[open] {
 }
 
 .rank-summary-check input[type="checkbox"] {
-  transform: translateY(0.5px);
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+
+    width: 14px;            /* tu peux mettre 16px si tu veux plus discret */
+    height: 14px;
+    border: 2px solid rgba(255,255,255,0.25);
+    border-radius: 4px;
+    background: transparent;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.2s ease;
+    margin-right: 2px;      /* pour espacer du texte "Rang terminé" */
+    vertical-align: middle; /* meilleur alignement dans la ligne du summary */
+}
+
+/* Survol */
+.rank-summary-check input[type="checkbox"]:hover {
+    border-color: rgba(255,255,255,0.4);
+}
+
+/* Quand cochée */
+.rank-summary-check input[type="checkbox"]:checked {
+    background: var(--accent);
+    border-color: var(--accent);
 }
 
 /* sur très petit écran: rendre la coche encore plus compacte */
@@ -200,55 +250,182 @@ details[open] > summary:focus-visible,
 
 /* ===== contenu du rang ===== */
 .rank-content {
-  padding: 10px 14px 16px;
-  background: rgba(0, 0, 0, 0.18);
-  border-top: 1px solid rgba(255, 255, 255, 0.02);
-  border-bottom-left-radius: var(--radius);
-  border-bottom-right-radius: var(--radius);
-  color: var(--text);
+  padding: 0 14px 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  
+  animation: fadeIn 0.18s ease-out;
 }
 
-.rank-content h2 {
-  margin-top: 2px;
-  margin-bottom: 10px;
-}
-
-.rank-content h3 {
-  margin-top: 14px;
-  margin-bottom: 6px;
-  color: var(--gold);
-  font-size: 15px;
-}
-
-.rank-content p,
 .rank-content li,
 .rank-content ul {
   color: var(--text);
-}
-
-.rank-content ul {
-  margin: 0 0 6px 0;
-  padding-left: 20px;
-}
-
-.rank-content li {
-  margin-bottom: 2px;
+  animation:fadeIn .18s ease-out;
 }
 
 /* ligne avec case à cocher injectée */
 .rank-checkline {
   display: flex;
-  align-items: flex-start;
-  gap: 8px;
+  align-items: center;
+  gap: 6px;
 }
 
+/* === Barre de progression dans le résumé du rang === */
+
+.rank-progress {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 140px;
+  margin-top: 12px;
+  margin-left: 8px;
+  flex: 0 0 auto; /* ne s’étire pas, reste compact */
+}
+
+.rank-progress-bar {
+  position: relative;
+  width: 100%;
+  height: 7px;
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.95);
+  box-shadow:
+    inset 0 0 0 1px rgba(15, 23, 42, 0.9),
+    0 0 0 1px rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+}
+
+.rank-progress-bar-inner {
+  position: absolute;
+  inset: 0;
+  width: 0%;
+  border-radius: inherit;
+  background: linear-gradient(
+    90deg,
+    rgba(171, 163, 109, 0.3),
+    rgba(171, 163, 109, 1)
+  );
+  transition: width 0.2s ease-out;
+}
+
+.rank-progress-label {
+  font-size: 0.78em;
+  color: var(--muted);
+  text-align: left;
+}
+
+
+.rank-progress-bar {
+  position: relative;
+  width: 100%;
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.95);
+  box-shadow: inset 0 0 0 1px rgba(15, 23, 42, 0.9),
+    0 0 0 1px rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+}
+
+.rank-progress-bar-inner {
+  position: absolute;
+  inset: 0;
+  width: 0%;
+  border-radius: inherit;
+  background: linear-gradient(
+    90deg,
+    rgba(171, 163, 109, 0.3),
+    rgba(171, 163, 109, 1)
+  );
+  transition: width 0.2s ease-out;
+}
+
+.rank-progress-label {
+  font-size: 0.8em;
+  color: var(--muted);
+}
+
+/* On enlève l'apparence native */
 .rank-checkline input[type="checkbox"] {
-  margin-top: 3px;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+
+    width: 14px;
+    height: 14px;
+    border: 2px solid rgba(255,255,255,0.25); /* bord discret */
+    border-radius: 4px;
+    background: transparent;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.2s ease;
+}
+
+/* Au survol : léger éclaircissement */
+.rank-checkline input[type="checkbox"]:hover {
+    border-color: rgba(255,255,255,0.4);
+}
+
+/* Quand cochée : fond + bord en var(--accent) */
+.rank-checkline input[type="checkbox"]:checked {
+    background: var(--accent);
+    border-color: rgba(255,255,255,0.25);
 }
 
 .rank-checkline span {
   flex: 1 1 auto;
 }
+
+/* Supprime les puces UNIQUEMENT pour les <li> contenant une checkbox */
+li:has(.rank-checkline) {
+    list-style: none;
+    padding-left: 0; /* optionnel : retire l'espace restant */
+    margin-left: 0;
+}
+
+li:has(.rank-checkline) > .rank-checkline {
+    margin-left: -1.1em;   /* déplace la checkbox à l’emplacement exact d’une puce */
+}
+
+
+
+/* Layout 2 colonnes */
+.rank-columns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 8px;
+}
+
+/* chaque "bloc" (Conditions / Infos & Déblocages) */
+.rank-section {
+  flex: 1 1 260px;
+  min-width: 260px;
+  background: radial-gradient(circle at top left, rgba(15, 23, 42, 0.95), rgba(2, 6, 23, 0.95));
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 10px 10px 12px;
+  box-shadow: 0 0 0 1px rgba(10, 10, 10, 0.85);
+}
+
+.rank-section h3 {
+  font-family: 'MedievalSharp', cursive;
+}
+
+.rank-section h2 {
+  font-family: 'MedievalSharp', cursive;
+  font-size: 1.4em;
+  margin: 0 0 8px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.45);
+  color: #f9fafb;
+}
+
+
+/* Séparateur interne */
+.rank-section-inner hr {
+  border: none;
+  border-bottom: 1px dashed rgba(148, 163, 184, 0.5);
+  margin: 8px 0 10px;
+}
+
 
 /* état quand c’est coché */
 .rank-checkline.rank-item-done span {
@@ -257,16 +434,17 @@ details[open] > summary:focus-visible,
 }
 
 /* fade-in animation */
-@keyframes fadein {
+@keyframes fadeIn {
   from {
-    opacity: 0.65;
-    transform: translateY(4px);
+    opacity: 0;
+    transform: translateY(-2px);
   }
   to {
     opacity: 1;
     transform: translateY(0);
   }
 }
+
 
 .fadein {
   animation: fadein 180ms ease-out;
@@ -311,7 +489,7 @@ details.rank.rank-completed:not([open]) > summary {
   flex-direction: column;   /* image seule au centre */
   align-items: center;
   text-align: center;
-  border-color:var(--gold);
+  border-color:var(--accent);
   gap: 0;
   padding: 8px 10px;
 }
