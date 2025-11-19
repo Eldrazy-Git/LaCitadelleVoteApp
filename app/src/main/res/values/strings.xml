@@ -16,6 +16,7 @@
 	<string name="settings_category_sites">Sites de vote</string>
 	<string name="settings_site_ready">Prêt à voter</string>
 	<string name="settings_site_vote_in_minutes">Vote dans %1$d min</string>
+	<string name="open_menu">Bouton menu</string>
 	<!-- ===== Infos & Légal ===== -->
 	<string name="pref_info_category_title">Infos &amp; légal</string>
 

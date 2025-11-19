@@ -1,6 +1,7 @@
 package fr.lacitadelle.votecompagnon
 
 import android.os.Bundle
+import android.view.View
 import android.webkit.WebChromeClient
 import android.webkit.WebSettings
 import android.webkit.WebView
@@ -19,34 +20,42 @@ class RankupActivity : ComponentActivity() {
 
         webView = findViewById(R.id.rankupWebView)
 
-        // 🔧 réglages importants pour que localStorage fonctionne dans une WebView
-        val settings = webView.settings
-        settings.javaScriptEnabled = true
-        settings.domStorageEnabled = true              // <— indispensable pour localStorage
-        settings.databaseEnabled = true                // old webview compat
-        settings.allowFileAccess = true
-        settings.allowContentAccess = true
-        // si jamais tu as d’autres imports HTML locaux
-        settings.allowFileAccessFromFileURLs = true
-        settings.allowUniversalAccessFromFileURLs = true
-        settings.cacheMode = WebSettings.LOAD_DEFAULT
+        // Config d’affichage de la WebView
+        webView.apply {
+            isVerticalScrollBarEnabled = false
+            isHorizontalScrollBarEnabled = false
+            overScrollMode = View.OVER_SCROLL_IF_CONTENT_SCROLLS
+        }
 
-        webView.webChromeClient = WebChromeClient()
+        val settings = webView.settings
+        settings.apply {
+            // Déjà présents chez toi
+            javaScriptEnabled = true
+            domStorageEnabled = true
+            databaseEnabled = true
+            allowFileAccess = true
+            allowContentAccess = true
+            allowFileAccessFromFileURLs = true
+            allowUniversalAccessFromFileURLs = true
+            cacheMode = WebSettings.LOAD_DEFAULT
+
+            // 🔧 IMPORTANT pour l’effet “zoom”
+            useWideViewPort = true             // respecte le meta viewport du HTML
+            loadWithOverviewMode = false       // ne zoome pas pour tout faire tenir
+            setSupportZoom(false)              // pas de pinch-to-zoom
+            builtInZoomControls = false
+            displayZoomControls = false
+            textZoom = 100                     // échelle neutre du texte
+        }
 
         val prefs = PreferenceManager.getDefaultSharedPreferences(this)
         val useMedieval = prefs.getBoolean("pref_custom_font", true)
 
-        webView = findViewById(R.id.rankupWebView)
-        webView.isVerticalScrollBarEnabled = false
-        webView.isHorizontalScrollBarEnabled = false
-
-        // Laisser l'overscroll/stretch natif (rebon) quand il y a du contenu
-        webView.overScrollMode = android.view.View.OVER_SCROLL_IF_CONTENT_SCROLLS
+        webView.webChromeClient = WebChromeClient()
 
         webView.webViewClient = object : WebViewClient() {
             override fun onPageFinished(view: WebView, url: String) {
                 super.onPageFinished(view, url)
-                // on applique ton switch de police
                 if (!useMedieval) {
                     view.evaluateJavascript(
                         "document.body.classList.add('no-medieval');",
@@ -56,9 +65,10 @@ class RankupActivity : ComponentActivity() {
             }
         }
 
-        // ⚠️ charger APRES avoir configuré le WebView
+        // Charger APRES avoir tout configuré
         webView.loadUrl("file:///android_asset/rankup/rankup.html")
     }
+
 
     override fun onResume() {
         super.onResume()

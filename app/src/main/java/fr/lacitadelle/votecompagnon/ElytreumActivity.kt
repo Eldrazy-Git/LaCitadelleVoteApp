@@ -1,6 +1,7 @@
 package fr.lacitadelle.votecompagnon
 
 import android.os.Bundle
+import android.view.View
 import android.webkit.WebChromeClient
 import android.webkit.WebSettings
 import android.webkit.WebView
@@ -16,7 +17,7 @@ class ElytreumActivity : ComponentActivity() {
     private lateinit var webView: WebView
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        // ✅ Active edge-to-edge et gère les insets
+        // edge-to-edge
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
         super.onCreate(savedInstanceState)
@@ -24,48 +25,59 @@ class ElytreumActivity : ComponentActivity() {
 
         webView = findViewById(R.id.elytreumWebView)
 
-        // ✅ Gère le padding pour éviter chevauchement barre notif/navigation
+        // Inset pour barre de statut / navigation
         ViewCompat.setOnApplyWindowInsetsListener(webView) { v, insets ->
             val sys = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(v.paddingLeft, sys.top, v.paddingRight, sys.bottom)
             insets
         }
 
-        // ✅ Réglages WebView identiques à Rankup
+        webView.apply {
+            isVerticalScrollBarEnabled = false
+            isHorizontalScrollBarEnabled = false
+            overScrollMode = View.OVER_SCROLL_IF_CONTENT_SCROLLS
+        }
+
         val settings = webView.settings
-        settings.javaScriptEnabled = true
-        settings.domStorageEnabled = true
-        settings.databaseEnabled = true
-        settings.allowFileAccess = true
-        settings.allowContentAccess = true
-        settings.allowFileAccessFromFileURLs = true
-        settings.allowUniversalAccessFromFileURLs = true
-        settings.cacheMode = WebSettings.LOAD_DEFAULT
+        settings.apply {
+            javaScriptEnabled = true
+            domStorageEnabled = true
+            databaseEnabled = true
+            allowFileAccess = true
+            allowContentAccess = true
+            allowFileAccessFromFileURLs = true
+            allowUniversalAccessFromFileURLs = true
+            cacheMode = WebSettings.LOAD_DEFAULT
 
-        webView.webChromeClient = WebChromeClient()
-
-        webView = findViewById(R.id.elytreumWebView)
-        webView.isVerticalScrollBarEnabled = false
-        webView.isHorizontalScrollBarEnabled = false
-
-        // Laisser l'overscroll/stretch natif (rebon) quand il y a du contenu
-        webView.overScrollMode = android.view.View.OVER_SCROLL_IF_CONTENT_SCROLLS
+            // 🔧 Anti-zoom
+            useWideViewPort = true
+            loadWithOverviewMode = false
+            setSupportZoom(false)
+            builtInZoomControls = false
+            displayZoomControls = false
+            textZoom = 100
+        }
 
         val prefs = PreferenceManager.getDefaultSharedPreferences(this)
         val useMedieval = prefs.getBoolean("pref_custom_font", true)
+
+        webView.webChromeClient = WebChromeClient()
 
         webView.webViewClient = object : WebViewClient() {
             override fun onPageFinished(view: WebView, url: String) {
                 super.onPageFinished(view, url)
                 if (!useMedieval) {
-                    view.evaluateJavascript("document.body.classList.add('no-medieval');", null)
+                    view.evaluateJavascript(
+                        "document.body.classList.add('no-medieval');",
+                        null
+                    )
                 }
             }
         }
 
-        // ✅ Charge la page Elytreum
         webView.loadUrl("file:///android_asset/elytreum/elytreum.html")
     }
+
 
     override fun onResume() {
         super.onResume()

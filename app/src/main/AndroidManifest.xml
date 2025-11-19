@@ -9,6 +9,7 @@
     <!-- Android 12+ : autoriser les alarmes exactes (nécessite aussi l’écran de demande à l’utilisateur) -->
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
 
+
     <application
         android:name=".MyApplication"
         android:allowBackup="true"
@@ -35,7 +36,7 @@
             android:theme="@style/Theme.LaCitadelleVoteApp.Preferences">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.votecompagnon.MainActivity" />
+                android:value="fr.lacitadelle.votecompagnon.MainActivity" />
         </activity>
 
         <activity

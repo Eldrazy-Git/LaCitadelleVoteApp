@@ -38,6 +38,13 @@ body{
   scroll-behavior:smooth;
   scrollbar-width: none;        /* Firefox */
   -ms-overflow-style: none;     /* Internet Explorer / Edge Legacy */
+  font-size: 15px;
+}
+
+@media (max-width: 360px) {
+  html, body {
+    font-size: 13px;
+  }
 }
 
 html::-webkit-scrollbar,

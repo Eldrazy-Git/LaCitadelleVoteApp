@@ -1,0 +1,17 @@
+<resources>
+    <dimen name="main_screen_padding">16dp</dimen>
+
+    <dimen name="main_logo_width">200dp</dimen>
+    <dimen name="main_logo_margin_vertical">16dp</dimen>
+
+    <dimen name="discord_logo_width">64dp</dimen>
+    <dimen name="discord_logo_margin_bottom">24dp</dimen>
+
+    <dimen name="vote_button_width">220dp</dimen>
+    <dimen name="vote_button_height">64dp</dimen>
+    <dimen name="vote_button_margin_horizontal">16dp</dimen>
+    <dimen name="vote_button_margin_bottom">12dp</dimen>
+    <dimen name="vote_button_padding">12dp</dimen>
+
+    <dimen name="vote_timer_text_size">13sp</dimen>
+</resources>

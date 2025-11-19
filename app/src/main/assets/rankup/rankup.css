@@ -32,6 +32,13 @@ body {
   background: var(--bg);
   color: var(--text);
   font-family: system-ui, -apple-system, Roboto, "Segoe UI", sans-serif;
+  font-size: 15px;
+}
+
+@media (max-width: 360px) {
+  html, body {
+    font-size: 12px;
+  }
 }
 
 html::-webkit-scrollbar,
@@ -228,7 +235,7 @@ details.rank[open] {
     font-size: 11px;
   }
   .rank-summary-check .label {
-    display: none; /* ne garder que la case à cocher si tu veux ultra-compact */
+    display: flex; /* ne garder que la case à cocher si tu veux ultra-compact */
   }
 }
 

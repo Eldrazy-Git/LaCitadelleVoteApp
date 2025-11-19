@@ -1,30 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:app="http://schemas.android.com/apk/res-auto">
-	<group android:checkableBehavior="none">
-		<item
-			android:id="@+id/nav_settings"
-			android:title="Paramètres"
-			android:fontFamily="@font/medievalsharp"
-			android:icon="@drawable/ic_settings" />
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-		<item
-			android:id="@+id/nav_wiki"
-			android:title="Wiki"
-			android:icon="@drawable/ic_info" />
+    <group
+        android:id="@+id/group_main"
+        android:checkableBehavior="none">
 
-		<item
-			android:id="@+id/nav_rankup"
-			android:title="Rankup"
-			android:icon="@drawable/ic_rankup" />
-			
-		<item
-			android:id="@+id/nav_Elytreum"
-			app:actionLayout="@layout/menu_item_elytreum" />
-			
-		<item
-			android:id="@+id/nav_more"
-			android:title="À venir…" 
-			android:icon="@drawable/ic_soon" />
-	</group>
+        <item
+            android:id="@+id/nav_settings"
+            android:title="Paramètres"
+            android:fontFamily="@font/medievalsharp"
+            android:icon="@drawable/ic_settings"
+            android:orderInCategory="0" />
+
+        <item
+            android:id="@+id/nav_wiki"
+            android:title="Wiki"
+            android:icon="@drawable/ic_info"
+            android:orderInCategory="2" />
+
+        <item
+            android:id="@+id/nav_rankup"
+            android:title="Rankup"
+            android:icon="@drawable/ic_rankup"
+            android:orderInCategory="3" />
+
+        <item
+            android:id="@+id/nav_Elytreum"
+            app:actionLayout="@layout/menu_item_elytreum"
+            android:orderInCategory="4" />
+
+        <item
+            android:id="@+id/nav_more"
+            android:title="À venir…"
+            android:icon="@drawable/ic_soon"
+            android:orderInCategory="5" />
+    </group>
 </menu>
