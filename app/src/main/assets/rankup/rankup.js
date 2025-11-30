@@ -127,7 +127,6 @@ document.addEventListener("DOMContentLoaded", function () {
   };
 
   // ----- Animations d'ouverture/fermeture PROMISES + anti-rebonds -----
-  // ----- Animations d'ouverture/fermeture PROMISES + anti-rebonds (copié d'Elytreum) -----
   const animating = new WeakSet();
 
   const smoothOpen = (details) =>
@@ -471,6 +470,223 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
+  // ========= RECHERCHE RANKUP =========
+
+  // Normalisation pour ignorer accents / casse / ligatures (é → e, œ → oe)
+  const normalizeRankup = (str) =>
+    String(str ?? "")
+      .replace(/œ/g, "oe")
+      .replace(/Œ/g, "oe")
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase();
+
+  const escapeRegex = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+  function setupRankupSearch() {
+    const input = document.getElementById("rankupSearch");
+    const btn = document.getElementById("rankupSearchBtn");
+    const resetBtn = document.getElementById("rankupSearchReset");   // span ⌁
+    const resultsBox = document.getElementById("rankupSearchResults");
+
+    if (!input || !btn || !resetBtn || !resultsBox) return;
+
+    // récupère le nom du rang à partir du texte, à droite de "→" si présent
+    const extractRankNameFromText = (raw) => {
+      if (!raw) return "";
+      const arrowIdx = raw.indexOf("→");
+      let target = arrowIdx >= 0 ? raw.slice(arrowIdx + 1) : raw;
+      return target.trim().replace(/\s+/g, " ");
+    };
+
+    // index de tous les rangs
+    const index = Array.from(detailsList).map((details) => {
+      const summary = details.querySelector("summary");
+
+      // 1) Nom principal = alt de l'image (ce que tu as dans le HTML)
+      const img = summary?.querySelector("img[alt]");
+      const altName = img?.getAttribute("alt")?.trim() || "";
+
+      // 2) Texte brut du summary (peut contenir "Visiteur → Citoyen")
+      const rawTitle = summary?.textContent || "";
+
+      // 3) Nom d'affichage = alt si dispo, sinon partie droite du texte
+      const displayName =
+        altName || extractRankNameFromText(rawTitle);
+
+      const nameNorm = normalizeRankup(displayName);
+
+      // 4) Texte des objets / contenu du rang (pour recherche d’items)
+      const itemsText = Array.from(
+        details.querySelectorAll(".rank-content li")
+      )
+        .map((li) => li.textContent || "")
+        .join(" ");
+      const itemsNorm = normalizeRankup(itemsText);
+
+      return {
+        details,
+        displayName, // ce qu'on affichera dans les résultats
+        nameNorm,    // nom de rang normalisé
+        itemsNorm,   // texte des objets normalisé
+      };
+    });
+
+    const updateClearVisibility = () => {
+      resetBtn.style.display = input.value.trim() ? "block" : "none";
+    };
+
+    const runSearch = () => {
+      const qRaw = input.value.trim();
+      const q = normalizeRankup(qRaw);
+
+      resultsBox.innerHTML = "";
+      if (!q) {
+        updateClearVisibility();
+        return;
+      }
+
+      const isSingleToken = !/\s/.test(q);
+      let testFn;
+
+      if (isSingleToken && q.length <= 3) {
+        // mots très courts → match par mot entier (évite blé -> sable)
+        const re = new RegExp("\\b" + escapeRegex(q) + "\\b", "i");
+        testFn = (textNorm) => re.test(textNorm);
+      } else {
+        // sinon substring
+        testFn = (textNorm) => textNorm.includes(q);
+      }
+
+      // 1) On cherche d'abord sur les NOMS de rang (alt)
+      const nameMatches = index.filter(
+        (node) => node.nameNorm && testFn(node.nameNorm)
+      );
+
+      let matches;
+      if (nameMatches.length > 0) {
+        // Si au moins un nom de rang match, on ignore les descriptions
+        matches = nameMatches;
+      } else {
+        // Sinon, on fait une recherche dans les objets / contenu
+        matches = index.filter(
+          (node) => node.itemsNorm && testFn(node.itemsNorm)
+        );
+      }
+
+      if (matches.length === 0) {
+        resultsBox.innerHTML =
+          '<p class="search-empty">Aucun rang trouvé.</p>';
+        updateClearVisibility();
+        return;
+      }
+
+      const ul = document.createElement("ul");
+      ul.className = "search-result-list";
+
+      matches.forEach((node) => {
+        const li = document.createElement("li");
+        const btnResult = document.createElement("button");
+        btnResult.type = "button";
+        btnResult.className = "search-result";
+
+        // Texte du résultat : toujours le nom du rang (alt)
+        const labelText = node.displayName || "Rang";
+        btnResult.textContent = labelText;
+
+        btnResult.addEventListener("click", () => {
+          smoothOpen(node.details).then(() =>
+            ensureScrollToWithOffset(node.details)
+          );
+        });
+
+        li.appendChild(btnResult);
+        ul.appendChild(li);
+      });
+
+      resultsBox.appendChild(ul);
+      updateClearVisibility();
+    };
+
+    btn.addEventListener("click", runSearch);
+
+    input.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        runSearch();
+      }
+    });
+
+    resetBtn.addEventListener("click", () => {
+      input.value = "";
+      resultsBox.innerHTML = "";
+      updateClearVisibility();
+      input.focus();
+    });
+
+    updateClearVisibility();
+  }
+
+
+  // ========= BOUTON FLOTTANT "REMONTÉE" =========
+  function setupScrollTopFab() {
+    // petit style de base injecté (tu peux le déplacer en .css si tu préfères)
+    const style = document.createElement("style");
+    style.textContent = `
+      .scroll-top-fab {
+        position: fixed;
+        right: 16px;
+        bottom: 60px;
+        width: 40px;
+        height: 40px;
+        border-radius: 999px;
+        border: 1px solid #aba36d;
+        background: #40516de0;
+        color: #ead27b;
+        font-size: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        z-index: 9999;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.2s ease, transform 0.2s ease;
+      }
+      .scroll-top-fab:hover {
+        transform: translateY(-2px);
+      }
+    `;
+    document.head.appendChild(style);
+
+    const btn = document.createElement("button");
+    btn.id = "rankupScrollTopFab";
+    btn.className = "scroll-top-fab";
+    btn.type = "button";
+    btn.setAttribute("aria-label", "Remonter en haut");
+    btn.textContent = "↑";
+
+    document.body.appendChild(btn);
+
+    const toggleVisibility = () => {
+      if (window.pageYOffset > 120) {
+        btn.style.opacity = "1";
+        btn.style.pointerEvents = "auto";
+      } else {
+        btn.style.opacity = "0";
+        btn.style.pointerEvents = "none";
+      }
+    };
+
+    toggleVisibility();
+    window.addEventListener("scroll", toggleVisibility);
+
+    btn.addEventListener("click", () => {
+      smoothScrollToTop(0, 450);
+    });
+  }
+
   // 8) Auto-ouvrir le premier rang incomplet au chargement (avec scroll assuré)
   (function autoOpenFirstIncomplete() {
     const MAX_RETRIES = 8, RETRY_DELAY = 80;
@@ -491,5 +707,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
     requestAnimationFrame(() => setTimeout(run, 0));
   })();
+
+  // 🔍 Initialisation de la recherche Rankup
+  setupRankupSearch();
+
+  // ⬆️ Bouton flottant de remontée
+  setupScrollTopFab();
 
 }); // fin DOMContentLoaded

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Contrats</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1" />
+
+  <!-- On garde le style Elytreum -->
+  <link rel="stylesheet" href="../elytreum/elytreum.css" />
+  <link rel="stylesheet" href="contracts.css" />
+</head>
+<body>
+  <header class="page-header">
+    <h1>Contrats</h1>
+  </header>
+
+  <section class="tab-panel active">
+    <!-- Totaux globaux -->
+    <div class="totals-card" id="totalsBox">
+      <div class="line">
+        <span>Gain maximum par jour :</span>
+        <strong id="totalMaxDaily" class="orbsvalue">—</strong>
+      </div>
+      <div class="line total-line">
+        <span>Gain par jour <span class="little">(chaque contrat une fois)</span> :</span>
+        <strong id="totalOnce" class="orbsvalue">—</strong>
+      </div>
+    </div>
+
+	<!-- Recherche -->
+	<div class="contracts-search">
+	  <div class="search-row">
+		<div class="search-wrapper">
+		  <input
+			type="text"
+			id="contractsSearch"
+			placeholder="Rechercher un contrat ou un item..."
+		  />
+		  <strong><span id="searchClearBtn" class="clear-btn">&#10873;</span></strong>
+		</div>
+
+		<button id="contractsSearchBtn">Rechercher</button>
+	  </div>
+
+	  <div id="searchResults" class="search-results"></div>
+	</div>
+
+
+    <!-- Onglets par difficulté -->
+    <div class="subtabs">
+      <button class="subtab-btn active" data-sub="Facile">Facile</button>
+      <button class="subtab-btn" data-sub="Moyenne">Moyenne</button>
+      <button class="subtab-btn" data-sub="Difficile">Difficile</button>
+      <button class="subtab-btn" data-sub="Épique">Épique</button>
+      <button class="subtab-btn" data-sub="Mythique">Mythique</button>
+    </div>
+
+    <!-- Panels par difficulté -->
+    <div id="panel-Facile" class="subtab-panel active" data-label="Facile">
+      <div class="accordion contracts-section" data-difficulty="Facile"></div>
+    </div>
+
+    <div id="panel-Moyenne" class="subtab-panel" data-label="Moyenne">
+      <div class="accordion contracts-section" data-difficulty="Moyenne"></div>
+    </div>
+
+    <div id="panel-Difficile" class="subtab-panel" data-label="Difficile">
+      <div class="accordion contracts-section" data-difficulty="Difficile"></div>
+    </div>
+
+    <div id="panel-Épique" class="subtab-panel" data-label="Épique">
+      <div class="accordion contracts-section" data-difficulty="Épique"></div>
+    </div>
+
+    <div id="panel-Mythique" class="subtab-panel" data-label="Mythique">
+      <div class="accordion contracts-section" data-difficulty="Mythique"></div>
+    </div>
+  </section>
+
+  <!-- 🔹 Un seul JS : données + logique -->
+  <script src="contracts_bundle.js"></script>
+</body>
+</html>

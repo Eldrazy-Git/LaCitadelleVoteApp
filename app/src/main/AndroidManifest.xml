@@ -54,6 +54,10 @@
             android:name=".ElytreumActivity"
             android:exported="false" />
 
+        <activity
+            android:name=".ContractsActivity"
+            android:exported="false" />
+
         <!-- Receiver déclenché par AlarmManager quand un vote est dispo -->
         <receiver
             android:name=".alarm.VoteAlarmReceiver"

@@ -536,3 +536,107 @@ details.rank > summary:focus {
     transition: none;
   }
 }
+
+/* Recherche */
+.rankup-search {
+  margin-bottom: 16px;
+}
+
+.rankup-search .search-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.rankup-search input {
+  flex: 1;
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(0, 0, 0, 0.25);
+  color: #fff;
+}
+
+.rankup-search input::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.rankup-search button {
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: 1px solid #aba36d;
+  background: #40516d;
+  color: #ead27b;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.search-results {
+  margin-top: 4px;
+}
+
+.search-result-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.search-result {
+  width: 100%;
+  text-align: left;
+  padding: 6px 10px;
+  margin-bottom: 4px;
+  border-radius: 6px;
+  border: 1px solid rgba(234, 210, 123, 0.4);
+  background: rgba(0, 0, 0, 0.35);
+  color: #fff;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.search-result:hover {
+  background: rgba(234, 210, 123, 0.12);
+}
+
+.search-empty {
+  font-size: 13px;
+  opacity: 0.8;
+}
+
+/* Conteneur du champ */
+.search-wrapper {
+  position: relative;
+  flex: 1;
+}
+
+/* espace pour l’icône */
+.search-wrapper input {
+  width: 100%;
+  padding-right: 28px;
+  box-sizing: border-box;
+}
+
+/* bouton reset */
+.clear-btn {
+  position: absolute;
+  right: 8px;
+  /* centrage vertical parfait */
+  top: 0;
+  bottom: 0;
+  margin: auto 0;
+  height: 24px; /* même taille que ta font-size */
+  line-height: 24px;
+  font-size: 24px;
+  cursor: pointer;
+  color: #ccc;
+  display: none; /* devient visible si texte */
+}
+
+.clear-btn:hover {
+  color: #fff;
+}
+
+.clear-btn:active {
+  transform: scale(0.85);
+  opacity: 0.7;
+}

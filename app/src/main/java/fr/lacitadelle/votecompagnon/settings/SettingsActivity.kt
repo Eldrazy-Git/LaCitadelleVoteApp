@@ -4,8 +4,11 @@ import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.PowerManager
+import android.provider.Settings
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -21,6 +24,7 @@ import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
 import androidx.preference.SwitchPreferenceCompat
 import fr.lacitadelle.votecompagnon.R
+import fr.lacitadelle.votecompagnon.alarm.ExactAlarmPermission
 import fr.lacitadelle.votecompagnon.alarm.VoteAlarmReceiver
 import fr.lacitadelle.votecompagnon.data.VoteSitesRepository
 import fr.lacitadelle.votecompagnon.legal.LegalPageActivity
@@ -56,6 +60,7 @@ class SettingsActivity : AppCompatActivity() {
             setPreferencesFromResource(R.xml.settings_preferences, rootKey)
 
             // ---- Système / Notifications ----
+            // Paramètres de notifications de l'application
             findPreference<Preference>("pref_open_app_notifications")
                 ?.setOnPreferenceClickListener {
                     try {
@@ -85,41 +90,68 @@ class SettingsActivity : AppCompatActivity() {
                     true
                 }
 
-            findPreference<Preference>("pref_battery_optim")
-                ?.setOnPreferenceClickListener {
-                    try {
-                        startActivity(Intent(android.provider.Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS))
-                    } catch (_: Exception) {
+            // Batterie / optimisation
+            val batteryPref = findPreference<Preference>("pref_battery_optim")
+            batteryPref?.let { pref ->
+                val ignoring = isIgnoringBatteryOptimizations()
+                pref.summary = if (ignoring) {
+                    "L'application n'est pas optimisée pour la batterie. Les rappels devraient rester fiables."
+                } else {
+                    "Recommandé pour que les rappels fonctionnent même si l'application est fermée."
+                }
+
+                pref.setOnPreferenceClickListener {
+                    if (ignoring) {
                         Toast.makeText(
                             requireContext(),
-                            "Échec d’ouverture des paramètres batterie",
+                            "L'application est déjà exclue de l’optimisation batterie.",
                             Toast.LENGTH_SHORT
                         ).show()
+                    } else {
+                        openBatteryOptimizationRequest()
                     }
                     true
                 }
+            }
 
-            findPreference<Preference>("pref_exact_alarm")
-                ?.setOnPreferenceClickListener {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                        try {
-                            startActivity(Intent(android.provider.Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM))
-                        } catch (_: Exception) {
+            // Alarmes exactes
+            val exactPref = findPreference<Preference>("pref_exact_alarm")
+            exactPref?.let { pref ->
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
+                    // Avant Android 12 : inutile
+                    pref.isVisible = false
+                } else {
+                    val hasExact = ExactAlarmPermission.canScheduleExact(requireContext())
+                    pref.summary = if (hasExact) {
+                        "Les alarmes exactes sont déjà autorisées."
+                    } else {
+                        "Recommandé pour une précision maximale des rappels de vote."
+                    }
+
+                    pref.setOnPreferenceClickListener {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                            try {
+                                startActivity(
+                                    Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM)
+                                )
+                            } catch (_: Exception) {
+                                Toast.makeText(
+                                    requireContext(),
+                                    "Échec d’ouverture des alarmes exactes",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                        } else {
                             Toast.makeText(
                                 requireContext(),
-                                "Échec d’ouverture des alarmes exactes",
+                                "Non requis avant Android 12",
                                 Toast.LENGTH_SHORT
                             ).show()
                         }
-                    } else {
-                        Toast.makeText(
-                            requireContext(),
-                            "Non requis avant Android 12",
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        true
                     }
-                    true
                 }
+            }
 
             // --- Test de notification ---
             findPreference<Preference>("pref_test_notification")
@@ -188,6 +220,48 @@ class SettingsActivity : AppCompatActivity() {
             // ---- Infos & Légal ----
             setupInfoCategory()
         }
+
+        /**
+         * L’app est-elle déjà exclue de l’optimisation batterie ?
+         */
+        private fun isIgnoringBatteryOptimizations(): Boolean {
+            val ctx = requireContext()
+            val pm = ctx.getSystemService(Context.POWER_SERVICE) as? PowerManager
+                ?: return false
+            return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                pm.isIgnoringBatteryOptimizations(ctx.packageName)
+            } else {
+                // Avant Doze : pas d’optimisation agressive
+                true
+            }
+        }
+
+        /**
+         * Ouvre la popup système pour demander l’exclusion de l’optimisation batterie.
+         */
+        private fun openBatteryOptimizationRequest() {
+            try {
+                val ctx = requireContext()
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    // Ouvre la liste des applis ignorées par l'optimisation batterie
+                    val intent = Intent(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS)
+                    startActivity(intent)
+                } else {
+                    Toast.makeText(
+                        ctx,
+                        "Non requis avant Android 6 (Marshmallow).",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            } catch (e: Exception) {
+                Toast.makeText(
+                    requireContext(),
+                    "Échec d’ouverture des paramètres batterie",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+
 
         /**
          * Réinitialisation des timers et affichage du temps restant.

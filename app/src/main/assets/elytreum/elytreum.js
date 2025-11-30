@@ -625,6 +625,65 @@ document.addEventListener("DOMContentLoaded", () => {
 };
 
 
+  // ========= BOUTON FLOTTANT "REMONTÉE" =========
+  function setupScrollTopFab() {
+    const style = document.createElement("style");
+    style.textContent = `
+      .scroll-top-fab {
+        position: fixed;
+        right: 16px;
+        bottom: 60px;
+        width: 40px;
+        height: 40px;
+        border-radius: 999px;
+        border: 1px solid #aba36d;
+        background: #40516de0;
+        color: #ead27b;
+        font-size: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        z-index: 9999;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.2s ease, transform 0.2s ease;
+      }
+      .scroll-top-fab:hover {
+        transform: translateY(-2px);
+      }
+    `;
+    document.head.appendChild(style);
+
+    const btn = document.createElement("button");
+    btn.id = "elytreumScrollTopFab";
+    btn.className = "scroll-top-fab";
+    btn.type = "button";
+    btn.setAttribute("aria-label", "Remonter en haut");
+    btn.textContent = "↑";
+
+    document.body.appendChild(btn);
+
+    const toggleVisibility = () => {
+      if (window.pageYOffset > 120) {
+        btn.style.opacity = "1";
+        btn.style.pointerEvents = "auto";
+      } else {
+        btn.style.opacity = "0";
+        btn.style.pointerEvents = "none";
+      }
+    };
+
+    toggleVisibility();
+    window.addEventListener("scroll", toggleVisibility);
+
+    btn.addEventListener("click", () => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  }
+
+
 
   // =========================================================
   //  INIT
@@ -633,5 +692,6 @@ document.addEventListener("DOMContentLoaded", () => {
   computeTotalsFromDom();   // totaux stuffs
   updateCalcUI();           // construit le calculateur + animations
   highlightEnchantments();  // applique le style sur les enchantements
+  setupScrollTopFab(); // activation du bouton
 });
 

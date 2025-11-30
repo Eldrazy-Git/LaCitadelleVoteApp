@@ -30,6 +30,13 @@
             app:actionLayout="@layout/menu_item_elytreum"
             android:orderInCategory="4" />
 
+		<item
+			android:id="@+id/nav_contracts"
+			android:title="Contrats"
+			android:icon="@drawable/ic_contracts" 
+            android:orderInCategory="5" />
+
+
         <item
             android:id="@+id/nav_more"
             android:title="À venir…"

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+
+    <!-- Fond du parchemin -->
+    <path
+        android:fillColor="#FFEEEEEE"
+        android:pathData="M6,3h9l3,3v13a2,2 0 0 1 -2,2h-10a2,2 0 0 1 -2,-2v-14a2,2 0 0 1 2,-2z" />
+
+    <!-- Bord gauche plus foncé -->
+    <path
+        android:fillColor="#FFDDD4AA"
+        android:pathData="M6,3h2v18h-2a2,2 0 0 1 -2,-2v-14a2,2 0 0 1 2,-2z" />
+
+    <!-- Repli du coin en haut à droite -->
+    <path
+        android:fillColor="#FFE6D7B2"
+        android:pathData="M15,3l3,3h-3z" />
+
+    <!-- Lignes de texte -->
+    <path
+        android:strokeColor="#FF8B7A4A"
+        android:strokeWidth="1.2"
+        android:strokeLineCap="round"
+        android:pathData="M8.5,9.0h7.0" />
+    <path
+        android:strokeColor="#FF8B7A4A"
+        android:strokeWidth="1.2"
+        android:strokeLineCap="round"
+        android:pathData="M8.5,11.5h7.0" />
+    <path
+        android:strokeColor="#FF8B7A4A"
+        android:strokeWidth="1.2"
+        android:strokeLineCap="round"
+        android:pathData="M8.5,14.0h4.5" />
+
+    <!-- Petit sceau en bas -->
+    <path
+        android:fillColor="#FFB33A3A"
+        android:pathData="M14.5,17.5a1.5,1.5 0 1 1 -3,0a1.5,1.5 0 1 1 3,0z" />
+
+</vector>

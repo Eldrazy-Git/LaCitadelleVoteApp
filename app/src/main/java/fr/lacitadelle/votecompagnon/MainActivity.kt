@@ -185,6 +185,7 @@ class MainActivity : ComponentActivity() {
                 R.id.nav_wiki -> openUrl("https://lacitadelle-mc.fr/wiki")
                 R.id.nav_rankup -> startActivity(Intent(this, RankupActivity::class.java))
                 R.id.nav_Elytreum -> startActivity(Intent(this, ElytreumActivity::class.java))
+                R.id.nav_contracts -> startActivity(Intent(this, ContractsActivity::class.java))
                 R.id.nav_more -> Toast.makeText(this, "Bientôt 👀", Toast.LENGTH_SHORT).show()
             }
 
