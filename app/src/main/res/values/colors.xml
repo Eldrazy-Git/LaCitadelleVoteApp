@@ -18,4 +18,9 @@
 	<!-- Couleur de TRACK (l’arrière-plan de la piste), semi-transparente -->
     <color name="pref_switch_on_track">#66ABA36D</color>   <!-- or doré 40% d’opacité -->
     <color name="pref_switch_off_track">#6640516D</color>  <!-- bleu-gris 40% d’opacité -->
+	
+	<color name="dialog_button_cancel_blue">#40516d</color>
+	<color name="dialog_button_ok_gold">#aba36d</color>
+
+
 </resources>

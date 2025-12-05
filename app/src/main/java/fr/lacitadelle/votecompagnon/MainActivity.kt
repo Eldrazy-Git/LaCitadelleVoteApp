@@ -36,8 +36,30 @@ import fr.lacitadelle.votecompagnon.notif.NotificationHelper
 import fr.lacitadelle.votecompagnon.utils.CustomTypefaceSpan
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.first
+import android.app.Activity
+import android.content.IntentSender
+import com.google.android.play.core.appupdate.AppUpdateManager
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory
+import com.google.android.play.core.install.InstallStateUpdatedListener
+import com.google.android.play.core.install.model.AppUpdateType
+import com.google.android.play.core.install.model.InstallStatus
+import com.google.android.play.core.install.model.UpdateAvailability
+
 
 class MainActivity : ComponentActivity() {
+
+    // In-App Update (Play Store)
+    private lateinit var appUpdateManager: AppUpdateManager
+    private val APP_UPDATE_REQUEST_CODE = 1001
+
+    private val installStateUpdatedListener = InstallStateUpdatedListener { state ->
+        if (state.installStatus() == InstallStatus.DOWNLOADED) {
+            // La mise à jour est téléchargée, on termine l’update (redémarrage auto de l’app)
+            Toast.makeText(this, "Mise à jour téléchargée, redémarrage…", Toast.LENGTH_SHORT).show()
+            appUpdateManager.completeUpdate()
+        }
+    }
+
 
     // Drawer
     private lateinit var drawerLayout: DrawerLayout
@@ -86,6 +108,12 @@ class MainActivity : ComponentActivity() {
         WindowCompat.setDecorFitsSystemWindows(window, false)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        // --- In-App Update (Google Play) ---
+        appUpdateManager = AppUpdateManagerFactory.create(this)
+        appUpdateManager.registerListener(installStateUpdatedListener)
+        checkForAppUpdate()    // vérifie silencieusement si une MAJ est dispo
+
 
         // Reset notifications unless opened FROM notification
         val openedFromNotification = intent?.hasExtra("open_url") == true
@@ -280,7 +308,19 @@ class MainActivity : ComponentActivity() {
         NotificationHelper.cancelAllVoteReminders(this)
         applyDrawerFont()
         applyCustomFontIfAvailable()
+
+        // In-App Update : si une mise à jour flexible a déjà été téléchargée,
+        // on propose de terminer l’update.
+        if (::appUpdateManager.isInitialized) {
+            appUpdateManager.appUpdateInfo.addOnSuccessListener { info ->
+                if (info.installStatus() == InstallStatus.DOWNLOADED) {
+                    Toast.makeText(this, "Mise à jour téléchargée, redémarrage…", Toast.LENGTH_SHORT).show()
+                    appUpdateManager.completeUpdate()
+                }
+            }
+        }
     }
+
 
     private fun applyDrawerFont() {
         val prefs = PreferenceManager.getDefaultSharedPreferences(this)
@@ -548,6 +588,37 @@ class MainActivity : ComponentActivity() {
     // =======================================================================
     // HELPERS
     // =======================================================================
+
+    // =======================================================================
+    // IN-APP UPDATE (Google Play)
+    // =======================================================================
+
+    private fun checkForAppUpdate() {
+        // Ne fait rien si le Play Store n’est pas dispo
+        val appUpdateInfoTask = appUpdateManager.appUpdateInfo
+
+        appUpdateInfoTask.addOnSuccessListener { appUpdateInfo ->
+            // On ne fait quelque chose que si une mise à jour est réellement disponible
+            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE &&
+                appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)
+            ) {
+                try {
+                    // Lance le flux officiel Google (bannière / dialog système)
+                    appUpdateManager.startUpdateFlowForResult(
+                        appUpdateInfo,
+                        AppUpdateType.FLEXIBLE,  // tu peux mettre IMMEDIATE si tu veux forcer
+                        this,
+                        APP_UPDATE_REQUEST_CODE
+                    )
+                } catch (e: IntentSender.SendIntentException) {
+                    // En cas de problème, on ignore et on ne casse pas l’app
+                    e.printStackTrace()
+                }
+            }
+            // Si aucune MAJ dispo : on ne montre rien comme demandé
+        }
+    }
+
     private fun setDiscordDrawerVisibility(visible: Boolean) {
         val menu = rightDrawer.menu
         val existing = menu.findItem(ID_NAV_DISCORD)
@@ -583,6 +654,18 @@ class MainActivity : ComponentActivity() {
 
     private fun Int.dp(): Int = (this * resources.displayMetrics.density).toInt()
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == APP_UPDATE_REQUEST_CODE) {
+            // Si l'utilisateur annule ou si ça fail, on ne fait rien de spécial
+            if (resultCode != Activity.RESULT_OK) {
+                // Mise à jour annulée ou échouée
+                // Tu peux log / Toast si tu veux, mais ce n'est pas obligatoire
+            }
+        }
+    }
+
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         setIntent(intent)
@@ -592,5 +675,9 @@ class MainActivity : ComponentActivity() {
     override fun onDestroy() {
         super.onDestroy()
         scope.cancel()
+
+        if (::appUpdateManager.isInitialized) {
+            appUpdateManager.unregisterListener(installStateUpdatedListener)
+        }
     }
 }

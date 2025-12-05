@@ -7,6 +7,7 @@ import android.content.Intent
 import androidx.work.Data
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
+import fr.lacitadelle.votecompagnon.data.GraceDelayStorage
 import fr.lacitadelle.votecompagnon.data.VoteSitesRepository
 import fr.lacitadelle.votecompagnon.model.VoteSite
 import fr.lacitadelle.votecompagnon.work.VoteReminderWorker
@@ -15,9 +16,6 @@ import kotlinx.coroutines.runBlocking
 import java.util.concurrent.TimeUnit
 
 object VoteScheduler {
-
-    // ⏱️ Petit délai après le clic avant de démarrer réellement le cooldown
-    private const val GRACE_MS = 10_000L // 10 secondes (ajuste si tu veux)
 
     /** Programme une alarme EXACTE à l’horodatage donné et persiste le next_trigger. */
     fun scheduleNextExact(context: Context, site: VoteSite, triggerAtMillis: Long) {
@@ -40,7 +38,7 @@ object VoteScheduler {
         // Réveil écran verrouillé / Doze
         am.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, triggerAtMillis, pi)
 
-        // Persiste le prochain déclenchement
+        // Persiste le prochain déclenchement (déjà avec le décalage inclus)
         runBlocking(Dispatchers.IO) {
             VoteSitesRepository(context).setNextTrigger(site.id, triggerAtMillis)
         }
@@ -50,18 +48,20 @@ object VoteScheduler {
      * Programme dans [delayMinutes].
      * - Si autorisation d'alarmes exactes : AlarmManager exact.
      * - Sinon : WorkManager (sans expedited, pour éviter le crash).
-     * Ajoute un petit décalage GRACE_MS après le clic.
+     * Le délai utilisateur (grace) est ajouté par-dessus.
      */
     fun scheduleNext(context: Context, site: VoteSite, delayMinutes: Long = site.cooldownMinutes) {
         val delay = delayMinutes.coerceAtLeast(1L)
 
-        // Cooldown "théorique" en ms
+        // cooldown de base (en ms) + décalage utilisateur (en ms)
         val baseDelayMs = TimeUnit.MINUTES.toMillis(delay)
-        // On ajoute le délai de grâce
-        val totalDelayMs = baseDelayMs + GRACE_MS
+        val graceMs = GraceDelayStorage.getGraceMillis(context)
+        val totalDelayMs = baseDelayMs + graceMs
+
         val triggerAt = System.currentTimeMillis() + totalDelayMs
 
         if (ExactAlarmPermission.canScheduleExact(context)) {
+            // Cas "clean" : alarmes exactes autorisées
             scheduleNextExact(context, site, triggerAt)
         } else {
             // Fallback WorkManager si l’appli n’a pas l’autorisation d’alarmes exactes

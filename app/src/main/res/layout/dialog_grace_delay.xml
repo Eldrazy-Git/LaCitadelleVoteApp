@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:background="@drawable/bg_dialog_grace">
+
+    <!-- Titre -->
+    <TextView
+        android:id="@+id/dialogTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Décalage en secondes"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="@color/pref_title_color"
+        android:gravity="center_horizontal"
+        android:paddingBottom="16dp" />
+
+    <!-- Champ -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="0 à 60"
+        app:boxBackgroundMode="outline"
+        app:boxStrokeWidth="2dp"
+        app:boxStrokeColor="@color/pref_title_color"
+        app:hintTextColor="@color/pref_summary_color">
+
+		<com.google.android.material.textfield.TextInputEditText
+			android:id="@+id/editGraceDelay"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:inputType="number"
+			android:textColor="@color/pref_title_color"
+			android:theme="@style/DialogEditTextTheme" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Boutons -->
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:orientation="horizontal"
+		android:gravity="end"
+		android:layout_marginTop="24dp">
+
+		<com.google.android.material.button.MaterialButton
+			android:id="@+id/btnCancel"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="Annuler"
+			android:textAllCaps="false"
+			android:textColor="@color/pref_title_color"
+			android:paddingLeft="24dp"
+			android:paddingRight="24dp"
+			android:paddingTop="8dp"
+			android:paddingBottom="8dp"
+			app:backgroundTint="@color/dialog_button_cancel_blue"
+			app:cornerRadius="999dp" />
+
+		<Space
+			android:layout_width="16dp"
+			android:layout_height="0dp" />
+
+		<com.google.android.material.button.MaterialButton
+			android:id="@+id/btnOk"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="Valider"
+			android:textAllCaps="false"
+			android:textColor="#283852"
+			android:paddingLeft="24dp"
+			android:paddingRight="24dp"
+			android:paddingTop="8dp"
+			android:paddingBottom="8dp"
+			app:backgroundTint="@color/dialog_button_ok_gold"
+			app:cornerRadius="999dp" />
+	</LinearLayout>
+
+
+</LinearLayout>

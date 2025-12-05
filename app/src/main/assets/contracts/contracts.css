@@ -76,6 +76,16 @@ body {
   font-size: 14px;
 }
 
+/* Compteur d'items à droite dans les résultats de recherche */
+.search-result .sr-meta {
+  margin-left: auto;      /* pousse à droite si le bouton est en flex */
+  padding-left: 8px;
+  font-size: 0.85em;
+  color: #cbb982;
+  opacity: 0.9;
+}
+
+
 .search-result:hover {
   background: rgba(234, 210, 123, 0.12);
 }
@@ -83,6 +93,13 @@ body {
 .search-empty {
   font-size: 13px;
   opacity: 0.8;
+}
+
+/* Surbrillance dans un contrat */
+.search-highlight-line {
+  background: rgba(234, 210, 123, 0.35);
+  border-radius: 4px;
+  padding: 0 2px;
 }
 
 /* Conteneur du champ */
@@ -101,9 +118,14 @@ body {
 /* bouton reset */
 .clear-btn {
   position: absolute;
-  right: 8px;
-  top: 50%;
-  transform: translateY(-50%);
+  right: 0px;
+  /* centrage vertical parfait */
+  top: 0;
+  bottom: 0;
+  padding: 0px 10px; 
+  margin: auto 0;
+  height: 24px; /* même taille que ta font-size */
+  line-height: 24px;
   font-size: 24px;
   cursor: pointer;
   color: #ccc;

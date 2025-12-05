@@ -29,7 +29,7 @@ class VoteSitesRepository(private val context: Context) {
             id = "spn",
             name = "Serveur-prive.net",
             url = "https://serveur-prive.net/minecraft/lacitadelle/vote",
-            cooldownMinutes = 90
+            cooldownMinutes = 1
         ),
         VoteSite(
             id = "smv",

@@ -2,6 +2,13 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
 				xmlns:app="http://schemas.android.com/apk/res-auto">
 
+	<PreferenceCategory android:title="Documentation">
+    <Preference
+        android:key="pref_documentation"
+        android:title="Gitbook de l'application"
+        android:summary="Ouvrir le guide complet de l'application" />
+	</PreferenceCategory>
+		
     <!-- Notifications -->
     <PreferenceCategory android:title="Notifications">
 
@@ -38,11 +45,23 @@
             android:defaultValue="true" />
     </PreferenceCategory>
 	
+
+
+
+	
 	<!-- NOUVELLE CATÉGORIE : Votes -->
     <PreferenceCategory
         android:key="prefcat_votes"
         android:title="Votes">
+	
+		<Preference
+			android:key="pref_grace_delay_seconds"
+			android:title="Décalage du cooldown"
+			android:summary="Décalage actuel : 10s"
+			app:iconSpaceReserved="false" />
 
+
+		
         <!-- Suivi en direct du compte à rebours -->
         <SwitchPreferenceCompat
             android:key="pref_vote_live_updates"

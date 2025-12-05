@@ -3,15 +3,25 @@ package fr.lacitadelle.votecompagnon.settings
 import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context
+import androidx.core.content.ContextCompat
 import android.content.Intent
+import android.graphics.drawable.ColorDrawable
+import android.graphics.Color
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.PowerManager
 import android.provider.Settings
+import android.text.InputType
+import android.view.animation.DecelerateInterpolator
+import android.view.LayoutInflater
 import android.view.View
+import android.widget.Button
+import android.widget.EditText
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
@@ -23,7 +33,9 @@ import androidx.preference.PreferenceCategory
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
 import androidx.preference.SwitchPreferenceCompat
+import com.google.android.material.textfield.TextInputEditText
 import fr.lacitadelle.votecompagnon.R
+import fr.lacitadelle.votecompagnon.data.GraceDelayStorage
 import fr.lacitadelle.votecompagnon.alarm.ExactAlarmPermission
 import fr.lacitadelle.votecompagnon.alarm.VoteAlarmReceiver
 import fr.lacitadelle.votecompagnon.data.VoteSitesRepository
@@ -49,15 +61,25 @@ class SettingsActivity : AppCompatActivity() {
             .beginTransaction()
             .replace(android.R.id.content, SettingsFragment())
             .commit()
+
     }
 
     class SettingsFragment : PreferenceFragmentCompat() {
+
+        private val DOC_URL = "https://la-citadelle-vote-compagnon.gitbook.io/docs/"
 
         private val repo by lazy { VoteSitesRepository(requireContext()) }
         private val sites by lazy { repo.defaultSites() }
 
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             setPreferencesFromResource(R.xml.settings_preferences, rootKey)
+
+            // --- Bouton Documentation GitBook ---
+            findPreference<Preference>("pref_documentation")
+                ?.setOnPreferenceClickListener {
+                    openDocumentation()
+                    true
+                }
 
             // ---- Système / Notifications ----
             // Paramètres de notifications de l'application
@@ -89,6 +111,68 @@ class SettingsActivity : AppCompatActivity() {
                     }
                     true
                 }
+
+            // --- Décalage cooldown (grace delay) ---
+            findPreference<Preference>("pref_grace_delay_seconds")?.let { pref ->
+
+                fun updateSummary() {
+                    val sec = (GraceDelayStorage.getGraceMillis(requireContext()) / 1000L).toInt()
+                    pref.summary = "Décalage actuel : ${sec}s"
+                }
+
+                updateSummary()
+
+                pref.setOnPreferenceClickListener {
+                    val ctx = requireContext()
+                    val currentSec = (GraceDelayStorage.getGraceMillis(ctx) / 1000L).toInt()
+
+                    val dialogView = LayoutInflater.from(ctx)
+                        .inflate(R.layout.dialog_grace_delay, null)
+
+                    val editText = dialogView.findViewById<TextInputEditText>(R.id.editGraceDelay)
+                    val btnCancel = dialogView.findViewById<Button>(R.id.btnCancel)
+                    val btnOk = dialogView.findViewById<Button>(R.id.btnOk)
+
+                    editText.setText(currentSec.toString())
+                    editText.setSelection(editText.text?.length ?: 0)
+                    editText.inputType = InputType.TYPE_CLASS_NUMBER
+
+                    val dialog = AlertDialog.Builder(ctx)
+                        .setView(dialogView)
+                        .create()
+
+                    dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+                    btnCancel.setOnClickListener {
+                        dialog.dismiss()
+                    }
+
+                    btnOk.setOnClickListener {
+                        val sec = editText.text?.toString()?.toIntOrNull() ?: 0
+                        GraceDelayStorage.setGraceSeconds(ctx, sec)
+                        updateSummary()
+                        dialog.dismiss()
+                    }
+
+                // ✨ Animation de scale + fade-in
+                    dialog.setOnShowListener {
+                        dialogView.scaleX = 0.8f
+                        dialogView.scaleY = 0.8f
+                        dialogView.alpha = 0f
+
+                        dialogView.animate()
+                            .scaleX(1f)
+                            .scaleY(1f)
+                            .alpha(1f)
+                            .setDuration(200L)
+                            .setInterpolator(DecelerateInterpolator())
+                            .start()
+                    }
+
+                    dialog.show()
+                    true
+                }
+            }
 
             // Batterie / optimisation
             val batteryPref = findPreference<Preference>("pref_battery_optim")
@@ -262,6 +346,19 @@ class SettingsActivity : AppCompatActivity() {
             }
         }
 
+        private fun openDocumentation() {
+            val url = DOC_URL
+
+            // Tente d’ouvrir en Custom Chrome Tab (comme le reste de l’app)
+            try {
+                val customTabsIntent = CustomTabsIntent.Builder().build()
+                customTabsIntent.launchUrl(requireContext(), Uri.parse(url))
+            } catch (e: Exception) {
+                // Fallback : ouvre dans le navigateur classique
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                startActivity(intent)
+            }
+        }
 
         /**
          * Réinitialisation des timers et affichage du temps restant.

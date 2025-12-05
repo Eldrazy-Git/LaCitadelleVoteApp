@@ -571,14 +571,11 @@ summary {
   color: var(--text);
 }
 
-/* Mise en gras des enchantements */
-.ench {
-  font-weight: 600;
-  color: var(--text);
-}
-
 /* Enchantements custom Elytreum */
 .ench-custom {
-  color: #83c3ff;  /* bleu/blanc clair */
-  font-weight: 600;
+  color: #55ffff;  /*83c3ff bleu/blanc clair */
+}
+
+.ench-custom2 {
+  color: #55ff55;  /* bleu/blanc clair */
 }

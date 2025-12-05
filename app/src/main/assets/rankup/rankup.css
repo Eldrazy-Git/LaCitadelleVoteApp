@@ -269,6 +269,7 @@ details[open] > summary:focus-visible,
   animation:fadeIn .18s ease-out;
 }
 
+
 /* ligne avec case à cocher injectée */
 .rank-checkline {
   display: flex;
@@ -434,11 +435,13 @@ li:has(.rank-checkline) > .rank-checkline {
 }
 
 
-/* état quand c’est coché */
+/* état quand c’est coché : on “grise” via la couleur, pas l’opacité globale */
 .rank-checkline.rank-item-done span {
-  opacity: 0.45;
-  transition: opacity 0.12s ease-out;
+  opacity: 1; /* surtout pas < 1, sinon ça assombrit aussi la surbrillance */
+  color: rgba(253, 247, 227, 0.45); /* texte plus pâle */
+  transition: color 0.12s ease-out;
 }
+
 
 /* fade-in animation */
 @keyframes fadeIn {
@@ -594,6 +597,16 @@ details.rank > summary:focus {
   font-size: 14px;
 }
 
+/* Compteur d'items à droite dans les résultats de recherche */
+.search-result .sr-meta {
+  margin-left: auto;      /* pousse à droite si le bouton est en flex */
+  padding-left: 8px;
+  font-size: 0.85em;
+  color: #cbb982;
+  opacity: 0.9;
+}
+
+
 .search-result:hover {
   background: rgba(234, 210, 123, 0.12);
 }
@@ -616,13 +629,22 @@ details.rank > summary:focus {
   box-sizing: border-box;
 }
 
+/* Surbrillance dans un rang */
+.search-highlight-line {
+  background: rgba(234, 210, 123, 0.35);
+  border-radius: 4px;
+  padding: 0 2px;
+}
+
+
 /* bouton reset */
 .clear-btn {
   position: absolute;
-  right: 8px;
+  right: 0px;
   /* centrage vertical parfait */
   top: 0;
   bottom: 0;
+  padding: 10px 10px; 
   margin: auto 0;
   height: 24px; /* même taille que ta font-size */
   line-height: 24px;

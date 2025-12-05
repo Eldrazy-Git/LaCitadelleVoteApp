@@ -4,14 +4,13 @@ document.addEventListener("DOMContentLoaded", function () {
   // ---- OFFSET de scroll pour éviter la barre de statut ----
   const SCROLL_OFFSET = 48;
 
-  // ===== Scroll fluide (remplace l'ancien ensureScrollToWithOffset) =====
+  // ===== Scroll fluide =====
   const easeInOutCubic = (t) =>
     t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
 
   let _activeScrollAnim = null;
 
   const smoothScrollToTop = (top, duration = 450) => {
-    // annule une éventuelle anim en cours
     if (_activeScrollAnim && _activeScrollAnim.cancel) {
       _activeScrollAnim.cancel();
     }
@@ -50,12 +49,10 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   };
 
-  // Scroll "assuré" : animation fluide + petite correction si le layout bouge
   const ensureScrollToWithOffset = async (el, offset = SCROLL_OFFSET) => {
     const targetTop = window.pageYOffset + el.getBoundingClientRect().top - offset;
     await smoothScrollToTop(targetTop, 450);
 
-    // correction finale si l'ouverture/fermeture a décalé la page
     const newTarget = window.pageYOffset + el.getBoundingClientRect().top - offset;
     if (Math.abs(window.pageYOffset - newTarget) > 3) {
       await smoothScrollToTop(newTarget, 220);
@@ -70,7 +67,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // 2) Nodes
   const detailsList = document.querySelectorAll("details.rank");
 
-  // Helpers
+  // helpers
   const getAllItemCheckboxes = (details) =>
     Array.from(details.querySelectorAll('.rank-checkline input[type="checkbox"]'));
 
@@ -85,16 +82,14 @@ document.addEventListener("DOMContentLoaded", function () {
     return items.length > 0 && items.every(cb => cb.checked);
   };
 
-  // --- Barre de progression (contenu placé en premier dans .rank-content) ---
+  // --- Progress bar ---
   const ensureRankProgressBar = (details) => {
     const content = details.querySelector(".rank-content");
     if (!content) return null;
 
-    // Si déjà présente, on la renvoie
     let progress = content.querySelector(".rank-progress");
     if (progress) return progress;
 
-    // Sinon, on la crée et on la met juste au début du contenu
     progress = document.createElement("div");
     progress.className = "rank-progress";
     progress.innerHTML = `
@@ -126,7 +121,6 @@ document.addEventListener("DOMContentLoaded", function () {
     if (label) label.textContent = `${done} / ${total || 0}`;
   };
 
-  // ----- Animations d'ouverture/fermeture PROMISES + anti-rebonds -----
   const animating = new WeakSet();
 
   const smoothOpen = (details) =>
@@ -160,7 +154,6 @@ document.addEventListener("DOMContentLoaded", function () {
         content.style.transition = "";
         animating.delete(details);
 
-        // comme sur Elytreum : on recentre après ouverture
         ensureScrollToWithOffset(details);
         resolve();
       };
@@ -202,7 +195,6 @@ document.addEventListener("DOMContentLoaded", function () {
       content.addEventListener("transitionend", onEnd);
     });
 
-  // Ouvrir le prochain rang incomplet (appelé SEULEMENT si le rang courant était ouvert)
   const openNextIncompleteFrom = async (currentDetails) => {
     const arr = Array.from(detailsList);
     const idx = arr.indexOf(currentDetails);
@@ -210,10 +202,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const next = arr.slice(idx + 1).find((d) => !isRankCompleted(d));
     if (!next) return;
 
-    // fermer proprement les autres
     for (const d of arr) {
       if (d !== next && d.open) {
-        // eslint-disable-next-line no-await-in-loop
         await smoothClose(d);
       }
     }
@@ -222,7 +212,6 @@ document.addEventListener("DOMContentLoaded", function () {
     requestAnimationFrame(() => ensureScrollToWithOffset(next));
   };
 
-  // Met à jour le checkbox de rang selon l'état des items
   const syncHeaderFromItems = (details, headerCb, rankDoneKey) => {
     const allItems = getAllItemCheckboxes(details);
     const allChecked = allItems.length > 0 && allItems.every(cb => cb.checked);
@@ -230,7 +219,6 @@ document.addEventListener("DOMContentLoaded", function () {
     state[rankDoneKey] = headerCb.checked;
     setRankCompletedClass(details, headerCb.checked);
 
-    // 🔁 mettre à jour la barre de progression quand on recalcule l'état du rang
     updateRankProgressUI(details);
 
     saveState();
@@ -240,7 +228,9 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   };
 
-  // 3) Clic sur SUMMARY : accordéon + scroll offset (même logique qu'Elytreum)
+
+  // ========= ACCORDÉON SUMMARY =========
+
   detailsList.forEach((details, idx) => {
     if (!details.dataset.rankId) details.dataset.rankId = "rank_" + idx;
 
@@ -254,7 +244,6 @@ document.addEventListener("DOMContentLoaded", function () {
       e.preventDefault();
       if (animating.has(details)) return;
 
-      // parent "groupe" comme .accordion sur Elytreum
       const parentAcc = details.parentElement;
 
       if (details.open) {
@@ -264,7 +253,6 @@ document.addEventListener("DOMContentLoaded", function () {
           const siblings = parentAcc.querySelectorAll("details.rank");
           for (const other of siblings) {
             if (other !== details && other.open) {
-              // eslint-disable-next-line no-await-in-loop
               await smoothClose(other);
             }
           }
@@ -275,7 +263,8 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
 
-  // 4) Injection des cases à cocher dans Requis + Objets
+  // ========= CHECKBOXS REQUIS / OBJETS =========
+
   detailsList.forEach((details) => {
     const rankId = details.dataset.rankId;
     const content = details.querySelector(".rank-content") || details;
@@ -316,7 +305,6 @@ document.addEventListener("DOMContentLoaded", function () {
             const rankDoneKey = rankId + "::__rank_done";
             syncHeaderFromItems(details, headerCb, rankDoneKey);
           } else {
-            // pas de checkbox de rang -> on met juste à jour la barre
             updateRankProgressUI(details);
           }
         });
@@ -331,7 +319,7 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     });
 
-    // 5) Checkbox "Rang terminé" dans le SUMMARY (à droite de l’image)
+    // Checkbox rang terminé
     const summary = details.querySelector("summary");
     if (summary) {
       const rankDoneKey = rankId + "::__rank_done";
@@ -384,7 +372,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
         saveState();
 
-        // 🔁 mettre à jour la barre de progression quand on coche/décoche tout
         updateRankProgressUI(details);
 
         if (headerCb.checked && details.open) {
@@ -413,15 +400,13 @@ document.addEventListener("DOMContentLoaded", function () {
           }
         }
 
-        // après avoir synchronisé l'état, on initialise la barre
         updateRankProgressUI(details);
       });
     } else {
-      // s'il n'y a pas de summary / checkbox de rang, on initialise quand même la barre
       updateRankProgressUI(details);
     }
 
-    // 6) reset par rang
+    // Bouton reset du rang
     const resetBtn = document.createElement("button");
     resetBtn.textContent = "Remise à zéro de ce rang";
     resetBtn.className = "rank-reset-btn";
@@ -438,7 +423,6 @@ document.addEventListener("DOMContentLoaded", function () {
       if (headerCb) headerCb.checked = false;
       setRankCompletedClass(details, false);
 
-      // 🔁 réinitialise la barre de progression du rang
       updateRankProgressUI(details);
 
       resetBtn.classList.remove("is-animating");
@@ -449,7 +433,9 @@ document.addEventListener("DOMContentLoaded", function () {
     content.appendChild(resetBtn);
   });
 
-  // 7) reset global
+
+  // ========= Reset global =========
+
   const resetAllBtn = document.getElementById("reset-all");
   if (resetAllBtn) {
     resetAllBtn.addEventListener("click", function () {
@@ -460,7 +446,6 @@ document.addEventListener("DOMContentLoaded", function () {
       document.querySelectorAll('.rank-summary-check input[type="checkbox"]').forEach((cb) => { cb.checked = false; });
       document.querySelectorAll('details.rank').forEach(d => {
         d.classList.remove('rank-completed');
-        // 🔁 maj barre pour chaque rang après reset global
         updateRankProgressUI(d);
       });
 
@@ -470,9 +455,48 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // ========= RECHERCHE RANKUP =========
 
-  // Normalisation pour ignorer accents / casse / ligatures (é → e, œ → oe)
+  // =============== SURBRILLANCE RECHERCHE (par ligne) ===================
+
+  function clearRankupHighlights() {
+    document
+      .querySelectorAll(".search-highlight-line")
+      .forEach((el) => el.classList.remove("search-highlight-line"));
+  }
+
+  function highlightTermInRank(rankNode, termRaw) {
+    clearRankupHighlights();
+
+    const raw = (termRaw || "").trim();
+    if (!raw) return;
+
+    const needleNorm = normalizeRankup(raw);
+    if (!needleNorm) return;
+
+    // 1) Surbrillance du SUMMARY (nom du rang) si ça matche
+    const summary = rankNode.querySelector("summary");
+    if (summary) {
+      const summaryNorm = normalizeRankup(summary.textContent || "");
+      if (summaryNorm.includes(needleNorm)) {
+        summary.classList.add("search-highlight-line");
+      }
+    }
+
+    // 2) Surbrillance des lignes d'items (label.rank-checkline)
+    const itemLines = rankNode.querySelectorAll(".rank-checkline");
+    itemLines.forEach((label) => {
+      const span = label.querySelector("span");
+      const text = span ? span.textContent : label.textContent || "";
+      const textNorm = normalizeRankup(text);
+      if (textNorm.includes(needleNorm)) {
+        label.classList.add("search-highlight-line");
+      }
+    });
+  }
+
+
+  // ========= RECHERCHE RANKUP (avec surbrillance) =========
+
   const normalizeRankup = (str) =>
     String(str ?? "")
       .replace(/œ/g, "oe")
@@ -486,12 +510,11 @@ document.addEventListener("DOMContentLoaded", function () {
   function setupRankupSearch() {
     const input = document.getElementById("rankupSearch");
     const btn = document.getElementById("rankupSearchBtn");
-    const resetBtn = document.getElementById("rankupSearchReset");   // span ⌁
+    const resetBtn = document.getElementById("rankupSearchReset");
     const resultsBox = document.getElementById("rankupSearchResults");
 
     if (!input || !btn || !resetBtn || !resultsBox) return;
 
-    // récupère le nom du rang à partir du texte, à droite de "→" si présent
     const extractRankNameFromText = (raw) => {
       if (!raw) return "";
       const arrowIdx = raw.indexOf("→");
@@ -499,24 +522,19 @@ document.addEventListener("DOMContentLoaded", function () {
       return target.trim().replace(/\s+/g, " ");
     };
 
-    // index de tous les rangs
     const index = Array.from(detailsList).map((details) => {
       const summary = details.querySelector("summary");
 
-      // 1) Nom principal = alt de l'image (ce que tu as dans le HTML)
       const img = summary?.querySelector("img[alt]");
       const altName = img?.getAttribute("alt")?.trim() || "";
 
-      // 2) Texte brut du summary (peut contenir "Visiteur → Citoyen")
       const rawTitle = summary?.textContent || "";
 
-      // 3) Nom d'affichage = alt si dispo, sinon partie droite du texte
       const displayName =
         altName || extractRankNameFromText(rawTitle);
 
       const nameNorm = normalizeRankup(displayName);
 
-      // 4) Texte des objets / contenu du rang (pour recherche d’items)
       const itemsText = Array.from(
         details.querySelectorAll(".rank-content li")
       )
@@ -526,9 +544,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
       return {
         details,
-        displayName, // ce qu'on affichera dans les résultats
-        nameNorm,    // nom de rang normalisé
-        itemsNorm,   // texte des objets normalisé
+        displayName,
+        nameNorm,
+        itemsNorm,
       };
     });
 
@@ -540,6 +558,9 @@ document.addEventListener("DOMContentLoaded", function () {
       const qRaw = input.value.trim();
       const q = normalizeRankup(qRaw);
 
+      // ⭐ AJOUT : Nettoyage avant la nouvelle recherche
+      clearRankupHighlights();
+
       resultsBox.innerHTML = "";
       if (!q) {
         updateClearVisibility();
@@ -550,25 +571,20 @@ document.addEventListener("DOMContentLoaded", function () {
       let testFn;
 
       if (isSingleToken && q.length <= 3) {
-        // mots très courts → match par mot entier (évite blé -> sable)
         const re = new RegExp("\\b" + escapeRegex(q) + "\\b", "i");
         testFn = (textNorm) => re.test(textNorm);
       } else {
-        // sinon substring
         testFn = (textNorm) => textNorm.includes(q);
       }
 
-      // 1) On cherche d'abord sur les NOMS de rang (alt)
       const nameMatches = index.filter(
         (node) => node.nameNorm && testFn(node.nameNorm)
       );
 
       let matches;
       if (nameMatches.length > 0) {
-        // Si au moins un nom de rang match, on ignore les descriptions
         matches = nameMatches;
       } else {
-        // Sinon, on fait une recherche dans les objets / contenu
         matches = index.filter(
           (node) => node.itemsNorm && testFn(node.itemsNorm)
         );
@@ -590,14 +606,17 @@ document.addEventListener("DOMContentLoaded", function () {
         btnResult.type = "button";
         btnResult.className = "search-result";
 
-        // Texte du résultat : toujours le nom du rang (alt)
         const labelText = node.displayName || "Rang";
-        btnResult.textContent = labelText;
+		btnResult.textContent = labelText;
+
 
         btnResult.addEventListener("click", () => {
-          smoothOpen(node.details).then(() =>
-            ensureScrollToWithOffset(node.details)
-          );
+          smoothOpen(node.details).then(() => {
+            ensureScrollToWithOffset(node.details);
+
+            // surbrillance de la ligne (rang + items) pour ce terme
+            highlightTermInRank(node.details, qRaw);
+          });
         });
 
         li.appendChild(btnResult);
@@ -617,20 +636,21 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
 
-    resetBtn.addEventListener("click", () => {
-      input.value = "";
-      resultsBox.innerHTML = "";
-      updateClearVisibility();
-      input.focus();
-    });
+	resetBtn.addEventListener("click", () => {
+	  input.value = "";
+	  resultsBox.innerHTML = "";
+	  clearRankupHighlights();
+	  updateClearVisibility();
+	  input.focus();
+	});
+
 
     updateClearVisibility();
   }
 
 
-  // ========= BOUTON FLOTTANT "REMONTÉE" =========
+  // ========= BOUTON FLOTTANT =========
   function setupScrollTopFab() {
-    // petit style de base injecté (tu peux le déplacer en .css si tu préfères)
     const style = document.createElement("style");
     style.textContent = `
       .scroll-top-fab {
@@ -682,12 +702,9 @@ document.addEventListener("DOMContentLoaded", function () {
     toggleVisibility();
     window.addEventListener("scroll", toggleVisibility);
 
-    btn.addEventListener("click", () => {
-      smoothScrollToTop(0, 450);
-    });
+    btn.addEventListener("click", () => smoothScrollToTop(0, 450));
   }
 
-  // 8) Auto-ouvrir le premier rang incomplet au chargement (avec scroll assuré)
   (function autoOpenFirstIncomplete() {
     const MAX_RETRIES = 8, RETRY_DELAY = 80;
     let tries = 0;
@@ -708,10 +725,8 @@ document.addEventListener("DOMContentLoaded", function () {
     requestAnimationFrame(() => setTimeout(run, 0));
   })();
 
-  // 🔍 Initialisation de la recherche Rankup
+  // Init
   setupRankupSearch();
-
-  // ⬆️ Bouton flottant de remontée
   setupScrollTopFab();
 
 }); // fin DOMContentLoaded

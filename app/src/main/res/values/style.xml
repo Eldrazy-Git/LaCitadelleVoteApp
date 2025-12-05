@@ -3,5 +3,12 @@
     <style name="RoundedImageStyle">
     <item name="cornerFamily">rounded</item>
     <item name="cornerSize">4dp</item>
-</style>
+	</style>
+
+    <!-- Thème local pour ton TextInputEditText -->
+    <style name="DialogEditTextTheme" parent="ThemeOverlay.Material3.TextInputEditText">
+        <item name="colorControlActivated">#aba36d</item> <!-- curseur -->
+        <item name="colorPrimary">#aba36d</item> <!-- fallback curseur -->
+    </style>
+
 </resources>

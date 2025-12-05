@@ -31,13 +31,24 @@ document.addEventListener("DOMContentLoaded", () => {
   const formatStacks = (qty) => {
     const q = Number(qty || 0);
     if (q < 64) return "";
+
     const stacks = Math.floor(q / 64);
     const rest = q % 64;
+
     if (rest === 0) {
-      return ` (${stacks}x64)`;
+      // 1 stack → afficher seulement "64"
+      return stacks === 1 ? " (64)" : ` (${stacks}x64)`;
     }
-    return ` (${stacks}x64 + ${rest})`;
-  };
+
+    // stacks + reste
+    if (stacks === 1) {
+      // 1 stack → afficher "64 + reste"
+      return ` (64 + ${rest})`;
+    }
+
+  return ` (${stacks}x64 + ${rest})`;
+};
+
 
   // =========================================================
   //  ONGLET PRINCIPAL (Stuffs / Calculateur)
@@ -268,7 +279,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	  icon: "img/ely_tungstene_ingot.png",
       components: {
         "Lingot de fer": 1,
-        "Poudre de creeper": 1
+        "Poudre à canon": 1
       },
       craftHtml: `
         <div class="craft-step">
@@ -276,7 +287,7 @@ document.addEventListener("DOMContentLoaded", () => {
           <div class="craft-row">
             <div class="craft-grid">
               <div class="craft-slot"><img src="img/mc_iron_ingot.png" alt="Lingot de fer"></div>
-              <div class="craft-slot"><img src="img/mc_gunpowder.png" alt="Poudre de creeper"></div>
+              <div class="craft-slot"><img src="img/mc_gunpowder.png" alt="Poudre à canon"></div>
               <div class="craft-slot empty"></div>
               <div class="craft-slot empty"></div>
               <div class="craft-slot empty"></div>
@@ -374,9 +385,9 @@ document.addEventListener("DOMContentLoaded", () => {
 	  icon: "img/ely_oxydite_gem.png",
       components: {
         "Éclat d’écho": 2,
-        "Bloc de roche noire dorée": 1,
-        "Lingot de netherite": 2,
-        "Cristal de l’end": 1,
+        "Roche noire dorée": 1,
+        "Lingot de Netherite": 2,
+        "Cristal de l’End": 1,
         "Bloc d’or brut": 2,
         "Cœur de la mer": 1
       },
@@ -511,7 +522,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       Object.entries(res.components).forEach(([name]) => {
         const qty = globalTotals[name] || 0;
-        recapList += `<li><strong>${fmt(qty)}${formatStacks(qty)}</strong> ${name}</li>`;
+        recapList += `<li><strong>${fmt(qty)}</strong> <em>${formatStacks(qty)}</em><strong> -</strong> ${name}</li>`;
       });
 
       recapList += "</ul>";
@@ -564,9 +575,7 @@ document.addEventListener("DOMContentLoaded", () => {
         bodyHtml += "<h4>Ressources nécessaires totales</h4><ul>";
         Object.entries(res.components).forEach(([name, perUnit]) => {
           const qty = perUnit * totalCustom;
-          bodyHtml += `<li><strong>${fmt(qty)}${formatStacks(
-            qty
-          )}</strong> ${name}</li>`;
+          bodyHtml += `<li><strong>${fmt(qty)}</strong> <em>${formatStacks(qty)}</em><strong> -</strong> ${name}</li>`;		  
         });
         bodyHtml += "</ul>";
       }
@@ -649,10 +658,16 @@ document.addEventListener("DOMContentLoaded", () => {
         opacity: 0;
         pointer-events: none;
         transition: opacity 0.2s ease, transform 0.2s ease;
+		-webkit-tap-highlight-color: transparent;  /* enlève le halo bleu Android */
+		outline: none;                             /* pas de contour focus moche */
       }
       .scroll-top-fab:hover {
         transform: translateY(-2px);
       }
+	  .scroll-top-fab:focus,
+	  .scroll-top-fab:focus-visible {
+		outline: none;
+}
     `;
     document.head.appendChild(style);
 
